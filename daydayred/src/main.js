@@ -4,8 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import request from './common/js/requestServerSetting'
-import Cube from 'cube-ui'
-Vue.use(Cube)
+import swipe from 'mint-ui'
 Vue.config.productionTip = false
 request(Vue)
 /* eslint-disable no-new */
@@ -13,5 +12,5 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App }
+  components: { App, swipe }
 })

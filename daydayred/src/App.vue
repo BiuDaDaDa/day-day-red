@@ -2,20 +2,21 @@
   <div id="app">
     <img src="./assets/logo.png">
     <router-view/>
+    <button @click="fetchHomeData">获取</button>
   </div>
 </template>
-
 <script>
 export default {
   name: 'app',
   methods: {
     fetchHomeData () {
       this.$request({
-        url: '',
+        url: '/api/news/banner',
         type: 'get',
         headers: {},
         params: {},
-        success: function () {
+        success: function (res) {
+          console.log(res)
         },
         failed: function () {
         }
