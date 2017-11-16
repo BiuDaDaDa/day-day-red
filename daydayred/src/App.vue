@@ -27,7 +27,10 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @color:red;
+  @import '../src/common/css/style';
   @import '../node_modules/marx-css/css/marx.min.css';
+  #app{
+    color: @color-blue;
+  }
 
 </style>
