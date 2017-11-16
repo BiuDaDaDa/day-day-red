@@ -5,9 +5,8 @@ import WeiShiBo from './WeiShiBo'
 import ZhaoJiang from './ZhaoJiang'
 import YuKaiRui from './YuKariRui'
 Vue.use(Router)
-let routes = []
-routes.concat(OuXueSong, WeiShiBo, ZhaoJiang, YuKaiRui)
+YuKaiRui.concat(OuXueSong, WeiShiBo, ZhaoJiang)
 export default new Router({
   mode: 'history',
-  routes: routes
+  routes: YuKaiRui
 })
