@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
     <router-view/>
-    <button @click="fetchHomeData">获取</button>
   </div>
 </template>
 <script>
@@ -25,12 +23,8 @@ export default {
   }
 }
 </script>
-
 <style scoped lang="less">
-  @import '../src/common/css/style';
-  @import '../node_modules/marx-css/css/marx.min.css';
   #app{
-    color: @color-blue;
   }
 
 </style>
