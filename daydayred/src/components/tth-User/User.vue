@@ -1,7 +1,14 @@
 <template>
   <div>
     <div class="user-body">
+      <!--用户页面背景颜色-->
       <div class="user-bg"></div>
+      <!--用户页面头像部分-->
+      <div>
+        <div>
+
+        </div>
+      </div>
     </div>
   </div>
 </template>
