@@ -1,9 +1,7 @@
 <template>
   <div>
     <div class="user-body">
-      <div class="user-bg">
-
-      </div>
+      <div class="user-bg"></div>
     </div>
   </div>
 </template>
@@ -14,11 +12,11 @@
 </script>
 <style scoped lang="less">
  @import "../../common/css/style.less";
- *{
-   padding: 0;
-   margin: 0;
+ .user-body{
+   width: 100%;
+   height: 100%;
  }
-  .user-body{
+  .user-bg{
     width: 100%;
     height: 29.33333vmin;
     background-color: @color-red;
