@@ -4,8 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import request from './common/js/requestServerSetting'
-import { Swipe } from 'mint-ui'
+import { Swipe, SwipeItem } from 'mint-ui'
 import VueBus from 'vue-bus'
+Vue.component(Swipe.name, Swipe)
+Vue.component(SwipeItem.name, SwipeItem)
 Vue.use(VueBus)
 Vue.config.productionTip = false
 request(Vue)
@@ -14,5 +16,5 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App, Swipe }
+  components: { App }
 })
