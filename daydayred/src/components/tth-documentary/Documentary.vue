@@ -38,6 +38,33 @@
               近{{(plan.hitState).split('').length}}中{{counts[index]}}
             </div>
           </span>
+          <span class="documengtary_recommend_body_title_time">
+            {{plan.followedBet.deadline}}截止
+          </span>
+        </div>
+        <div class="documengtary_recommend_body_body">
+          {{plan.nick}}
+        </div>
+        <div class="documengtary_recommend_body_footer_wrap">
+          <div class="documengtary_recommend_body_footer_counts">
+            <span>场次数</span>
+            <strong>{{plan.matchCounts}}</strong>
+          </div>
+          <p></p>
+          <div class="documengtary_recommend_body_footer_way">
+            <span>过关方式</span>
+            <strong>{{plan.parlay}}</strong>
+          </div>
+          <p></p>
+          <div class="documengtary_recommend_body_footer_bet">
+            <span>彩帝投注</span>
+            <strong>{{plan.bet}}</strong>
+          </div>
+          <p></p>
+          <div class="documengtary_recommend_body_footer_money">
+            <span>已跟投金额</span>
+            <strong class="colorred">{{plan.followedBet.views}}</strong>
+          </div>
         </div>
       </div>
     </div>
@@ -84,12 +111,11 @@
           headers: {},
           params: {},
           success: function (res) {
-//            console.log(res.data.data.plans[1].avatar)
+            console.log(res.data.data.plans[1].nick)
             this.plans = res.data.data.plans
             let count = 0
             let counts = []
             for (let i = 0; i < res.data.data.plans.length; i++) {
-//              console.log(res.data.data.plans[i].hitState)
               let str = res.data.data.plans[i].hitState
               let num1 = '1'
               let regex = new RegExp(num1, 'g')
@@ -101,7 +127,6 @@
               }
             }
             this.counts = counts
-            console.log(this.counts)
           },
           failed: function () {}
         })
@@ -247,8 +272,6 @@
   }
   .documengtary_recommend_body_title{
     box-sizing: border-box;
-    border: 1px solid blue;
-    /*height: 10px;*/
   }
   .documengtary_recommend_body_title img{
     width: 13.06667vmin;
@@ -273,6 +296,58 @@
     font-size: 3.8vmin;
     margin-top: 1vmin;
   }
+  .documengtary_recommend_body_title_time{
+    padding: 1.86667vmin 0;
+    font-size: 3.73333vmin;
+    color: #999;
+    font-weight: 400;
+    vertical-align: middle;
+    margin-top: 1vmin;
+    float: right;
+  }
+  .documengtary_recommend_body_body{
+    font-weight: 700;
+    padding-left: 4.4vmin;
+    display: block;
+    margin-top: 3.33333vmin;
+    font-size: 4vmin;
+  }
+  .documengtary_recommend_body_footer_wrap{
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 5vmin;
+    display: flex;
+    justify-content: space-between;
+  }
+  .documengtary_recommend_body_footer_wrap div{
+    width: 23%;
+  }
+  .documengtary_recommend_body_footer_wrap span{
+    color: #999;
+    display: block;
+    line-height: 1;
+    margin-bottom: 1.33333vmin;
+    font-size: 3.73333vmin;
+    text-align: center;
+  }
+  .documengtary_recommend_body_footer_wrap strong{
+    display: inline-block;
+    width: 100%;
+    line-height: 1;
+    font-weight: 400;
+    text-align: center;
+    font-size: 3.73333vmin;
+  }
+  .colorred{
+    color: red;
+  }
+  .documengtary_recommend_body_footer_wrap p{
+    height: 6vmin;
+    border-left: .3vmin solid #EDEDED;
+    margin-top: 1.5vmin;
+  }
+
+
 
 
 
