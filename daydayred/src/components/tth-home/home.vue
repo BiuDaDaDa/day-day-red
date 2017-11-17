@@ -66,7 +66,32 @@
 
 <script>
   export default {
-    name: 'home'
+    name: 'home',
+    data () {
+      return {
+        bannerArr: []
+      }
+    },
+    methods: {
+      fecthBannerData () {
+        this.$request({
+          type: 'get',
+          url: '/news/banner',
+          headers: {},
+          params: {},
+          success: function (res) {
+            this.bannerArr = res
+            console.log(res)
+          },
+          failed: function (err) {
+            console.log('未找到轮播图数据:' + err)
+          }
+        })
+      }
+    },
+    mounted () {
+      this.fecthBannerData()
+    }
   }
 </script>
 
