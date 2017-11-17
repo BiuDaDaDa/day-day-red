@@ -5,21 +5,21 @@
       <div class="user-bg"></div>
       <!--用户页面头像部分-->
       <div class="user-head">
-        <div class="user-tth-head">
-          <img src="../../assets/tth-user/tth-user.png" alt="">
-        </div>
-        <!--头像下面登陆注册文字-->
-        <span class="user-login">登陆/注册</span>
-        <!--余额-->
-        <p class="user-balance">
-          余额：<strong>--</strong>元
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="right iconfont icon-arrow-right"></i>
-        </p>
+          <div class="user-tth-head">
+            <img src="../../assets/tth-user/tth-user.png" alt="">
+          </div>
+          <!--头像下面登陆注册文字-->
+          <span class="user-login">登陆/注册</span>
+          <!--余额-->
+          <p class="user-balance">
+            余额：<strong>--</strong>元
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="right iconfont icon-arrow-right"></i>
+          </p>
         <!--充值提款-->
         <div class="user-card">
           <div class="card">
-            <i class="iconfont icon-chongzhi chongzhi"></i>
-            <p>&nbsp;充值</p>
+              <i class="iconfont icon-chongzhi chongzhi"></i>
+              <p>&nbsp;充值</p>
           </div>
           <div class="shuxian"></div>
           <div class="money">
@@ -56,7 +56,6 @@
           <i class="gendanwang iconfont icon-gendanwang"></i>
           <span>我的跟单</span>
           <i class="arrow-right iconfont icon-arrow-right"></i>
-          <div class="hengxian"></div>
         </div>
       </div>
     </div>
@@ -184,7 +183,7 @@
     left: 2%;
     top: 10%;
     width: 96.26667vmin;
-    height: 60vmin;
+    height: 25%;
     background-color: #fff;
     border-top: 1px solid #eee;
     box-shadow: 1px 0.26667vmin 1.33333vmin #666;
@@ -200,21 +199,21 @@
   .chase {
     width: 90vmin;
     position: absolute;
-    top: 28%;
+    top: 32%;
     left: 5%;
   }
 
   .red-packet {
     width: 90vmin;
     position: absolute;
-    top: 48%;
+    top: 57%;
     left: 5%;
   }
 
   .my-documentary {
     width: 90vmin;
     position: absolute;
-    top: 68%;
+    top: 81%;
     left: 5%;
   }
 

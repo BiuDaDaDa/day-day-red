@@ -53,6 +53,39 @@
                       <p>{{basketball['HTeam']}} {{basketball['Rz']}} {{basketball['VTeam']}}</p>
                     </div>
                   </li>
+                  <li class="fucai3D">
+                    <p>
+                      <span>{{welfare['LotteryName']}}</span>
+                      <span>第{{welfare['IssueName']}}期</span>
+                    </p>
+                    <div class="fucai3D-number">
+                      <div v-for="evstr in str51">
+                        <p>{{evstr}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="line-3">
+                    <p>
+                      <span>{{welfare['LotteryName']}}</span>
+                      <span>第{{welfare['IssueName']}}期</span>
+                    </p>
+                    <div class="fucai3D-number">
+                      <div v-for="evstr in str61">
+                        <p>{{evstr}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="jiangxi">
+                    <p>
+                      <span>{{choose11['LotteryName']}}</span>
+                      <span>第{{choose11['IssueName']}}期</span>
+                    </p>
+                    <div class="jiangxi-number">
+                      <div v-for="evstr in str71">
+                        <p>{{evstr}}</p>
+                      </div>
+                    </div>
+                  </li>
                 </ul>
             </div>
       </div>
@@ -77,7 +110,15 @@
           // 足球竞猜
           football: {},
           // 篮球
-          basketball: {}
+          basketball: {},
+          // 福彩3D
+          welfare: {},
+          str51: [],
+          //  排列3
+          str61: [],
+          // 江西
+          choose11: {},
+          str71: []
         }
       },
       methods: {
@@ -94,7 +135,7 @@
             that.str11 = that.str1[0].split(' ')
             // 大乐透
             that.happy = response.data.data[1]
-            that.result = that.double['Rz']
+            that.result = that.happy['Rz']
             that.str2 = that.result.split('+')
             that.str21 = that.str2[0].split(' ')
             that.str22 = that.str2[1].split(' ')
@@ -102,6 +143,18 @@
             that.football = response.data.data[2]
             // 篮球
             that.basketball = response.data.data[3]
+            // 福彩3D
+            that.welfare = response.data.data[4]
+            that.str5 = that.welfare['Rz']
+            that.str51 = that.str5.split(',')
+            // 排列3
+            that.rank = response.data.data[5]
+            that.str6 = that.rank['Rz']
+            that.str61 = that.str6.split(',')
+            // 江西
+            that.choose11 = response.data.data[6]
+            that.str7 = that.choose11['Rz']
+            that.str71 = that.str7.split(',')
           })
       }
     }
@@ -153,7 +206,7 @@
   .rl-result{
     height: 8.8vmin;
   }
-  .double-number>div,.happy-number>div{
+  .double-number>div,.happy-number>div,.fucai3D-number div,.jiangxi-number div{
     display: inline-block;
     width: 8.26667vmin;
     height: 8.26667vmin;
@@ -168,7 +221,7 @@
   .double-number>div:last-child{
     background-color:#6b8dff;
   }
-  .happy-number>div:last-child,.happy->div:nth-child(6){
+  .happy-number>div:last-child,.happy-number>div:nth-child(6){
     background-color:#6b8dff;
   }
   /*篮球 足球*/
