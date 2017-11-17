@@ -1,5 +1,6 @@
 import User from '@/components/tth-User/User'
 import Login from '@/components/Login'
+import Logon from '@/components/logon'
 export default [
   {
     path: '/user',
@@ -10,5 +11,10 @@ export default [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/logon',
+    name: 'Logon',
+    component: Logon
   }
 ]
