@@ -4,8 +4,9 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import request from './common/js/requestServerSetting'
-import { Swipe, SwipeItem } from 'mint-ui'
+import { Swipe, SwipeItem, Field } from 'mint-ui'
 import VueBus from 'vue-bus'
+Vue.component(Field.name, Field)
 Vue.component(Swipe.name, Swipe)
 Vue.component(SwipeItem.name, SwipeItem)
 Vue.use(VueBus)
