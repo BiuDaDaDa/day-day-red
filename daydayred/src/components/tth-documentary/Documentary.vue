@@ -22,12 +22,34 @@
         <div>彩帝推荐</div>
       </div>
     </div>
+
+    <div>weqweqweqwe</div>
+
+    <!-- 背景图片 -->
+    <img id="documengtary_bgimg" src="../../assets/tth-documentary/20170622203327.png" alt="">
+    <!-- 暂无彩帝数据 -->
+    <div id="documengtary_no">暂无彩帝数据</div>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'Documentary'
+    name: 'Documentary',
+    data: {
+    },
+    methods: {
+      fecthHomeData () {
+        this.$request({
+          type: 'get',
+          url: '',
+          headers: {},
+          params: {},
+          success: function () {
+          },
+          failed: function () {}
+        })
+      }
+    }
   }
 </script>
 
@@ -92,8 +114,8 @@
   #documengtary_recommend_wrap{
     width: 100%;
     box-sizing: border-box;
-
   }
+  /* title */
   #documengtary_recommend_title{
     width: 100%;
     padding-left: 2.6vmin;
@@ -106,6 +128,20 @@
     font-weight: bold;
     color: @color-text-black;
     margin-top: 4vmin;
+    font-size: 4.26667vmin;
+    margin-bottom: 1vmin;
   }
-
+  /* 背景图 */
+  #documengtary_bgimg{
+    width: 100%;
+    display: block;
+    margin: 34.66667vmin 0 13.33333vmin;
+  }
+  /* 暂无彩帝数据 */
+  #documengtary_no{
+    width: 100%;
+    text-align: center;
+    font-size: 4.26667vmin;
+    color: @color-text-black;
+  }
 </style>
