@@ -9,12 +9,8 @@
   <div class="home_swiper">
     <div class="home_swiper_bgred"></div>
     <div class="home_swiper_main">
-      <mt-swipe :auto="2000">
-        <mt-swipe-item><img src="../../assets/tth-home/slidePic1.png" height="276" width="722"/></mt-swipe-item>
-        <mt-swipe-item><img src="../../assets/tth-home/slidePic2.png" height="276" width="722"/></mt-swipe-item>
-        <mt-swipe-item><img src="../../assets/tth-home/slidePic3.png" height="276" width="722"/></mt-swipe-item>
-        <mt-swipe-item><img src="../../assets/tth-home/slidePic4.png" height="276" width="723"/></mt-swipe-item>
-        <mt-swipe-item><img src="../../assets/tth-home/slidePic5.png" height="413" width="1080"/></mt-swipe-item>
+      <mt-swipe :auto="3000">
+        <mt-swipe-item v-for="(bannerImg,index) in bannerArr" :key="index"><a href=""><img :src="bannerImg.cover" alt=""></a></mt-swipe-item>
       </mt-swipe>
     </div>
   </div>
@@ -66,7 +62,30 @@
 
 <script>
   export default {
-    name: 'home'
+    name: 'home',
+    data () {
+      return {
+        bannerArr: []
+      }
+    },
+    methods: {
+      fecthBannerData () {
+        this.$request({
+          type: 'get',
+          url: '/api/news/banner',
+          success: function (res) {
+            this.bannerArr = res.data.data.newses
+            console.log(this.bannerArr[0].cover)
+          },
+          failed: function (err) {
+            console.log('未找到轮播图数据:' + err)
+          }
+        })
+      }
+    },
+    mounted () {
+      this.fecthBannerData()
+    }
   }
 </script>
 
