@@ -5,16 +5,18 @@
       <h3>彩帝跟单</h3>
     </div>
     <!-- join:申请加入 -->
-    <div id="documengtary_join">
-      <img src="../../assets/tth-documentary/20171012095335.png" alt="">
+    <div id="documengtary_join"><router-link to="/join">
+      <img src="../../assets/tth-documentary/join.png"></router-link>
     </div>
     <!-- ranking:彩帝排行 -->
     <div id="documengtary_ranking_wrap">
       <!-- title -->
+      <router-link to="/rank">
       <h6>
         <span>彩帝排行</span>
         <i class="iconfont icon-arrow-right "></i>
       </h6>
+      </router-link>
       <!-- body  -->
       <div id="documengtary_ranking_body-wrap">
         <div class="documengtary_ranking_body" v-for="(god,index,key) in halfgods">
@@ -69,7 +71,7 @@
       </div>
     </div>
     <!-- 背景图片 -->
-    <img id="documengtary_bgimg" src="../../assets/tth-documentary/20170622203327.png" alt="">
+    <img id="documengtary_bgimg" src="../../assets/tth-documentary/NoDate.png" alt="">
     <!-- 暂无彩帝数据 -->
     <div id="documengtary_no">暂无彩帝数据</div>
   </div>
@@ -108,10 +110,11 @@
         this.$request({
           type: 'get',
           url: 'api/master/master/plan/recommend',
+//          master/master/plan/recommend?page=1&pageSize=20
           headers: {},
           params: {},
           success: function (res) {
-            console.log(res.data.data.plans[1].nick)
+            console.log(res.data.data.plans[0].nick)
             this.plans = res.data.data.plans
             let count = 0
             let counts = []

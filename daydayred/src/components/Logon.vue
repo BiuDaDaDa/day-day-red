@@ -10,7 +10,7 @@
       <div class="login-phone">
         <i class="iconfont icon-shouji shouji"></i>
         <div id="phone-text">
-          <mt-field  label="" placeholder="请输入手机号" type="tel" v-model="phone"></mt-field>
+          <mt-field :attr="{ maxlength: 11 }"  label="" placeholder="请输入手机号" type="tel" v-model="phone"></mt-field>
         </div>
         <!--<input @input="phoneinput" type="text" v-model="phoneValue" placeholder="请输入手机号" class="phone-text">-->
       </div>
@@ -18,8 +18,8 @@
       <div class="login-sms">
         <i class="iconfont icon-weibiaoti9 weibiaoti"></i>
         <div class="sms-text">
-          <mt-field label="" v-model="captcha" placeholder="请输入验证码">
-            <span class="send-yzm">发送验证码</span>
+          <mt-field :attr="{ maxlength: 6 }" label="" v-model="captcha" placeholder="请输入验证码">
+            <button @click="sendClick($event)" class="send-yzm">发送验证码</button>
           </mt-field>
         </div>
         <!--<input @input="smsinput" type="text" v-model="smsValue" placeholder="请输入验证码" class="sms-text">-->
@@ -29,26 +29,85 @@
       <div class="logon-password">
         <i class="iconfont icon-mima mima"></i>
         <div class="sms-text">
-          <mt-field label="" placeholder="6~16位密码" type="password" v-model="password"></mt-field>
+          <mt-field label="" :attr="{ maxlength: 16, minlength:6 }" placeholder="6~16位密码" type="password" v-model="password"></mt-field>
         </div>
       </div>
       <!--登陆-->
-      <button class="login-login">立即注册</button>
+      <mt-button class="login-login" type="default" @click.native="logonClick">立即注册</mt-button>
       <!--注册-->
       <p class="celerity-logon">注册即代表我已满18周岁并同意《用户服务协议》</p>
     </div>
   </div>
 </template>
 <script>
+  import { Toast } from 'mint-ui'
+  import isPhone from '@/common/js/isPhone'
+  import sendCode from '@/common/js/sendCode'
+  import guid from '@/common/js/guid'
   export default {
     name: 'Logon',
     data () {
-      return {}
+      return {
+        phone: '',
+        captcha: '',
+        password: ''
+      }
     },
     methods: {
       // 点击右箭头的返回事件
       gobackClick () {
         this.$router.go(-1)
+      },
+      // 点击立即注册按钮
+      logonClick () {
+        let myUrl = `"RandomGuid":"${guid()}","UserName":"${this.phone}","Password":"${this.password}","ValidCode":"${this.captcha}","ReferrerId":"undefined"`
+        let myOtherUrl = encodeURI(myUrl)
+        console.log(myOtherUrl)
+        if (this.phone.length <= 0) {
+          isPhone(this.phone)
+        } else {
+          isPhone(this.phone)
+        }
+        if (this.password.length <= 0) {
+          Toast({
+            message: '获取验证码后手机号不能修改或者已经过时！',
+            position: 'middle',
+            iconClass: 'iconfont icon-guanbi1',
+            duration: 5000
+          })
+          return false
+        }
+        this.$request({
+          type: 'get',
+          url: '/api/user/Handler.ashx?action=703&params={' + myOtherUrl + '}',
+          success: function (res) {
+            console.log(res)
+          },
+          failed: function (err) {
+            console.log('未找到数据是' + err)
+          }
+        })
+      },
+      // 点击发送验证码
+      sendClick (event) {
+        let myUrl = `"Mobile":"${this.phone}","TypeID":"1"`
+        let myOtherUrl = encodeURIComponent(myUrl)
+        if (this.phone.length <= 0) {
+          isPhone(this.phone)
+        } else {
+          isPhone(this.phone)
+        }
+        this.$request({
+          type: 'get',
+          url: '/api/user/Handler.ashx?action=704&params={' + myOtherUrl + '}',
+          success: function (res) {
+            let msg = res.data.msg
+            sendCode(msg, event)
+          },
+          failed: function (err) {
+            console.log('未找到的验证码数据是' + err)
+          }
+        })
       }
     }
   }
@@ -177,10 +236,11 @@
     height: 12vmin;
   }
   .sms-text {
-    width: 65vmin;
+    width: 70vmin;
     height: 12vmin;
   }
   .send-yzm {
+    outline: none;
     color: @color-text-red;
     font-size: 16px;
   }
