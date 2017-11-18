@@ -27,15 +27,15 @@
       <!--随机选球-->
       <div class="home_shortcut_center_nums">
         <!--红球-->
-        <div v-for="n in 6" class="home_shortcut_center_nums_balls">
-          <strong>{{}}</strong>
+        <div v-for="red in randomRedArr" class="home_shortcut_center_nums_balls">
+          <strong>{{red}}</strong>
         </div>
         <!--蓝球-->
-        <div class="home_shortcut_center_nums_balls_blue">
-          <strong>01</strong>
+        <div v-for="blue in randomBlueArr" class="home_shortcut_center_nums_balls_blue">
+          <strong>{{blue}}</strong>
         </div>
       </div>
-      <i class="iconfont icon-shuaxin"></i>
+      <i class="iconfont icon-shuaxin" @click="getRandomNum"></i>
     </div>
     <div class="home_shortcut_bottom">
       <span>{{shortcutArr.Title}}</span>
@@ -76,7 +76,17 @@
       return {
         bannerArr: [],
         shortcutArr: [],
-        itemArr: []
+        itemArr: [],
+//        随机到的数组
+        randomRedArr: [],
+        randomBlueArr: [],
+//        随机最大值和最小值
+        randomRedMax: 0,
+        randomMin: 1,
+        randomBlueMax: 0,
+//        随机次数
+        randomBlueTimes: 0,
+        randomRedTimes: 0
       }
     },
     methods: {
@@ -99,7 +109,19 @@
           url: '/api/data/Handler.ashx?action=105&params={}',
           success: function (res) {
             this.shortcutArr = res.data.data.Number
-//            console.log(res.data.data.Number)
+            if (parseInt(res.data.data.Number.LotteryID) === 4) {
+              // 当为大乐透时
+              this.randomBlueTimes = 2
+              this.randomRedTimes = 5
+              this.randomRedMax = 35
+              this.randomBlueMax = 12
+            } else if (parseInt(res.data.data.Number.LotteryID) === 2) {
+              // 当为双色球时
+              this.randomBlueTimes = 5
+              this.randomRedTimes = 1
+              this.randomRedMax = 33
+              this.randomBlueMax = 16
+            }
           },
           failed: function (err) {
             console.log('未找到快捷投注数据:' + err)
@@ -118,6 +140,41 @@
             console.log('未找到快捷投注数据:' + err)
           }
         })
+      },
+      // 快捷投注随机球数
+      getRandomNum () {
+        // 红球随机
+        this.randomRedArr = []
+        for (let red = 0; red < this.randomRedTimes; red++) {
+          let randRedNum = Math.floor(Math.random() * (this.randomRedMax + 1 - this.randomMin) + this.randomMin)
+          // 查重
+          if (randRedNum < 10) {
+            randRedNum = '0' + randRedNum
+          }
+          if (this.randomRedArr.indexOf(parseInt(randRedNum)) === -1) {
+            // 放入arr
+            this.randomRedArr.push(randRedNum)
+          } else {
+            red--
+          }
+        }
+        console.log(this.randomRedArr)
+        // 蓝球随机
+        this.randomBlueArr = []
+        for (let blue = 0; blue < this.randomBlueTimes; blue++) {
+          let randBlueNum = Math.floor(Math.random() * (this.randomBlueMax + 1 - this.randomMin) + this.randomMin)
+          // 查重
+          if (randBlueNum < 10) {
+            randBlueNum = '0' + randBlueNum
+          }
+          if (this.randomBlueArr.indexOf(parseInt(randBlueNum)) === -1) {
+            // 放入arr
+            this.randomBlueArr.push(randBlueNum)
+          } else {
+            blue--
+          }
+        }
+//        console.log(this.randomBlueArr)
       }
     },
     mounted () {
