@@ -124,6 +124,7 @@
               let myUrl = `"UserIDGuid":"${Guid}"`
               let myOtherUrl = encodeURI(myUrl)
               console.log(res.data)
+
               console.log(res.status)
               if (res.status === 200) {
                 this.$request({
