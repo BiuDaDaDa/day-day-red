@@ -19,7 +19,7 @@
     <div class="home_shortcut_top">
       <div class="home_shortcut_top_left">
         <img src="../../assets/tth-home/touzhu.png" height="39" width="222"/>
-        <span>双色球{{shortcutArr.Name}}</span>
+        <span>{{shortcutArr.LotteryName}}{{shortcutArr.Name}}</span>
       </div>
       <strong class="home_shortcut_">{{shortcutArr.BuyEndTime}}</strong>
     </div>
@@ -28,7 +28,7 @@
       <div class="home_shortcut_center_nums">
         <!--红球-->
         <div v-for="n in 6" class="home_shortcut_center_nums_balls">
-          <strong>01</strong>
+          <strong>{{}}</strong>
         </div>
         <!--蓝球-->
         <div class="home_shortcut_center_nums_balls_blue">
@@ -39,7 +39,13 @@
     </div>
     <div class="home_shortcut_bottom">
       <span>{{shortcutArr.Title}}</span>
-      <input type="button" value="立即购买">
+      <div class="home_shortcut_bottom_right">
+        <label>
+          <input type="checkbox">
+          追加
+        </label>
+        <input class="shortcut_buyNow" type="button" value="立即购买">
+      </div>
     </div>
   </div>
   <!--彩票分类-->
@@ -258,18 +264,33 @@
           color: @color-text-gray;
           font-size:3.73333vmin ;
         }
-        input{
-          border: none;
-          width: 26.66667vmin;
-          height: 7.46667vmin;
-          -webkit-box-pack: center;
-          -webkit-justify-content: center;
-          justify-content: center;
-          color: #fff;
-          background: @color-red;
-          font-size: 3.46667vmin;
-          display: block;
-          text-align: center;
+        .home_shortcut_bottom_right{
+          display: flex;
+          align-items: center;
+          label{
+            display: flex;
+            align-items: center;
+            color: @color-text-gray;
+            margin-right: 4vmin;
+            input{
+              height: 4.53333vmin;
+              width: 4.26667vmin;
+              margin-right: .66667vmin;
+            }
+          }
+          .shortcut_buyNow{
+            border: none;
+            width: 26.66667vmin;
+            height: 7.46667vmin;
+            -webkit-box-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            color: #fff;
+            background: @color-red;
+            font-size: 3.46667vmin;
+            display: block;
+            text-align: center;
+          }
         }
       }
     }

@@ -16,9 +16,9 @@
   <!--邀请达人-->
   <div class="invitation_topUser">
     <ul>
-      <li v-for="i in 30">
-        <span class="topUser_name">{{}}</span>
-        <span class="topUser_getMoney">获得{{}}元</span>
+      <li v-for="topUser in invitationArr">
+        <span class="topUser_name">{{topUser.Name}}</span>
+        <span class="topUser_getMoney">获得{{topUser.Money}}元</span>
       </li>
     </ul>
     <img src="../../assets/tth-home/invitation5.png" />
@@ -34,26 +34,29 @@
     name: 'Invitation',
     data () {
       return {
-        invitationArr: [1, 2, 3, 4, 5, 6]
+        invitationArr: []
       }
     },
     components: {
       homeHeader
     },
     methods: {
-      fecthBannerData () {
+      fecthInvitationData () {
         this.$request({
           type: 'get',
-          url: '/api/news/banner',
+          url: '/api/hd/Handler.ashx?action=1106&params={}',
           success: function (res) {
-            this.bannerArr = res.data.data.newses
-//            console.log(this.bannerArr[0].cover)
+            this.invitationArr = res.data.data
+            console.log(res.data)
           },
           failed: function (err) {
-            console.log('未找到轮播图数据:' + err)
+            console.log('未找到邀请好友数据:' + err)
           }
         })
       }
+    },
+    mounted () {
+      this.fecthInvitationData()
     }
   }
 </script>
@@ -117,9 +120,11 @@
         overflow: scroll;
         list-style: none;
         li{
+          font-size: 3.73333vmin;
           display: flex;
           justify-content: space-between;
           width: 100%;
+          margin-bottom: 1.6vmin;
         }
       }
     }
