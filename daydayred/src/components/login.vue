@@ -16,24 +16,25 @@
         <div class="login-phone">
           <i class="iconfont icon-denglu phone-dl"></i>
           <div id="phone-text">
-            <mt-field  label="" placeholder="请输入手机号" type="tel" v-model="phone"></mt-field>
+            <mt-field :attr="{ maxlength: 11 }" label="" placeholder="请输入手机号" type="tel" v-model="phone"></mt-field>
           </div>
         </div>
-      <!--请输入短信验证码-->
+        <!--请输入短信验证码-->
         <div class="login-sms">
           <i v-show="weibiaoti" class="iconfont icon-weibiaoti9 weibiaoti"></i>
           <i v-show="mima" class="iconfont icon-mima mima"></i>
-          <div id ="sms-text" v-show="smsisShow">
-            <mt-field  label="" v-model="captcha" placeholder="请输入短信验证码">
-              <span v-show="sendYzm" class="send-yzm">发送验证码</span>
+          <div id="sms-text" v-show="smsisShow">
+            <mt-field :attr="{ maxlength: 6 }" label="" v-model="captcha" placeholder="请输入短信验证码">
+              <span @click="sendClick" :disabled="isDisabled" v-show="sendYzm" class="send-yzm">{{sendCode}}</span>
             </mt-field>
           </div>
           <div class="sms-text" v-show="passwordShow">
-            <mt-field label=""  placeholder="请输入6到16位密码" type="password" v-model="password"></mt-field>
+            <mt-field label="" :attr="{ maxlength: 16, minlength:6 }" placeholder="请输入6到16位密码" type="password"
+                      v-model="password"></mt-field>
           </div>
         </div>
         <!--登陆-->
-        <button class="login-login">登&nbsp;&nbsp;录</button>
+        <mt-button class="login-login" @click.native="loginClick" type="default">登&nbsp;&nbsp;录</mt-button>
         <!--注册-->
         <p class="celerity-logon" @click="celerityClicked">快速注册</p>
       </div>
@@ -41,6 +42,10 @@
   </div>
 </template>
 <script>
+  /* eslint-disable no-trailing-spaces */
+  import {Toast} from 'mint-ui'
+  import isPhone from '@/common/js/isPhone'
+  import sendCode from '@/common/js/sendCode'
   export default {
     name: 'Login',
     data () {
@@ -51,7 +56,12 @@
         smsisShow: true,
         passwordShow: false,
         weibiaoti: true,
-        mima: false
+        mima: false,
+        phone: '',
+        captcha: '',
+        password: '',
+        isDisabled: true,
+        sendCode: '发送验证码'
       }
     },
     methods: {
@@ -82,6 +92,56 @@
       // 点击快速注册事件
       celerityClicked () {
         this.$router.push({path: '/logon'})
+      },
+      // 点击登陆判断是否有账号和短信验证码
+      loginClick () {
+        if (this.loginUser === 'login-user-dl') {
+          if (this.phone.length <= 0 || this.captcha.length <= 0) {
+            Toast({
+              message: '获取验证码后手机号不能修改或者已经过时！',
+              position: 'middle',
+              iconClass: 'iconfont icon-guanbi1',
+              duration: 5000
+            })
+            return false
+          } else {
+            isPhone(this.phone)
+          }
+        } else {
+          if (this.phone.length <= 0) {
+            Toast({
+              message: '用户不存在，请先注册',
+              position: 'middle',
+              iconClass: 'iconfont icon-guanbi1',
+              duration: 5000
+            })
+            return false
+          } else {
+            isPhone(this.phone)
+          }
+        }
+      },
+      // 点击发送验证按钮
+      sendClick () {
+        var myUrl = `"Mobile":"${this.phone}","TypeID":"1"`
+        var myOtherUrl = encodeURI(myUrl)
+        if (this.phone.length <= 0) {
+          isPhone(this.phone)
+        } else {
+          isPhone(this.phone)
+        }
+        this.$request({
+          type: 'get',
+          url: '/api/user/Handler.ashx?action=704&params={' + myOtherUrl + '}',
+          success: function (res) {
+            let msg = res.data.msg
+            console.log(msg)
+            sendCode(msg, this.sendCode, this.isDisabled)
+          },
+          failed: function (err) {
+            console.log('未找到的验证码数据是' + err)
+          }
+        })
       }
     }
   }
@@ -89,12 +149,14 @@
 
 <style scoped lang="less">
   @import "../common/css/style.less";
-  .login-wrap{
+
+  .login-wrap {
     width: 100%;
     height: 100%;
     position: relative;
   }
-  .login-user{
+
+  .login-user {
     width: 60%;
     position: absolute;
     left: 20%;
@@ -108,14 +170,16 @@
     opacity: 1;
     text-align: center;
   }
-  .login-user-dl{
+
+  .login-user-dl {
     width: 50%;
     height: 10vmin;
     text-align: center;
     line-height: 10vmin;
     color: @color-text-red;
   }
-  .login-user-yzm{
+
+  .login-user-yzm {
     line-height: 10vmin;
     height: 10vmin;
     width: 50%;
@@ -123,13 +187,15 @@
     background-color: @color-text-red;
     color: #F2F2F2;
   }
-  .login-phone-body{
+
+  .login-phone-body {
     width: 90vmin;
     position: absolute;
     left: 10%;
-    top:35vmin;
+    top: 35vmin;
   }
-  .login-phone{
+
+  .login-phone {
     display: -webkit-box;
     display: -webkit-flex;
     display: flex;
@@ -144,20 +210,24 @@
     border: 2px solid rgb(204, 204, 204);
     border-radius: 10px;
   }
+
   #phone-text {
     width: 80vmin;
     height: 12vmin;
   }
-  #sms-text{
+
+  #sms-text {
     width: 65vmin;
     height: 12vmin;
   }
-  .sms-text{
+
+  .sms-text {
     width: 80vmin;
     height: 12vmin;
   }
-  .login-sms{
-    margin-top: 30px;
+
+  .login-sms {
+    margin-top: 20px;
     display: -webkit-box;
     display: -webkit-flex;
     display: flex;
@@ -172,27 +242,32 @@
     border: 2px solid rgb(204, 204, 204);
     border-radius: 10px;
   }
-  .phone-dl{
+
+  .phone-dl {
     margin-left: 20px;
     font-size: 24px;
     color: @color-text-red;
   }
-  .weibiaoti{
+
+  .weibiaoti {
     margin-left: 16px;
     font-size: 30px;
     color: @color-text-red;
   }
-  .mima{
+
+  .mima {
     margin-left: 16px;
     font-size: 30px;
     color: @color-text-red;
   }
-  .send-yzm{
+
+  .send-yzm {
     color: @color-text-red;
     font-size: 17px;
   }
-  .login-login{
-    margin-top: 25px;
+
+  .login-login {
+    margin-top: 20px;
     width: 80vmin;
     height: 10vmin;
     background-color: @color-text-red;
@@ -201,7 +276,8 @@
     font-size: 20px;
     border-radius: 5px;
   }
-  .celerity-logon{
+
+  .celerity-logon {
     margin-top: 25px;
     width: 80vmin;
     text-align: center;
