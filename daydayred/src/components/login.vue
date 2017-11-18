@@ -25,7 +25,7 @@
           <i v-show="mima" class="iconfont icon-mima mima"></i>
           <div id="sms-text" v-show="smsisShow">
             <mt-field :attr="{ maxlength: 6 }" label="" v-model="captcha" placeholder="请输入短信验证码">
-              <span @click="sendClick" :disabled="isDisabled" v-show="sendYzm" class="send-yzm">{{sendCode}}</span>
+              <span @click="sendClick"  v-show="sendYzm" class="send-yzm">发送验证码</span>
             </mt-field>
           </div>
           <div class="sms-text" v-show="passwordShow">
@@ -46,6 +46,7 @@
   import {Toast} from 'mint-ui'
   import isPhone from '@/common/js/isPhone'
   import sendCode from '@/common/js/sendCode'
+//  import guid from '@/common/js/guid'
   export default {
     name: 'Login',
     data () {
@@ -59,9 +60,7 @@
         mima: false,
         phone: '',
         captcha: '',
-        password: '',
-        isDisabled: true,
-        sendCode: '发送验证码'
+        password: ''
       }
     },
     methods: {
@@ -95,6 +94,9 @@
       },
       // 点击登陆判断是否有账号和短信验证码
       loginClick () {
+        let myUrl = `"UserName":"${this.phone}","Password":"${this.password}"`
+        let myOtherUrl = encodeURI(myUrl)
+        console.log(myOtherUrl)
         if (this.loginUser === 'login-user-dl') {
           if (this.phone.length <= 0 || this.captcha.length <= 0) {
             Toast({
@@ -108,23 +110,45 @@
             isPhone(this.phone)
           }
         } else {
+          // 密码登陆
           if (this.phone.length <= 0) {
-            Toast({
-              message: '用户不存在，请先注册',
-              position: 'middle',
-              iconClass: 'iconfont icon-guanbi1',
-              duration: 5000
-            })
-            return false
+            isPhone(this.phone)
           } else {
             isPhone(this.phone)
           }
+          this.$request({
+            type: 'get',
+            url: '/api/user/Handler.ashx?action=701&params={' + myOtherUrl + '}',
+            success: function (res) {
+              let Guid = res.data.data.Guid
+              let myUrl = `"UserIDGuid":"${Guid}"`
+              let myOtherUrl = encodeURI(myUrl)
+              console.log(res.data)
+              console.log(res.status)
+              if (res.status === 200) {
+                this.$request({
+                  type: 'get',
+                  url: '/api/user/Handler.ashx?action=801&params={' + myOtherUrl + '}',
+                  success: function (res) {
+                    console.log(res)
+                  },
+                  failed: function (err) {
+                    console.log(err)
+                  }
+                })
+              }
+            },
+            failed: function (err) {
+              console.log('未找到的密码' + err)
+            }
+          })
+          console.log('密码登陆')
         }
       },
       // 点击发送验证按钮
-      sendClick () {
-        var myUrl = `"Mobile":"${this.phone}","TypeID":"1"`
-        var myOtherUrl = encodeURI(myUrl)
+      sendClick (event) {
+        let myUrl = `"Mobile":"${this.phone}","TypeID":"1"`
+        let myOtherUrl = encodeURI(myUrl)
         if (this.phone.length <= 0) {
           isPhone(this.phone)
         } else {
@@ -135,8 +159,7 @@
           url: '/api/user/Handler.ashx?action=704&params={' + myOtherUrl + '}',
           success: function (res) {
             let msg = res.data.msg
-            console.log(msg)
-            sendCode(msg, this.sendCode, this.isDisabled)
+            sendCode(msg, event)
           },
           failed: function (err) {
             console.log('未找到的验证码数据是' + err)
@@ -149,7 +172,6 @@
 
 <style scoped lang="less">
   @import "../common/css/style.less";
-
   .login-wrap {
     width: 100%;
     height: 100%;
