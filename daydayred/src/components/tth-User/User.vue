@@ -57,6 +57,12 @@
           <span>我的跟单</span>
           <i class="arrow-right iconfont icon-arrow-right"></i>
         </div>
+        <!--关于我们-->
+        <div class="my-about">
+          <i class="iconfont icon-guanyu guanyu"></i>
+          <span>关于我们</span>
+          <i class="arrow-right iconfont icon-arrow-right"></i>
+        </div>
       </div>
     </div>
   </div>
@@ -71,7 +77,7 @@
 
   .user-body {
     width: 100%;
-    height: 178vmin;
+    height: 230vmin;
     background-color: @color-background-gray;
   }
 
@@ -191,9 +197,7 @@
 
   .record {
     width: 90vmin;
-    position: absolute;
-    top: 8%;
-    left: 5%;
+    margin: 5% 0;
   }
 
   .chase {
@@ -211,6 +215,18 @@
   }
 
   .my-documentary {
+    width: 90vmin;
+    position: absolute;
+    top: 81%;
+    left: 5%;
+  }
+  .my-about {
+    width: 90vmin;
+    position: absolute;
+    top: 91%;
+    left: 5%;
+  }
+  .my-about span {
     width: 90vmin;
     position: absolute;
     top: 81%;
@@ -266,6 +282,13 @@
   }
 
   .gendanwang {
+    position: absolute;
+    left: 0;
+    top: -4px;
+    color: @color-text-red;
+    font-size: 24px;
+  }
+  .guanyu{
     position: absolute;
     left: 0;
     top: -4px;
