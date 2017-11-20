@@ -1,4 +1,5 @@
 import axios from 'axios'
+axios.defaults.withCredentials = true
 export default function (Vue) {
   Vue.prototype.$request = function (options) {
     let headers = options.headers || {}

@@ -46,6 +46,8 @@
   import {Toast} from 'mint-ui'
   import isPhone from '@/common/js/isPhone'
   import sendCode from '@/common/js/sendCode'
+
+//  import axios from 'axios'
 //  import guid from '@/common/js/guid'
   export default {
     name: 'Login',
@@ -123,9 +125,7 @@
               let Guid = res.data.data.Guid
               let myUrl = `"UserIDGuid":"${Guid}"`
               let myOtherUrl = encodeURI(myUrl)
-              console.log(res.data)
-
-              console.log(res.status)
+              console.log(res.headers)
               if (res.status === 200) {
                 this.$request({
                   type: 'get',

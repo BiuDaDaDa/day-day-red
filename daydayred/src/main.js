@@ -4,12 +4,17 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import request from './common/js/requestServerSetting'
-import { Swipe, SwipeItem, Field, Toast, Button } from 'mint-ui'
+import { Swipe, SwipeItem, Field, Toast, Button, Tabbar, TabItem, MessageBox, Popup, Picker } from 'mint-ui'
 import VueBus from 'vue-bus'
+Vue.component(Picker.name, Picker)
+Vue.component(Popup.name, Popup)
+Vue.component(Tabbar.name, Tabbar)
+Vue.component(TabItem.name, TabItem)
 Vue.component(Field.name, Field)
 Vue.component(Swipe.name, Swipe)
 Vue.component(SwipeItem.name, SwipeItem)
 Vue.component(Toast.name, Toast)
+Vue.component(MessageBox.name, MessageBox)
 Vue.component(Button.name, Button)
 Vue.use(VueBus)
 Vue.config.productionTip = false
