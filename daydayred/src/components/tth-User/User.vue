@@ -22,7 +22,7 @@
               <p>&nbsp;充值</p>
           </div>
           <div class="shuxian"></div>
-          <div class="money">
+          <div class="money" @click="moneyClick">
             <i class="iconfont icon-tikuan tikuan"></i>
             <p>&nbsp;提款</p>
           </div>
@@ -56,25 +56,54 @@
           <i class="gendanwang iconfont icon-gendanwang"></i>
           <span>我的跟单</span>
           <i class="arrow-right iconfont icon-arrow-right"></i>
+          <div class="hengxian"></div>
+        </div>
+        <!--关于我们-->
+        <div class="my-about" @click="aboutClick">
+          <i class="iconfont icon-guanyu guanyu"></i>
+          <span>关于我们</span>
+          <i class="arrow-right iconfont icon-arrow-right"></i>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+  import {MessageBox} from 'mint-ui'
   export default {
-    name: 'User'
+    name: 'User',
+    data () {
+      return {}
+    },
+    methods: {
+      aboutClick () {
+        this.$router.push({path: '/about'})
+      },
+      moneyClick () {
+        MessageBox({
+          title: '提示',
+          message: '提现功能请在app里使用！是否立即下载',
+          showCancelButton: true,
+          confirmButtonClass: 'mint-msgbox-confirm'
+        })
+      }
+    }
   }
 </script>
 <style scoped lang="less">
   @import "../../common/css/style.less";
-
   .user-body {
     width: 100%;
-    height: 178vmin;
+    height: 230vmin;
     background-color: @color-background-gray;
   }
-
+  .mint-msgbox-confirm {
+    width: 50px;
+    height: 50px;
+  }
+  .mint-msgbox-cancel {
+    font-size: 50px;
+  }
   .user-bg {
     width: 100%;
     height: 29.33333vmin;
@@ -192,29 +221,40 @@
   .record {
     width: 90vmin;
     position: absolute;
-    top: 8%;
+    top: 5%;
     left: 5%;
   }
 
   .chase {
     width: 90vmin;
     position: absolute;
-    top: 32%;
+    top: 25%;
     left: 5%;
   }
 
   .red-packet {
     width: 90vmin;
     position: absolute;
-    top: 57%;
+    top: 45%;
     left: 5%;
   }
 
   .my-documentary {
     width: 90vmin;
     position: absolute;
-    top: 81%;
+    top: 65%;
     left: 5%;
+  }
+  .my-about {
+    width: 90vmin;
+    position: absolute;
+    top: 84%;
+    left: 5%;
+  }
+  .my-about span {
+    font-size: 18px;
+    font-weight: 400;
+    margin-left: 40px;
   }
 
   .my-documentary span {
@@ -266,6 +306,13 @@
   }
 
   .gendanwang {
+    position: absolute;
+    left: 0;
+    top: -4px;
+    color: @color-text-red;
+    font-size: 24px;
+  }
+  .guanyu{
     position: absolute;
     left: 0;
     top: -4px;

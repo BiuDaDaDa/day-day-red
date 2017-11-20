@@ -131,6 +131,7 @@
                   url: '/api/user/Handler.ashx?action=801&params={' + myOtherUrl + '}',
                   success: function (res) {
                     console.log(res)
+                    console.log(window.cookie)
                   },
                   failed: function (err) {
                     console.log(err)
