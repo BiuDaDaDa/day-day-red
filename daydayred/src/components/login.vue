@@ -46,7 +46,6 @@
   import {Toast} from 'mint-ui'
   import isPhone from '@/common/js/isPhone'
   import sendCode from '@/common/js/sendCode'
-
 //  import axios from 'axios'
 //  import guid from '@/common/js/guid'
   export default {
