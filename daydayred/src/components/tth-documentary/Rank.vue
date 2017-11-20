@@ -8,7 +8,10 @@
   </router-link>
   <div id="documentary_rank_body_wrap">
     <div class="documentary_rank_body" v-for="(god,index,key) in gods">
-      <div class="gods_rank">{{god.rank}}</div>
+      <div class="gods_rank" v-if="index == 0" :style="{backgroundImage:'url('+ bgcImage1 +')'}">{{god.rank}}</div>
+      <div class="gods_rank" v-if="index == 1" :style="{backgroundImage:'url('+ bgcImage2 +')'}">{{god.rank}}</div>
+      <div class="gods_rank" v-if="index == 2" :style="{backgroundImage:'url('+ bgcImage3 +')'}">{{god.rank}}</div>
+      <div class="gods_rank" v-if="index > 2">{{god.rank}}</div>
       <img class="gods_avatar" :src="god.avatar">
       <div class="gods_userinfo">
         <div class="gods_name">{{god.nick}}</div>
@@ -28,7 +31,10 @@
     name: 'Rank',
     data () {
       return {
-        gods: []
+        gods: [],
+        bgcImage1: '../../src/assets/tth-documentary/rank_one.png',
+        bgcImage2: '../../src/assets/tth-documentary/rank_two.png',
+        bgcImage3: '../../src/assets/tth-documentary/rank_three.png'
       }
     },
     methods: {
@@ -39,7 +45,7 @@
           headers: {},
           params: {},
           success: function (res) {
-            console.log(res.data.data.gods[2].avatar)
+            console.log(res.data.data.gods[0].rank)
             this.gods = res.data.data.gods
             for (let i = 0; i < res.data.data.gods.length; i++) {
               if (res.data.data.gods[i].avatar === '') {
@@ -103,6 +109,9 @@
     margin-right: 1.33333vmin;
     line-height: 13.86667vmin;
     text-align: center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: 0 2.6vmin;
   }
   .documentary_rank_body img{
     width: 13.06667vmin;

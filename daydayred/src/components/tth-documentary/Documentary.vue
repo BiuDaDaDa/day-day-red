@@ -5,8 +5,10 @@
       <h3>彩帝跟单</h3>
     </div>
     <!-- join:申请加入 -->
-    <div id="documengtary_join"><router-link to="/join">
-      <img src="../../assets/tth-documentary/join.png"></router-link>
+    <div id="documengtary_join">
+      <router-link to="/join">
+      <img src="../../assets/tth-documentary/join.png">
+      </router-link>
     </div>
     <!-- ranking:彩帝排行 -->
     <div id="documengtary_ranking_wrap">
@@ -41,7 +43,7 @@
             </div>
           </span>
           <span class="documengtary_recommend_body_title_time">
-            {{plan.followedBet.deadline}}截止
+            {{plan.followedBet.deadline}} 截止
           </span>
         </div>
         <div class="documengtary_recommend_body_body">
@@ -65,7 +67,7 @@
           <p></p>
           <div class="documengtary_recommend_body_footer_money">
             <span>已跟投金额</span>
-            <strong class="colorred">{{plan.followedBet.views}}</strong>
+            <strong class="colorred">{{plan.followedBet.amount}}</strong>
           </div>
         </div>
       </div>
@@ -74,10 +76,12 @@
     <img id="documengtary_bgimg" src="../../assets/tth-documentary/NoDate.png" alt="">
     <!-- 暂无彩帝数据 -->
     <div id="documengtary_no">暂无彩帝数据</div>
+    <zj-footer></zj-footer>
   </div>
 </template>
 
 <script>
+  import ZjFooter from '../Zj-Footer.vue'
   export default {
     name: 'Documentary',
     data () {
@@ -110,7 +114,6 @@
         this.$request({
           type: 'get',
           url: 'api/master/master/plan/recommend',
-//          master/master/plan/recommend?page=1&pageSize=20
           headers: {},
           params: {},
           success: function (res) {
@@ -134,6 +137,9 @@
           failed: function () {}
         })
       }
+    },
+    components: {
+      ZjFooter
     },
     mounted () {
       this.rankingData()
@@ -223,7 +229,7 @@
     border-radius: 50%;
   }
   .documengtary_ranking_body_username{
-    margin-top: 1.06667vmin;
+    margin-top: 2.06667vmin;
     font-size: 3.2vmin;
     height: 3.2vmin;
     color: #666;
