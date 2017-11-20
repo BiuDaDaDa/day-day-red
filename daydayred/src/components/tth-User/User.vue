@@ -86,6 +86,11 @@
           showCancelButton: true,
           confirmButtonClass: 'mint-msgbox-confirm'
         })
+        MessageBox.confirm('提现功能请在app里使用！是否立即下载').then(action => {
+          this.$router.push({path: '/download'})
+        }).catch(function (err) {
+          console.log(err)
+        })
       }
     }
   }
@@ -98,8 +103,9 @@
     background-color: @color-background-gray;
   }
   .mint-msgbox-confirm {
-    width: 50px;
-    height: 50px;
+    color: #26a2ff;
+    font-size: 20px;
+    width: 50%;
   }
   .mint-msgbox-cancel {
     font-size: 50px;
