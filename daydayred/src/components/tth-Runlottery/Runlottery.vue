@@ -28,7 +28,7 @@
                     </p>
                     <div class="happy-number">
                       <div v-for="evstr in str21">
-                        <p class="dda">{{evstr}}</p>
+                        <p>{{evstr}}</p>
                       </div>
                       <div v-for="lt in str22">
                           <p>{{lt}}</p>
@@ -170,6 +170,10 @@
   }
   .happy-number>div:last-child,.happy->div:nth-child(6){
     background-color:#6b8dff;
+  }
+  .happy-number>div p{
+    font-size: 4vmin;
+    font-weight: 700;
   }
   /*篮球 足球*/
   .football div{
