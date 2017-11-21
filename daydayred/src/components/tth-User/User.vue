@@ -121,7 +121,7 @@
         if (getJsCookie('CP_UserIDGuid') === null) {
           this.$router.push({path: '/login'})
         } else {
-          this.$router.push({path: '/recharge'})
+          this.$router.push({path: '/userRecharge'})
         }
       }
     }
