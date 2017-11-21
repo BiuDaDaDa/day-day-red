@@ -3,6 +3,7 @@ import Login from '@/components/Login'
 import Logon from '@/components/Logon'
 import About from '@/components/tth-User/About'
 import Download from '@/components/tth-User/Download'
+import Recharge from '@/components/tth-User/Recharge'
 export default [
   {
     path: '/user',
@@ -28,5 +29,10 @@ export default [
     path: '/download',
     name: 'Download',
     component: Download
+  },
+  {
+    path: '/recharge',
+    name: 'Recharge',
+    component: Recharge
   }
 ]

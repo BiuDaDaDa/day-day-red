@@ -47,6 +47,7 @@
   import isPhone from '@/common/js/isPhone'
   import sendCode from '@/common/js/sendCode'
   import guid from '@/common/js/guid'
+  import {getJsCookie} from '@/common/js/util'
 //  import axios from 'axios'
 //  import guid from '@/common/js/guid'
   export default {
@@ -62,7 +63,8 @@
         mima: false,
         phone: '',
         captcha: '',
-        password: ''
+        password: '',
+        cookieValue: ''
       }
     },
     methods: {
@@ -166,11 +168,17 @@
                   url: '/api/user/Handler.ashx?action=801&params={' + myOtherUrl + '}',
                   success: function (res) {
                     if (res.status === 200) {
-                      // 获取用户数据以字符串形式保存在localStorage中
-                      let data = JSON.stringify(res.data.data)
-                      window.localStorage.setItem('datas', data)
-                      console.log(res.data.data)
-                      this.$router.push({path: '/user'})
+                      this.cookieValue = getJsCookie('CP_UserIDGuid')
+                      console.log(this.cookieValue)
+                      if (this.cookieValue === Guid) {
+                        // 获取用户数据以字符串形式保存在localStorage中
+                        let data = JSON.stringify(res.data.data)
+                        window.localStorage.setItem('datas', data)
+                        this.$router.push({path: '/user'})
+                        window.location.reload()
+                      } else {
+                        window.localStorage.removeItem('datas')
+                      }
                     }
                   },
                   failed: function (err) {

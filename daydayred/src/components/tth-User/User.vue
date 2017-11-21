@@ -9,15 +9,20 @@
             <img src="../../assets/tth-user/tth-user.png" alt="">
           </div>
           <!--头像下面登陆注册文字-->
-          <span class="user-login">登陆/注册</span>
+          <span v-if="users.length === 0" class="user-login">登陆/注册</span>
+          <span v-else="" class="user-login-name" >{{users.Name}}</span>
           <!--余额-->
           <p class="user-balance">
-            余额：<strong>--</strong>元
+            <!--<i v-if="users !== ''" class="iconfont icon-yanjing yanjing"></i>-->
+            <i @click="iconsClick($event)" v-if="users.length !== 0" class="iconfont icon-yanjing yanjing"></i>
+            余额：<strong>{{air}}</strong>
+            <!--<strong v-else="">{{users.Balance}}</strong>-->
+            元
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="right iconfont icon-arrow-right"></i>
           </p>
         <!--充值提款-->
         <div class="user-card">
-          <div class="card">
+          <div class="card" @click="cardClick">
               <i class="iconfont icon-chongzhi chongzhi"></i>
               <p>&nbsp;充值</p>
           </div>
@@ -70,15 +75,24 @@
 </template>
 <script>
   import {MessageBox} from 'mint-ui'
+  import {fetch} from '@/common/js/localStorage'
+  import {getJsCookie} from '@/common/js/util'
+  let users = fetch()
+  console.log(users)
   export default {
     name: 'User',
     data () {
-      return {}
+      return {
+        users: users,
+        air: '--'
+      }
     },
     methods: {
+      // 点击关于页面
       aboutClick () {
         this.$router.push({path: '/about'})
       },
+      // 点击提现
       moneyClick () {
         MessageBox({
           title: '提示',
@@ -91,24 +105,42 @@
         }).catch(function (err) {
           console.log(err)
         })
+      },
+      // 点击切换小眼睛
+      iconsClick (event) {
+        if (event.target.className === 'iconfont icon-yanjing yanjing') {
+          event.target.className = 'iconfont icon-icons64x6416 icons'
+          this.air = this.users.Balance
+        } else {
+          event.target.className = 'iconfont icon-yanjing yanjing'
+          this.air = '--'
+        }
+      },
+      // 点击充值
+      cardClick () {
+        if (getJsCookie('CP_UserIDGuid') === null) {
+          this.$router.push({path: '/login'})
+        } else {
+          this.$router.push({path: '/recharge'})
+        }
       }
     }
   }
 </script>
 <style scoped lang="less">
   @import "../../common/css/style.less";
+  .yanjing {
+    font-size: 30px;
+    color: @color-text-gray;
+  }
+  .icons{
+    color: @color-text-gray;
+    font-size: 30px;
+  }
   .user-body {
     width: 100%;
-    height: 230vmin;
+    height: 180vmin;
     background-color: @color-background-gray;
-  }
-  .mint-msgbox-confirm {
-    color: #26a2ff;
-    font-size: 20px;
-    width: 50%;
-  }
-  .mint-msgbox-cancel {
-    font-size: 50px;
   }
   .user-bg {
     width: 100%;
@@ -151,10 +183,23 @@
     color: #ff9a9a;
     font-size: 4vmin;
   }
+  .user-login-name{
+    position: absolute;
+    left: 38%;
+    top: 27%;
+    color: #ff9a9a;
+    font-size: 4vmin;
+  }
 
   .user-balance {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
     position: absolute;
-    left: 35%;
+    left: 33%;
     top: 40%;
   }
 
@@ -218,7 +263,7 @@
     left: 2%;
     top: 10%;
     width: 96.26667vmin;
-    height: 25%;
+    height: 35%;
     background-color: #fff;
     border-top: 1px solid #eee;
     box-shadow: 1px 0.26667vmin 1.33333vmin #666;
