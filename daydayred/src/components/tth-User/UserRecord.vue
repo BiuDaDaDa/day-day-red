@@ -8,29 +8,72 @@
         <span class="record-span-two">最近一周 <i class="iconfont icon-jiantou2"></i></span>
       </div>
       <!--购彩记录导航栏-->
-        <mt-navbar v-model="selected">
-          <mt-tab-item id="1">全部</mt-tab-item>
-          <mt-tab-item id="2">待出票</mt-tab-item>
-          <mt-tab-item id="3">待开奖</mt-tab-item>
-          <mt-tab-item id="4">已中奖</mt-tab-item>
-        </mt-navbar>
+      <ul class="navBar">
+        <li :class="value.red" @click="navTabClick(index)" v-for="(value, index) in navArr" :key="index">{{value.text}}
+          <span :class="value.className"></span>
+        </li>
+      </ul>
+      <div v-if="itemArr.length === 0" class="nodate___1lEuU">
+        <img src="//common-1253410441.file.myqcloud.com/coverimg/20170622203327.png" alt="没有数据">
+        <span>暂无数据</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+  import {getJsCookie} from '@/common/js/util'
+
   export default {
     name: 'UserRecord',
     data () {
       return {
-        selected: ''
+        navArr: [
+          {className: 'nav-active', red: 'nav-red', text: '全部'},
+          {className: '', red: '', text: '待出票'},
+          {className: '', red: '', text: '待开奖'},
+          {className: '', red: '', text: '已中奖'}
+        ],
+        cookie: '',
+        index: null,
+        itemArr: []
       }
     },
     methods: {
       // 点击返回上一页事件
       goBackClick () {
         this.$router.go(-1)
+      },
+      // 点击导航栏切换事件
+      navTabClick (index) {
+        this.index = index
+        for (let i = 0; i < this.navArr.length; i++) {
+          this.navArr[i].className = ''
+          this.navArr[i].red = ''
+          this.navArr[index].red = 'nav-red'
+          this.navArr[index].className = 'nav-active'
+        }
+        this.getRecordData(index)
+      },
+      getRecordData (num) {
+        this.cookie = getJsCookie('CP_UserIDGuid')
+        let myUrl = `"SchemeState":"${num}","DateID":"1","PageIndex":"1","UserIDGuid":"${this.cookie}","PageSize":"20"`
+        let myOtherUrl = encodeURI(myUrl)
+        this.$request({
+          type: 'get',
+          url: '/api/user/Handler.ashx?action=803&params={' + myOtherUrl + '}',
+          success: function (res) {
+            console.log(res.data.data.item)
+            this.itemArr = res.data.data.item
+          },
+          failed: function (err) {
+            console.log(err)
+          }
+        })
       }
+    },
+    mounted () {
+      this.getRecordData(0)
     }
   }
 </script>
@@ -42,9 +85,6 @@
     width: 100%;
     height: 180vmin;
     background-color: #F2F2F2;
-  }
-  #1{
-
   }
 
   .user-record-head {
@@ -72,8 +112,44 @@
     color: @color-background-white;
     font-weight: 700;
   }
-  .am-tabs {
-    overflow: hidden;
+
+  .navBar {
+    width: 100%;
+    height: 35px;
+    background-color: @color-background-white;
+  }
+
+  .navBar li {
+    position: relative;
+    font-size: 4vmin;
+    display: inline-block;
+    width: 25%;
+    color: #333;
+    text-align: center;
+    line-height: 35px;
+  }
+
+  .user-record-body ul .nav-red {
+    color: #ff5f5f;
+  }
+
+  .nav-active {
+    transition: all 1s;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: .53333vmin;
+    background-color: #ff5f5f;
+  }
+  .nodate___1lEuU{
+    background: #f2f2f2;
+    text-align: center;
+  }
+  .nodate___1lEuU img{
+    width: 100%;
+    display: block;
+    margin: 34.66667vmin 0 13.33333vmin;
   }
 
 </style>
