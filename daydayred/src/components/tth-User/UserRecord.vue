@@ -5,7 +5,7 @@
       <div class="user-record-head">
         <i @click="goBackClick" class="iconfont icon-jiantou jiantou"></i>
         <span class="record-span">购彩记录</span>
-        <span @click="recentlyClick" class="record-span-two">最近一周 <i class="iconfont icon-jiantou2"></i></span>
+        <span @click="recentlyClickA" class="record-span-two">{{look}} <i class="iconfont icon-jiantou2"></i></span>
       </div>
       <!--购彩记录导航栏-->
       <ul class="navBar">
@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <MyMask v-show="maskisShow"></MyMask>
+    <MyMask :pass="maskisShow" @maskClicText="maskClicText" @maskClicked="maskClicked"></MyMask>
   </div>
 </template>
 <script>
@@ -43,7 +43,8 @@
         index: null,
         itemArr: [],
         animated: '',
-        maskisShow: false
+        maskisShow: false,
+        look: '最近一周'
       }
     },
     methods: {
@@ -85,8 +86,14 @@
         })
       },
       // 点击最近一周点点击事件
-      recentlyClick () {
-        this.maskisShow = !this.maskisShow
+      recentlyClickA () {
+        this.maskisShow = true
+      },
+      maskClicked (value) {
+        this.maskisShow = value
+      },
+      maskClicText (value) {
+        this.look = value
       }
     },
     mounted () {
@@ -107,7 +114,7 @@
   .user-record-head {
     width: 100%;
     height: 14vmin;
-    line-height: 15vmin;
+    line-height: 13vmin;
     background-color: @color-text-red;
   }
 
@@ -119,7 +126,8 @@
   }
 
   .record-span-two {
-    margin-left: 15%;
+    float: right;
+    margin-right: 3%;
     font-size: 14px;
     color: @color-background-white;
   }

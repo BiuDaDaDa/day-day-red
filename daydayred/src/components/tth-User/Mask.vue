@@ -1,5 +1,5 @@
 <template>
-  <div v-show="maskIsShow">
+  <div v-show="pass">
     <div @click="maskA" class="mask"></div>
     <div class="mask-ul">
       <div @click="maskClick(index)" v-for="(value, index) in maskArr" :key="index" :class="value.className">{{value.text}}</div>
@@ -9,6 +9,9 @@
 <script>
   export default {
     name: 'Mask',
+    props: {
+      pass: null
+    },
     data () {
       return {
         maskArr: [
@@ -18,20 +21,23 @@
           {className: 'am-action-sheet-button-list-item', text: '最近三月'},
           {className: 'cancel', text: '取消'}
         ],
-        index: null,
-        maskIsShow: true
+        index: null
       }
     },
     methods: {
       // 点击历史发送接口事件
       maskClick (index) {
         this.index = index
+        this.$emit('maskClicked', false)
+        if (index === 4) {
+          return false
+        }
         let text = this.maskArr[index].text
-        this.$emit('maskClicked', text)
+        this.$emit('maskClicText', text)
       },
       // 点击蒙版消失事件
       maskA () {
-        this.maskIsShow = !this.maskIsShow
+        this.$emit('maskClicked', false)
       }
     }
   }
@@ -53,6 +59,19 @@
     width: 100%;
     height: 255px;
     background-color: #E7E7ED;
+    animation-name: diagonal-slide;
+    animation-duration: 0.3s;
+    animation-iteration-count: 1;
+  }
+  @keyframes diagonal-slide {
+    0% {
+      left: 0;
+      bottom: -200px;
+    }
+    100%{
+      left: 0;
+      bottom: 0;
+    }
   }
   .am-action-sheet-button-list-item {
     font-size: 4.8vmin;
