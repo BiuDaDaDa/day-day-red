@@ -13,7 +13,7 @@ import isLogin from './common/js/isLogin'
 isLogin()
 Vue.use(Vuex)
 Vue.component(DatetimePicker.name, DatetimePicker)
-Vue.component(Indicator.name, Indicator)
+Vue.use(Indicator)
 Vue.component(Navbar.name, Navbar)
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
