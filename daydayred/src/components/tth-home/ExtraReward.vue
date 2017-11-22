@@ -1,4 +1,5 @@
 <template>
+  <!--疯狂加奖-->
 <div class="extraReward_wrap">
   <homeHeader :headerTitle="'加奖10%'"></homeHeader>
   <img src="../../assets/tth-home/extraReward.png"/>

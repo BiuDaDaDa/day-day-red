@@ -7,7 +7,7 @@
   </div>
   </router-link>
   <div id="documentary_rank_body_wrap">
-    <div class="documentary_rank_body" v-for="(god,index,key) in gods">
+    <div class="documentary_rank_body" v-for="(god,index,key) in gods" @click="clicked(index)">
       <div class="gods_rank" v-if="index == 0" :style="{backgroundImage:'url('+ bgcImage1 +')'}">{{god.rank}}</div>
       <div class="gods_rank" v-if="index == 1" :style="{backgroundImage:'url('+ bgcImage2 +')'}">{{god.rank}}</div>
       <div class="gods_rank" v-if="index == 2" :style="{backgroundImage:'url('+ bgcImage3 +')'}">{{god.rank}}</div>
@@ -45,7 +45,7 @@
           headers: {},
           params: {},
           success: function (res) {
-            console.log(res.data.data.gods[0].rank)
+//            console.log(res.data.data.gods[0].uid)
             this.gods = res.data.data.gods
             for (let i = 0; i < res.data.data.gods.length; i++) {
               if (res.data.data.gods[i].avatar === '') {
@@ -55,6 +55,11 @@
           },
           failed: function () {}
         })
+      },
+      clicked (index) {
+        let godsrankUid = this.gods[index].uid
+        this.$router.push('/particulars/' + godsrankUid)
+//        console.log(godsrankUid)
       }
     },
     mounted () {

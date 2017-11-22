@@ -16,12 +16,12 @@
       <router-link to="/rank">
       <h6>
         <span>彩帝排行</span>
-        <i class="iconfont icon-arrow-right "></i>
+        <i class="iconfont icon-arrow-right"></i>
       </h6>
       </router-link>
       <!-- body  -->
       <div id="documengtary_ranking_body-wrap">
-        <div class="documengtary_ranking_body" v-for="(god,index,key) in halfgods">
+        <div class="documengtary_ranking_body" v-for="(god,index,key) in halfgods" @click="clicked(index)">
           <div class="documengtary_ranking_body_avatar"><img :src="god.avatar"></div>
           <div class="documengtary_ranking_body_username">{{(god.nick).split('',5).join('')}}</div>
           <div class="documengtary_ranking_body_grade">近{{(god.hitState).split('').length}}中{{parseInt((god.hitState.split('').length) * parseInt(god.hitRate) / 100)}}</div>
@@ -47,33 +47,33 @@
           </span>
         </div>
         <div class="documengtary_recommend_body_body">
-          {{plan.nick}}
+          {{plan.recommendTitle}}
         </div>
         <div class="documengtary_recommend_body_footer_wrap">
           <div class="documengtary_recommend_body_footer_counts">
             <span>场次数</span>
-            <strong>{{plan.matchCounts}}</strong>
+            <strong class="blackstrong">{{plan.matchCounts}}</strong>
           </div>
           <p></p>
           <div class="documengtary_recommend_body_footer_way">
             <span>过关方式</span>
-            <strong>{{plan.parlay}}</strong>
+            <strong class="blackstrong">{{plan.parlay}}</strong>
           </div>
           <p></p>
           <div class="documengtary_recommend_body_footer_bet">
             <span>彩帝投注</span>
-            <strong>{{plan.bet}}</strong>
+            <strong class="blackstrong">{{plan.bet}}</strong>
           </div>
           <p></p>
           <div class="documengtary_recommend_body_footer_money">
             <span>已跟投金额</span>
-            <strong class="colorred">{{plan.followedBet.amount}}</strong>
+            <strong class="redstrong">{{plan.followedBet.amount}}</strong>
           </div>
         </div>
       </div>
     </div>
     <!-- 背景图片 -->
-    <img id="documengtary_bgimg" src="../../assets/tth-documentary/NoDate.png" alt="">
+    <img id="documengtary_bgimg" src="../../assets/tth-documentary/NoDate.png" v-if="this.plans.length <= 0">
     <!-- 暂无彩帝数据 -->
     <div id="documengtary_no">暂无彩帝数据</div>
     <zj-footer></zj-footer>
@@ -88,7 +88,8 @@
       return {
         halfgods: [],
         plans: [],
-        counts: []
+        counts: [],
+        gods: []
       }
     },
     methods: {
@@ -117,7 +118,7 @@
           headers: {},
           params: {},
           success: function (res) {
-            console.log(res.data.data.plans[0].nick)
+//            console.log(res.data.data.plans.length)
             this.plans = res.data.data.plans
             let count = 0
             let counts = []
@@ -136,6 +137,11 @@
           },
           failed: function () {}
         })
+      },
+      clicked (index) {
+        let godsrankUid = this.halfgods[index].uid
+        this.$router.push('/particulars/' + godsrankUid)
+//        console.log(godsrankUid)
       }
     },
     components: {
@@ -320,6 +326,7 @@
     display: block;
     margin-top: 3.33333vmin;
     font-size: 4vmin;
+    color: black;
   }
   .documengtary_recommend_body_footer_wrap{
     box-sizing: border-box;
@@ -339,6 +346,9 @@
     font-size: 3.73333vmin;
     text-align: center;
   }
+  .redstrong{
+    color: red;
+  }
   .documengtary_recommend_body_footer_wrap strong{
     display: inline-block;
     width: 100%;
@@ -347,18 +357,17 @@
     text-align: center;
     font-size: 3.73333vmin;
   }
-  .colorred{
-    color: red;
+  .blackstrong{
+    color: black;
   }
   .documengtary_recommend_body_footer_wrap p{
     height: 6vmin;
     border-left: .3vmin solid #EDEDED;
     margin-top: 1.5vmin;
   }
-
-
-
-
+  .user_username{
+    color: black;
+  }
 
   /* 背景图 */
   #documengtary_bgimg{

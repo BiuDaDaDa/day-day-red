@@ -1,4 +1,5 @@
 <template>
+  <!--邀请好友送红包-->
 <div class="invitation_wrap">
   <!--头部-->
   <homeHeader :headerTitle="'邀请好友送红包'"></homeHeader>

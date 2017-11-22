@@ -1,10 +1,11 @@
 <template>
+  <!--活动-->
 <div class="activities_wrap">
   <!--标题-->
   <homeHeader :headerTitle="'活动中心'"></homeHeader>
   <!--活动-->
   <div class="activities_content">
-    <div class="activities_content_info" v-for="activityInfo in activitiesArr">
+    <div class="activities_content_info" v-for="(activityInfo,index) in activitiesArr" :key="index" @click="toActivitiesPage(activityInfo.id)">
       <!--大图-->
       <img class="activities_content_info_img" :src=" activityInfo.cover" alt="">
       <!--活动状况-->
@@ -41,6 +42,13 @@
            console.log('未找到活动数据:' + err)
          }
        })
+     },
+     toActivitiesPage (index) {
+       if (index === 59) {
+         this.$router.push({ path: '/invitation' })
+       } else if (index === 58) {
+         this.$router.push({ path: '/recharge' })
+       }
      }
    },
    mounted () {
