@@ -5,6 +5,9 @@ import Invitation from '@/components/tth-home/Invitation'
 import Recharge from '@/components/tth-home/Recharge'
 import ExtraReward from '@/components/tth-home/ExtraReward'
 import DoubleExtraReward from '@/components/tth-home/DoubleExtraReward'
+import Rank3 from '@/components/tth-home/tth-buy/Rank3'
+import Fucai3D from '@/components/tth-home/tth-buy/Fucai3d'
+import SuperLotto from '@/components/tth-home/tth-buy/SuperLotto'
 export default [
   {
     path: '/home',
@@ -40,5 +43,20 @@ export default [
     path: '/doubleExtraReward',
     name: 'DoubleExtraReward',
     component: DoubleExtraReward
+  },
+  {
+    path: '/rank3',
+    name: 'Rank3',
+    component: Rank3
+  },
+  {
+    path: '/fucai3d',
+    name: 'Fucai3D',
+    component: Fucai3D
+  },
+  {
+    path: '/superLotto',
+    name: 'SuperLotto',
+    component: SuperLotto
   }
 ]

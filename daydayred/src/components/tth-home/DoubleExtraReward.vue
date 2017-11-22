@@ -1,4 +1,5 @@
 <template>
+  <!--双色球加奖-->
 <div class="doubleExtraReward_wrap">
   <homeHeader :headerTitle="'双色球加奖'"></homeHeader>
   <img src="../../assets/tth-home/doubleExtraReward.png"/>

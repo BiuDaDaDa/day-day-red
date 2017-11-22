@@ -1,4 +1,5 @@
 <template>
+  <!--疯狂竞猜-->
 <div class="crazyFree_wrap">
   <!--计算-->
   <div class="crazyFree_recommend">
