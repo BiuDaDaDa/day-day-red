@@ -223,7 +223,8 @@
   @import "../common/css/style.less";
   .login-wrap {
     width: 100%;
-    height: 100%;
+    height: 180vmin;
+    background-color: white;
     position: relative;
   }
 

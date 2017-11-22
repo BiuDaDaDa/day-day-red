@@ -5,7 +5,7 @@
       <div class="user-record-head">
         <i @click="goBackClick" class="iconfont icon-jiantou jiantou"></i>
         <span class="record-span">购彩记录</span>
-        <span class="record-span-two">最近一周 <i class="iconfont icon-jiantou2"></i></span>
+        <span @click="recentlyClick" class="record-span-two">最近一周 <i class="iconfont icon-jiantou2"></i></span>
       </div>
       <!--购彩记录导航栏-->
       <ul class="navBar">
@@ -13,19 +13,24 @@
           <span :class="value.className"></span>
         </li>
       </ul>
-      <div v-if="itemArr.length === 0" class="nodate___1lEuU">
-        <img src="//common-1253410441.file.myqcloud.com/coverimg/20170622203327.png" alt="没有数据">
-        <span>暂无数据</span>
+      <div v-if="itemArr.length === 0"  class="nodate___1lEuU">
+        <div :class="animated">
+          <img src="../../assets/tth-documentary/NoDate.png"/>
+          <span>暂无数据</span>
+        </div>
       </div>
     </div>
+    <MyMask v-show="maskisShow"></MyMask>
   </div>
 </template>
-
 <script>
   import {getJsCookie} from '@/common/js/util'
-
+  import MyMask from '../tth-User/Mask'
   export default {
     name: 'UserRecord',
+    components: {
+      MyMask
+    },
     data () {
       return {
         navArr: [
@@ -36,7 +41,9 @@
         ],
         cookie: '',
         index: null,
-        itemArr: []
+        itemArr: [],
+        animated: '',
+        maskisShow: false
       }
     },
     methods: {
@@ -53,23 +60,33 @@
           this.navArr[index].red = 'nav-red'
           this.navArr[index].className = 'nav-active'
         }
+        if (this.animated === '') {
+          this.animated = 'animated fadeInLeft'
+        } else if (this.animated === 'animated fadeInLeft') {
+          this.animated = 'animated fadeInRight'
+        } else {
+          this.animated = 'animated fadeInLeft'
+        }
         this.getRecordData(index)
       },
       getRecordData (num) {
         this.cookie = getJsCookie('CP_UserIDGuid')
-        let myUrl = `"SchemeState":"${num}","DateID":"1","PageIndex":"1","UserIDGuid":"${this.cookie}","PageSize":"20"`
+        let myUrl = `"SchemeState":"${num}","DateID":"1","tabselected":"${num}","PageIndex":"1","UserIDGuid":"${this.cookie}","PageSize":"20"`
         let myOtherUrl = encodeURI(myUrl)
         this.$request({
           type: 'get',
           url: '/api/user/Handler.ashx?action=803&params={' + myOtherUrl + '}',
           success: function (res) {
-            console.log(res.data.data.item)
             this.itemArr = res.data.data.item
           },
           failed: function (err) {
             console.log(err)
           }
         })
+      },
+      // 点击最近一周点点击事件
+      recentlyClick () {
+        this.maskisShow = !this.maskisShow
       }
     },
     mounted () {
@@ -83,7 +100,7 @@
 
   .user-record-body {
     width: 100%;
-    height: 180vmin;
+    height: 100%;
     background-color: #F2F2F2;
   }
 
@@ -150,6 +167,11 @@
     width: 100%;
     display: block;
     margin: 34.66667vmin 0 13.33333vmin;
+  }
+  .animatedCss {
+    position: absolute;
+    left: 0;
+    top: 20%;
   }
 
 </style>
