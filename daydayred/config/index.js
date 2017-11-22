@@ -12,8 +12,8 @@ module.exports = {
     proxyTable: {
       '/api': {
         target: 'http://m.tthong.cn',
-        changeOrigin:true,
         secure: false,
+        cookieDomainRewrite: "localhost",
         pathRewrite: {
           '^/api': '/'
         },

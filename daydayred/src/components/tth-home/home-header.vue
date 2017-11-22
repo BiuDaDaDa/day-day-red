@@ -1,4 +1,5 @@
 <template>
+  <!--首页-->
   <div class="header_wrap">
     <div class="header_back">
       <i class="iconfont icon-jiantou"></i>
@@ -27,7 +28,7 @@
     /*justify-content: center;*/
     h3{
       margin: 0 auto;
-      font-size: 1.5em;
+      font-size: 1.4em;
       display: inline-block;
       font-weight: bold;
     }

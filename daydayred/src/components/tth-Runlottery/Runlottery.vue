@@ -310,6 +310,10 @@
   #special-double{
     background-color:#6b8dff;
   }
+  .happy-number>div p{
+    font-size: 4vmin;
+    font-weight: 700;
+  }
   /*篮球 足球*/
   .football div{
     background-image: url("../../assets/tth-runlottery/download.png");

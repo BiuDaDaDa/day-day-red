@@ -6,18 +6,22 @@
     </div>
     <!-- join:申请加入 -->
     <div id="documengtary_join">
-      <img src="../../assets/tth-documentary/20171012095335.png" alt="">
+      <router-link to="/join">
+      <img src="../../assets/tth-documentary/join.png">
+      </router-link>
     </div>
     <!-- ranking:彩帝排行 -->
     <div id="documengtary_ranking_wrap">
       <!-- title -->
+      <router-link to="/rank">
       <h6>
         <span>彩帝排行</span>
-        <i class="iconfont icon-arrow-right "></i>
+        <i class="iconfont icon-arrow-right"></i>
       </h6>
+      </router-link>
       <!-- body  -->
       <div id="documengtary_ranking_body-wrap">
-        <div class="documengtary_ranking_body" v-for="(god,index,key) in halfgods">
+        <div class="documengtary_ranking_body" v-for="(god,index,key) in halfgods" @click="clicked(index)">
           <div class="documengtary_ranking_body_avatar"><img :src="god.avatar"></div>
           <div class="documengtary_ranking_body_username">{{(god.nick).split('',5).join('')}}</div>
           <div class="documengtary_ranking_body_grade">近{{(god.hitState).split('').length}}中{{parseInt((god.hitState.split('').length) * parseInt(god.hitRate) / 100)}}</div>
@@ -38,24 +42,54 @@
               近{{(plan.hitState).split('').length}}中{{counts[index]}}
             </div>
           </span>
+          <span class="documengtary_recommend_body_title_time">
+            {{plan.followedBet.deadline}} 截止
+          </span>
+        </div>
+        <div class="documengtary_recommend_body_body">
+          {{plan.recommendTitle}}
+        </div>
+        <div class="documengtary_recommend_body_footer_wrap">
+          <div class="documengtary_recommend_body_footer_counts">
+            <span>场次数</span>
+            <strong class="blackstrong">{{plan.matchCounts}}</strong>
+          </div>
+          <p></p>
+          <div class="documengtary_recommend_body_footer_way">
+            <span>过关方式</span>
+            <strong class="blackstrong">{{plan.parlay}}</strong>
+          </div>
+          <p></p>
+          <div class="documengtary_recommend_body_footer_bet">
+            <span>彩帝投注</span>
+            <strong class="blackstrong">{{plan.bet}}</strong>
+          </div>
+          <p></p>
+          <div class="documengtary_recommend_body_footer_money">
+            <span>已跟投金额</span>
+            <strong class="redstrong">{{plan.followedBet.amount}}</strong>
+          </div>
         </div>
       </div>
     </div>
     <!-- 背景图片 -->
-    <img id="documengtary_bgimg" src="../../assets/tth-documentary/20170622203327.png" alt="">
+    <img id="documengtary_bgimg" src="../../assets/tth-documentary/NoDate.png" v-if="this.plans.length <= 0">
     <!-- 暂无彩帝数据 -->
     <div id="documengtary_no">暂无彩帝数据</div>
+    <zj-footer></zj-footer>
   </div>
 </template>
 
 <script>
+  import ZjFooter from '../Zj-Footer.vue'
   export default {
     name: 'Documentary',
     data () {
       return {
         halfgods: [],
         plans: [],
-        counts: []
+        counts: [],
+        gods: []
       }
     },
     methods: {
@@ -84,12 +118,11 @@
           headers: {},
           params: {},
           success: function (res) {
-//            console.log(res.data.data.plans[1].avatar)
+//            console.log(res.data.data.plans.length)
             this.plans = res.data.data.plans
             let count = 0
             let counts = []
             for (let i = 0; i < res.data.data.plans.length; i++) {
-//              console.log(res.data.data.plans[i].hitState)
               let str = res.data.data.plans[i].hitState
               let num1 = '1'
               let regex = new RegExp(num1, 'g')
@@ -101,11 +134,18 @@
               }
             }
             this.counts = counts
-            console.log(this.counts)
           },
           failed: function () {}
         })
+      },
+      clicked (index) {
+        let godsrankUid = this.halfgods[index].uid
+        this.$router.push('/particulars/' + godsrankUid)
+//        console.log(godsrankUid)
       }
+    },
+    components: {
+      ZjFooter
     },
     mounted () {
       this.rankingData()
@@ -195,7 +235,7 @@
     border-radius: 50%;
   }
   .documengtary_ranking_body_username{
-    margin-top: 1.06667vmin;
+    margin-top: 2.06667vmin;
     font-size: 3.2vmin;
     height: 3.2vmin;
     color: #666;
@@ -247,8 +287,6 @@
   }
   .documengtary_recommend_body_title{
     box-sizing: border-box;
-    border: 1px solid blue;
-    /*height: 10px;*/
   }
   .documengtary_recommend_body_title img{
     width: 13.06667vmin;
@@ -273,8 +311,63 @@
     font-size: 3.8vmin;
     margin-top: 1vmin;
   }
-
-
+  .documengtary_recommend_body_title_time{
+    padding: 1.86667vmin 0;
+    font-size: 3.73333vmin;
+    color: #999;
+    font-weight: 400;
+    vertical-align: middle;
+    margin-top: 1vmin;
+    float: right;
+  }
+  .documengtary_recommend_body_body{
+    font-weight: 700;
+    padding-left: 4.4vmin;
+    display: block;
+    margin-top: 3.33333vmin;
+    font-size: 4vmin;
+    color: black;
+  }
+  .documengtary_recommend_body_footer_wrap{
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 5vmin;
+    display: flex;
+    justify-content: space-between;
+  }
+  .documengtary_recommend_body_footer_wrap div{
+    width: 23%;
+  }
+  .documengtary_recommend_body_footer_wrap span{
+    color: #999;
+    display: block;
+    line-height: 1;
+    margin-bottom: 1.33333vmin;
+    font-size: 3.73333vmin;
+    text-align: center;
+  }
+  .redstrong{
+    color: red;
+  }
+  .documengtary_recommend_body_footer_wrap strong{
+    display: inline-block;
+    width: 100%;
+    line-height: 1;
+    font-weight: 400;
+    text-align: center;
+    font-size: 3.73333vmin;
+  }
+  .blackstrong{
+    color: black;
+  }
+  .documengtary_recommend_body_footer_wrap p{
+    height: 6vmin;
+    border-left: .3vmin solid #EDEDED;
+    margin-top: 1.5vmin;
+  }
+  .user_username{
+    color: black;
+  }
 
   /* 背景图 */
   #documengtary_bgimg{
