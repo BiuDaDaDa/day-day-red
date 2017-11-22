@@ -46,6 +46,8 @@
   import {Toast} from 'mint-ui'
   import isPhone from '@/common/js/isPhone'
   import sendCode from '@/common/js/sendCode'
+  import guid from '@/common/js/guid'
+  import {getJsCookie} from '@/common/js/util'
 //  import axios from 'axios'
 //  import guid from '@/common/js/guid'
   export default {
@@ -61,7 +63,8 @@
         mima: false,
         phone: '',
         captcha: '',
-        password: ''
+        password: '',
+        cookieValue: ''
       }
     },
     methods: {
@@ -95,10 +98,9 @@
       },
       // 点击登陆判断是否有账号和短信验证码
       loginClick () {
-        let myUrl = `"UserName":"${this.phone}","Password":"${this.password}"`
-        let myOtherUrl = encodeURI(myUrl)
-        console.log(myOtherUrl)
         if (this.loginUser === 'login-user-dl') {
+          let myUrl = `"ValidCode":"${this.phone}","ValidCode":"${this.captcha}","RandomGuid":"${guid()}"`
+          let myOtherUrl = encodeURI(myUrl)
           if (this.phone.length <= 0 || this.captcha.length <= 0) {
             Toast({
               message: '获取验证码后手机号不能修改或者已经过时！',
@@ -110,7 +112,36 @@
           } else {
             isPhone(this.phone)
           }
+          this.$request({
+            type: 'get',
+            url: '/api/user/Handler.ashx?action=702&params={' + myOtherUrl + '}',
+            success: function (res) {
+              console.log(res)
+//              let Guid = res.data.data.Guid
+//              let myUrl = `"UserIDGuid":"${Guid}"`
+//              let myOtherUrl = encodeURI(myUrl)
+              if (res.status === 200) {
+                console.log(123)
+//                this.$request({
+//                  type: 'get',
+//                  url: '/api/user/Handler.ashx?action=801&params={' + myOtherUrl + '}',
+//                  success: function (res) {
+//                    console.log(res)
+//                    console.log(window.cookie)
+//                  },
+//                  failed: function (err) {
+//                    console.log(err)
+//                  }
+//                })
+              }
+            },
+            failed: function (err) {
+              console.log('未找到的密码' + err)
+            }
+          })
         } else {
+          let myUrl = `"UserName":"${this.phone}","Password":"${this.password}"`
+          let myOtherUrl = encodeURI(myUrl)
           // 密码登陆
           if (this.phone.length <= 0) {
             isPhone(this.phone)
@@ -124,14 +155,31 @@
               let Guid = res.data.data.Guid
               let myUrl = `"UserIDGuid":"${Guid}"`
               let myOtherUrl = encodeURI(myUrl)
-              console.log(res.headers)
+              console.log(res)
               if (res.status === 200) {
+                Toast({
+                  message: '登陆成功',
+                  position: 'middle',
+                  iconClass: 'iconfont icon-dui',
+                  duration: 800
+                })
                 this.$request({
                   type: 'get',
                   url: '/api/user/Handler.ashx?action=801&params={' + myOtherUrl + '}',
                   success: function (res) {
-                    console.log(res)
-                    console.log(window.cookie)
+                    if (res.status === 200) {
+                      this.cookieValue = getJsCookie('CP_UserIDGuid')
+                      console.log(this.cookieValue)
+                      if (this.cookieValue === Guid) {
+                        // 获取用户数据以字符串形式保存在localStorage中
+                        let data = JSON.stringify(res.data.data)
+                        window.localStorage.setItem('datas', data)
+                        this.$router.push({path: '/user'})
+                        window.location.reload()
+                      } else {
+                        window.localStorage.removeItem('datas')
+                      }
+                    }
                   },
                   failed: function (err) {
                     console.log(err)
@@ -180,7 +228,7 @@
   }
 
   .login-user {
-    width: 60%;
+    width: 58.66667vmin;
     position: absolute;
     left: 20%;
     top: 10vmin;
