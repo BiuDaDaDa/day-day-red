@@ -43,9 +43,28 @@
         <!--支付方式支付宝还是微信-->
         <div class="payment-body">
           <div class="payment-one">
-            <h5>支付方式</h5>
-            <span></span>
+            <h5>支付方式&nbsp;&nbsp;&nbsp;<span>支付完成后点击左上角app名返回</span></h5>
           </div>
+          <div class="payment-two">
+            <div class="payment-alipay">
+                <img src="../../assets/tth-user/20170601184552.png"/>
+                <span>支付宝</span>
+              <i @click="paymentClick" :class="checked"></i>
+            </div>
+            <div class="payment-WeChat">
+                <img src="../../assets/tth-user/20170601184553.png"/>
+                <span>微信</span>
+                <p>快捷方便，极速到账</p>
+              <i @click="wechatClick" :class="checkedon"></i>
+            </div>
+          </div>
+        </div>
+        <!--底部充值-->
+        <div class="footer-payment">
+          <p>
+            <b>充值金额不可提现只能用于购彩，中奖后奖金可以提现。</b>
+            <span>充值</span>
+          </p>
         </div>
       </div>
     </div>
@@ -68,7 +87,9 @@
           { className: '', text: '1000元' },
           { className: '', text: '' }
         ],
-        rest: '自定义金额'
+        rest: '自定义金额',
+        checked: 'iconfont icon-checkedon checkdon-one',
+        checkedon: 'iconfont icon-checkedon checkdon-two'
       }
     },
     methods: {
@@ -99,6 +120,24 @@
       // 点击跳转到充值优惠
       jumpClick () {
         this.$router.push({path: '/recharge'})
+      },
+      // 点击支付宝的点击事件
+      paymentClick () {
+        if (this.checkedon === 'iconfont icon-checkedon checkdon-one') {
+          this.checked = 'iconfont icon-checkedon checkdon-one'
+          this.checkedon = 'iconfont icon-checkedon checkdon-two'
+        } else {
+          this.checked = 'iconfont icon-checkedon checkdon-one'
+        }
+      },
+      // 点击微信的点击事件
+      wechatClick () {
+        if (this.checked === 'iconfont icon-checkedon checkdon-one') {
+          this.checkedon = 'iconfont icon-checkedon checkdon-one'
+          this.checked = 'iconfont icon-checkedon checkdon-two'
+        } else {
+          this.checkedon = 'iconfont icon-checkedon checkdon-one'
+        }
       }
     }
   }
@@ -126,7 +165,7 @@
     background-size: cover;
   }
   .recharge-body {
-    color: #6A6A6A;
+    color: #404040;
     width: 100%;
     height: 180vmin;
     background-color: #F2F2F2;
@@ -136,8 +175,8 @@
     display: flex;
     align-items: center;
     width: 100%;
-    height: 12vmin;
-    line-height: 12vmin;
+    height: 14vmin;
+    line-height: 14vmin;
     background-color: @color-text-red;
   }
 
@@ -213,21 +252,23 @@
     font-size: 15px;
   }
   .account-num-body {
-    width: 96%;
-    margin: 10px auto;
+    width: 100%;
+    margin: 10px 5%;
     height: 300px;
   }
   .account-num-body li {
     position: relative;
-    overflow: visible;
-    width: 90px;
-    height: 30px;
+    width: 25.66667vmin;
+    height: 8.53333vmin;
+    box-sizing: border-box;
+    line-height: 8.53333vmin;
     border: 1px solid #999;
-    line-height: 30px;
+    border-radius: .53333vmin;
+    float: left;
+    margin: 5.33333vmin 6.66667vmin 0 0;
     text-align: center;
-    display: inline-block;
-    margin: 9px 13px;
-    border-radius: 2px;
+    font-size: 4.26667vmin;
+    overflow: hidden;
   }
   .rest{
     position: relative;
@@ -255,6 +296,106 @@
     height: 15px;
     margin: 0 auto;
   }
+  .payment-two {
+    width: 90%;
+    margin: 25px auto;
+  }
+  .payment-alipay{
+    height: 50px;
+    width: 95%;
+    display: flex;
+    border-bottom: 1px solid #EEEEEE;
+  }
+  .checkdon-one{
+    color: @color-text-red;
+    position: absolute;
+    right: 9%;
+    font-size: 25px;
+    line-height: 30px;
+  }
+  .checkdon-two{
+    color: #DDDDDD;
+    position: absolute;
+    right: 9%;
+    line-height: 30px;
+    font-size: 25px;
+  }
+  .payment-WeChat{
+    display: flex;
+    margin-top: 15px;
+    height: 50px;
+    width: 95%;
+  }
+  .payment-WeChat p{
+    margin-left: -36px;
+    margin-top: 25px;
+    font-size: 14px;
+    color: @color-text-gray;
+  }
+  .payment-WeChat span{
+    margin-left: 20px;
+    font-size: 18px;
+    font-weight: 700;
+  }
 
+  .payment-WeChat img{
+    width: 40px;
+    height: 40px;
+  }
+  .payment-alipay img{
+    width: 40px;
+    height: 40px;
+  }
+  .payment-alipay span{
+    display: inline-block;
+    width: 100px;
+    margin-left: 5%;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .payment-one h5{
+    font-weight: 700;
+  }
+  .payment-one h5 span{
+    color: #CFCFCF;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .footer-payment{
+    position: fixed;
+    margin-top: 7.2vmin;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+  .footer-payment b{
+    height: 8.53333vmin;
+    line-height: 8.53333vmin;
+    background: #fff9c3;
+    font-size: 3.2vmin;
+    color: #fbb52f;
+    display: block;
+    padding: 0 3.2vmin;
+    font-weight: 400;
+  }
+  .footer-payment span {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    background: #ff5f5f;
+    text-align: center;
+    margin: 0 auto;
+    height: 11.73333vmin;
+    line-height: 11.73333vmin;
+    color: #fff;
+    font-size: 4.8vmin;
+  }
 
 </style>
