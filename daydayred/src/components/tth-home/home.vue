@@ -1,16 +1,17 @@
 <template>
+  <!--主页-->
 <div class="home_wrap">
   <!--头部-->
   <div class="home_nameBar">
     <span>天天红彩票</span>
-    <i class="iconfont icon-liwu"></i>
+    <i class="iconfont icon-liwu" @click="toActivities"></i>
   </div>
   <!--轮播图-->
   <div class="home_swiper">
     <div class="home_swiper_bgred"></div>
     <div class="home_swiper_main">
       <mt-swipe :auto="3000">
-        <mt-swipe-item v-for="(bannerImg,index) in bannerArr" :key="index"><a href=""><img :src="bannerImg.cover" alt=""></a></mt-swipe-item>
+        <mt-swipe-item v-for="(bannerImg,index) in bannerArr" :key="index"><a @click="toActivitiesDetail(index)"><img :src="bannerImg.cover" alt=""></a></mt-swipe-item>
       </mt-swipe>
     </div>
   </div>
@@ -50,7 +51,7 @@
   </div>
   <!--彩票分类-->
   <div class="home_item">
-    <div class="home_item_btn" v-for="(itemInfo,index) in itemArr" :key="index">
+    <div class="home_item_btn" v-for="(itemInfo,index) in itemArr" :key="index" @click="toBuyLottery(index)">
         <div class="home_item_btn_contain">
           <img :src="itemInfo.IconUrl" height="142" width="142"/>
           <div class="home_item_btn_contain_text">
@@ -85,11 +86,11 @@
         randomMin: 1,
         randomBlueMax: 0,
 //        随机次数
-        randomBlueTimes: 0,
         randomRedTimes: 0
       }
     },
     methods: {
+      // 轮播图
       fecthBannerData () {
         this.$request({
           type: 'get',
@@ -103,31 +104,74 @@
           }
         })
       },
+      // 快捷投注随机球数
+      getRandomNum () {
+        // 红球随机
+        this.randomRedArr = []
+        for (let red = 0; red < this.randomRedTimes; red++) {
+          let randRedNum = Math.floor(Math.random() * (this.randomRedMax + 1 - this.randomMin) + this.randomMin)
+          if (randRedNum < 10) {
+            randRedNum = '0' + randRedNum
+          } else {
+            randRedNum = randRedNum.toString()
+          }
+          // 查重
+          if (this.randomRedArr.indexOf(randRedNum) === -1) {
+            // 放入arr
+            this.randomRedArr.push(randRedNum)
+          } else {
+            red--
+          }
+        }
+//        console.log(this.randomRedArr)
+        // 蓝球随机
+        this.randomBlueArr = []
+        for (let blue = 0; blue < (7 - this.randomRedTimes); blue++) {
+          let randBlueNum = Math.floor(Math.random() * (this.randomBlueMax + 1 - this.randomMin) + this.randomMin)
+          if (randBlueNum < 10) {
+            randBlueNum = '0' + randBlueNum
+          } else {
+            randBlueNum = randBlueNum.toString()
+          }
+          if (this.randomBlueArr.indexOf(randBlueNum) === -1) {
+            // 放入arr
+            this.randomBlueArr.push(randBlueNum)
+          } else {
+            blue--
+            console.log('重复')
+          }
+        }
+//        console.log(this.randomBlueArr)
+      },
+      // 快捷投注
       fecthShortcutData () {
         this.$request({
           type: 'get',
           url: '/api/data/Handler.ashx?action=105&params={}',
           success: function (res) {
             this.shortcutArr = res.data.data.Number
-            if (parseInt(res.data.data.Number.LotteryID) === 4) {
+            let thisDate = new Date()
+            let thisWeek = parseInt(thisDate.getDay())
+//            console.log(thisWeek)
+            if (thisWeek === 1 || thisWeek === 3 || thisWeek === 5) {
               // 当为大乐透时
-              this.randomBlueTimes = 2
               this.randomRedTimes = 5
               this.randomRedMax = 35
               this.randomBlueMax = 12
-            } else if (parseInt(res.data.data.Number.LotteryID) === 2) {
+            } else if (thisWeek === 2 || thisWeek === 4 || thisWeek === 6) {
               // 当为双色球时
-              this.randomBlueTimes = 5
-              this.randomRedTimes = 1
+              this.randomRedTimes = 6
               this.randomRedMax = 33
               this.randomBlueMax = 16
             }
+            this.getRandomNum()
           },
           failed: function (err) {
             console.log('未找到快捷投注数据:' + err)
           }
         })
       },
+      // 彩票分类
       fecthItemData () {
         this.$request({
           type: 'get',
@@ -141,40 +185,33 @@
           }
         })
       },
-      // 快捷投注随机球数
-      getRandomNum () {
-        // 红球随机
-        this.randomRedArr = []
-        for (let red = 0; red < this.randomRedTimes; red++) {
-          let randRedNum = Math.floor(Math.random() * (this.randomRedMax + 1 - this.randomMin) + this.randomMin)
-          // 查重
-          if (randRedNum < 10) {
-            randRedNum = '0' + randRedNum
-          }
-          if (this.randomRedArr.indexOf(parseInt(randRedNum)) === -1) {
-            // 放入arr
-            this.randomRedArr.push(randRedNum)
-          } else {
-            red--
-          }
+      // 转活动页面
+      toActivities () {
+        this.$router.push({ path: '/activities' })
+      },
+      // 转购买页面
+      toBuyLottery (index) {
+        if (index === 5) {
+          this.$router.push({ path: '/rank3' })
+        } else if (index === 4) {
+          this.$router.push({ path: '/fucai3d' })
+        } else if (index === 3) {
+          this.$router.push({ path: '/superLotto' })
         }
-        console.log(this.randomRedArr)
-        // 蓝球随机
-        this.randomBlueArr = []
-        for (let blue = 0; blue < this.randomBlueTimes; blue++) {
-          let randBlueNum = Math.floor(Math.random() * (this.randomBlueMax + 1 - this.randomMin) + this.randomMin)
-          // 查重
-          if (randBlueNum < 10) {
-            randBlueNum = '0' + randBlueNum
-          }
-          if (this.randomBlueArr.indexOf(parseInt(randBlueNum)) === -1) {
-            // 放入arr
-            this.randomBlueArr.push(randBlueNum)
-          } else {
-            blue--
-          }
+      },
+      // 转活动子页面
+      toActivitiesDetail (index) {
+        if (index === 0) {
+          this.$router.push({ path: '/crazyFree' })
+        } else if (index === 1) {
+          this.$router.push({ path: '/extraReward' })
+        } else if (index === 2) {
+          this.$router.push({ path: '/doubleExtraReward' })
+        } else if (index === 3) {
+          this.$router.push({ path: '/recharge' })
+        } else if (index === 4) {
+          this.$router.push({ path: '/invitation' })
         }
-//        console.log(this.randomBlueArr)
       }
     },
     mounted () {
@@ -184,6 +221,7 @@
       this.fecthShortcutData()
       // 获取彩票分类数据
       this.fecthItemData()
+//      this.getRandomNum()
     }
   }
 </script>

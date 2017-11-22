@@ -36,32 +36,28 @@
       <!--个人信息详情部分-->
       <div class="user-particulars">
         <!--购彩记录-->
-        <div class="record">
+        <div class="record" @click="recordClick">
           <i class="zhuanhuan iconfont icon-icozhuanhuan"></i>
           <span>购彩记录</span>
           <i class="arrow-right iconfont icon-arrow-right"></i>
-          <div class="hengxian"></div>
         </div>
         <!--追号记录-->
         <div class="chase">
           <i class="jilu iconfont icon-jilu"></i>
           <span>追号记录</span>
           <i class="arrow-right iconfont icon-arrow-right"></i>
-          <div class="hengxian"></div>
         </div>
         <!--我的红包-->
         <div class="red-packet">
           <i class="hongbao iconfont icon-hongbao"></i>
           <span>我的红包</span>
           <i class="arrow-right iconfont icon-arrow-right"></i>
-          <div class="hengxian"></div>
         </div>
         <!--我的跟单-->
         <div class="my-documentary">
           <i class="gendanwang iconfont icon-gendanwang"></i>
           <span>我的跟单</span>
           <i class="arrow-right iconfont icon-arrow-right"></i>
-          <div class="hengxian"></div>
         </div>
         <!--关于我们-->
         <div class="my-about" @click="aboutClick">
@@ -123,6 +119,14 @@
         } else {
           this.$router.push({path: '/userRecharge'})
         }
+      },
+      // 点击购彩记录
+      recordClick () {
+        if (getJsCookie('CP_UserIDGuid') === null) {
+          this.$router.push({path: '/login'})
+        } else {
+          this.$router.push({path: '/userRecord'})
+        }
       }
     }
   }
@@ -138,6 +142,7 @@
     font-size: 30px;
   }
   .user-body {
+    position: relative;
     width: 100%;
     height: 180vmin;
     background-color: @color-background-gray;
@@ -260,8 +265,7 @@
 
   .user-particulars {
     position: relative;
-    left: 2%;
-    top: 10%;
+    margin: 20vmin auto;
     width: 96.26667vmin;
     height: 35%;
     background-color: #fff;
@@ -270,34 +274,42 @@
   }
 
   .record {
-    width: 90vmin;
+    width:90%;
+    height: 8vmin;
+    border-bottom: 1px solid #e6e6e6;
     position: absolute;
     top: 5%;
     left: 5%;
   }
 
   .chase {
-    width: 90vmin;
+    width:90%;
+    height: 8vmin;
+    border-bottom: 1px solid #e6e6e6;
     position: absolute;
     top: 25%;
     left: 5%;
   }
 
   .red-packet {
-    width: 90vmin;
+    height: 8vmin;
+    border-bottom: 1px solid #e6e6e6;
+    width:90%;
     position: absolute;
     top: 45%;
     left: 5%;
   }
 
   .my-documentary {
-    width: 90vmin;
+    height: 8vmin;
+    border-bottom: 1px solid #e6e6e6;
+    width:90%;
     position: absolute;
     top: 65%;
     left: 5%;
   }
   .my-about {
-    width: 90vmin;
+    width:90%;
     position: absolute;
     top: 84%;
     left: 5%;
@@ -372,7 +384,7 @@
   }
 
   .arrow-right {
-    margin-left: 200px;
+   float: right;
     font-size: 20px;
     color: @color-text-gray;
   }

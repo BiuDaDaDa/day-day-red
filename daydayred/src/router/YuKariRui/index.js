@@ -4,6 +4,7 @@ import Logon from '@/components/Logon'
 import About from '@/components/tth-User/About'
 import Download from '@/components/tth-User/Download'
 import UserRecharge from '@/components/tth-User/UserRecharge'
+import UserRecord from '@/components/tth-User/UserRecord'
 export default [
   {
     path: '/user',
@@ -34,5 +35,10 @@ export default [
     path: '/userRecharge',
     name: 'UserRecharge',
     component: UserRecharge
+  },
+  {
+    path: '/userRecord',
+    name: 'UserRecord',
+    component: UserRecord
   }
 ]
