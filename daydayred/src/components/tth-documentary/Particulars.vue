@@ -3,7 +3,7 @@
     <router-link to="/documentary">
     <div id="documentary_particulars_title">
       <i class="iconfont icon-jiantou"></i>
-      彩帝排行
+      彩帝详情
     </div>
     </router-link>
     <div id="documentary_particulars_user">
@@ -24,7 +24,7 @@
     </div>
     <div id="recommend_wrap" v-if="rDisplay">
       <div id="recommend_title">
-        <div>{{all}}(<span>{{this.plans.length}}</span>)</div>
+        <div>{{all}}(<span>{{Num}}</span>)</div>
         <div @click="filtrateClick">筛选<i class="icon-jiantou2 iconfont"></i></div>
         <div id="filtrate" v-if="fDisplay">
           <div id="triangle"></div>
@@ -33,7 +33,7 @@
           <p @click="wonclick">中奖推荐</p>
         </div>
       </div>
-      <div class="recommend_body" v-for="(plan,index,key) in plans" v-if="plan.state.split('').length <= four">
+      <div class="recommend_body" v-for="(plan,index,key) in plans" v-if="plan.state.split('').length <= four" @click="deity(index)">
         <div class="recommend_body_title">{{plan.date}}</div>
         <div class="recommend_body_body">
           <div class="recommend_body_body_title">
@@ -48,7 +48,8 @@
           </div>
           <div class="recommend_body_body_footer">
             <b>截止 {{plan.followedBet.deadline}}</b>
-            <span>已截止</span>
+            <span v-if="plan.state != 'begin'">已截止</span>
+            <strong class="redstrong1" v-if="plan.state === 'begin'">立即跟单</strong>
           </div>
         </div>
       </div>
@@ -122,7 +123,6 @@
         red: 'red',
         black: '',
         all: '全部推荐',
-        won: '中奖推荐',
         plans: [],
         wonbgimg: '../../src/assets/tth-documentary/won.png',
         lostbgimg: '../../src/assets/tth-documentary/lost.png',
@@ -130,7 +130,8 @@
         rDisplay: true,
         gDisplay: false,
         fDisplay: false,
-        four: 4
+        four: 5,
+        Num: ''
       }
     },
     methods: {
@@ -157,8 +158,16 @@
           headers: {},
           params: {},
           success: function (res) {
-//            console.log(res.data.data.plans[0].state.split('').length)
+//            console.log(res.data.data.plans[0].hitState.split('').length)
             this.plans = res.data.data.plans
+            this.allNum = res.data.data.plans.length
+            this.Num = res.data.data.plans.length
+            this.wonNums = res.data.data.plans[0].hitState.split('')
+            let num = 0
+            for (let i = 0; i < this.wonNums.length; i++) {
+              num += parseInt(this.wonNums[i])
+            }
+            this.wonNum = num
           },
           failed: function () {}
         })
@@ -202,12 +211,23 @@
         this.fDisplay = !this.fDisplay
       },
       allclick () {
-        this.four = 4
+        this.four = 5
         this.fDisplay = !this.fDisplay
+        this.all = '全部推荐'
+        this.Num = this.allNum
       },
-      wonclick () {
+      wonclick (res) {
         this.four = 3
         this.fDisplay = !this.fDisplay
+        this.all = '中奖推荐'
+        this.Num = this.wonNum
+      },
+      deity (index) {
+        let masterSchemeId = this.plans[index].masterSchemeId
+        let uId = this.plans[index].uid
+        this.$router.push('/deity/' + uId + '/' + masterSchemeId)
+//        console.log(masterSchemeId)
+//        console.log(uId)
       }
     },
     mounted () {
@@ -414,6 +434,16 @@
     margin-top: 4vmin;
     text-align: right;
   }
+  .redstrong1{
+    border:.1vmin solid red;
+    color: red;
+    font-size: 4.26667vmin;
+    width: 22.66667vmin;
+    height: 8vmin;
+    line-height: 8vmin;
+    text-align: center;
+    display: inline-block;
+  }
   .recommend_body_body_footer b{
     font-size: 3.73333vmin;
     color: #999;
@@ -422,7 +452,7 @@
     margin-right: 6.66667vmin;
   }
   .recommend_body_body_footer span{
-    border: 1px solid #e6e6e6;
+    border: .1vmin solid #e6e6e6;
     color: #aaa;
     font-size: 4.26667vmin;
     width: 22.66667vmin;

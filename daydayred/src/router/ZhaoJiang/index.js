@@ -2,6 +2,7 @@ import Documentary from '@/components/tth-documentary/Documentary'
 import Join from '@/components/tth-documentary/Join'
 import Rank from '@/components/tth-documentary/Rank'
 import Particulars from '@/components/tth-documentary/Particulars'
+import Deity from '../../components/tth-documentary/Deity.vue'
 export default [
   {
     path: '/documentary',
@@ -22,5 +23,10 @@ export default [
     path: '/particulars/:godsrankUid',
     name: 'Particulars',
     component: Particulars
+  },
+  {
+    path: '/deity/:uId/:masterSchemeId',
+    name: 'Deity',
+    component: Deity
   }
 ]

@@ -25,6 +25,9 @@
           <div class="documengtary_ranking_body_avatar"><img :src="god.avatar"></div>
           <div class="documengtary_ranking_body_username">{{(god.nick).split('',5).join('')}}</div>
           <div class="documengtary_ranking_body_grade">近{{(god.hitState).split('').length}}中{{parseInt((god.hitState.split('').length) * parseInt(god.hitRate) / 100)}}</div>
+          <div class="now" v-if="god.recommend > 0">
+            {{god.recommend}}
+          </div>
         </div>
       </div>
     </div>
@@ -34,22 +37,23 @@
         <div>彩帝推荐</div>
       </div>
       <div class="documengtary_recommend_body" v-for="(plan, index, key) in plans">
-        <div class="documengtary_recommend_body_title">
+        <div class="documengtary_recommend_body_title" @click="recommendClick(index)">
           <img :src="plan.avatar">
           <span class="documengtary_recommend_body_title_user">
             <strong class="user_username">{{plan.nick}}</strong>
-            <div class="user_userranking">
+            <div class="user_userranking" v-if="plan.hitState != ''">
               近{{(plan.hitState).split('').length}}中{{counts[index]}}
             </div>
+            <div class="newUser" v-if="plan.hitState === ''">新手发单</div>
           </span>
           <span class="documengtary_recommend_body_title_time">
             {{plan.followedBet.deadline}} 截止
           </span>
         </div>
-        <div class="documengtary_recommend_body_body">
+        <div class="documengtary_recommend_body_body" @click="recommendBodyClick(index)">
           {{plan.recommendTitle}}
         </div>
-        <div class="documengtary_recommend_body_footer_wrap">
+        <div class="documengtary_recommend_body_footer_wrap" @click="recommendBodyClick(index)">
           <div class="documengtary_recommend_body_footer_counts">
             <span>场次数</span>
             <strong class="blackstrong">{{plan.matchCounts}}</strong>
@@ -75,7 +79,7 @@
     <!-- 背景图片 -->
     <img id="documengtary_bgimg" src="../../assets/tth-documentary/NoDate.png" v-if="this.plans.length <= 0">
     <!-- 暂无彩帝数据 -->
-    <div id="documengtary_no">暂无彩帝数据</div>
+    <div id="documengtary_no" v-if="this.plans.length <= 0">暂无彩帝数据</div>
     <zj-footer></zj-footer>
   </div>
 </template>
@@ -142,6 +146,16 @@
         let godsrankUid = this.halfgods[index].uid
         this.$router.push('/particulars/' + godsrankUid)
 //        console.log(godsrankUid)
+      },
+      recommendClick (index) {
+        let godsrankUid = this.plans[index].uid
+        this.$router.push('/particulars/' + godsrankUid)
+//        console.log(godsrankUid)
+      },
+      recommendBodyClick (index) {
+        let masterSchemeId = this.plans[index].masterSchemeId
+        let uId = this.plans[index].uid
+        this.$router.push('/deity/' + uId + '/' + masterSchemeId)
       }
     },
     components: {
@@ -161,6 +175,7 @@
     width: 100%;
     height: 100%;
     background-color: @color-background-gray;
+    padding-bottom: 13.33333vmin;
   }
   /* 彩帝跟单 */
   #documengtary_title{
@@ -223,6 +238,22 @@
   }
   .documengtary_ranking_body{
     width: 21.33333vmin;
+    position: relative;
+  }
+  .now{
+    position: absolute;
+    width: 4vmin;
+    height: 4vmin;
+    line-height: 4vmin;
+    text-align: center;
+    background: #ff5f5f;
+    font-size: 3.2vmin;
+    color: #fff;
+    border-radius: 50%;
+    display: block;
+    top: 0;
+    right: 1.93333vmin;
+    font-weight: 400;
   }
   .documengtary_ranking_body_avatar{
     width: 13.06667vmin;
@@ -311,6 +342,12 @@
     font-size: 3.8vmin;
     margin-top: 1vmin;
   }
+  .newUser{
+    line-height: 1;
+    font-size: 3.73333vmin;
+    color: #999;
+    margin-top: 1vmin;
+  }
   .documengtary_recommend_body_title_time{
     padding: 1.86667vmin 0;
     font-size: 3.73333vmin;
@@ -348,6 +385,9 @@
   }
   .redstrong{
     color: red;
+    font-size: 4.26667vmin;
+    text-align: center;
+    display: inline-block;
   }
   .documengtary_recommend_body_footer_wrap strong{
     display: inline-block;
@@ -368,7 +408,6 @@
   .user_username{
     color: black;
   }
-
   /* 背景图 */
   #documengtary_bgimg{
     width: 100%;
