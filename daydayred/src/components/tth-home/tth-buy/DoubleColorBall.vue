@@ -4,7 +4,7 @@
     <!--main-->
     <div class="doubleColorBall_main" v-show="isMainShow">
       <!--头-->
-      <BuyHeader :thisPage="'38'" :MethodsArr="MethodsArr" :MoreArr="MoreArr" @changeSelectBall="changeSelectBall" @instructionShow="isInstructionShow"></BuyHeader>
+      <BuyHeader :MethodsArr="MethodsArr" :MoreArr="MoreArr" @changeSelectBall="changeSelectBall" @instructionShow="isInstructionShow"></BuyHeader>
       <!--选球-->
       <div class="doubleColorBall_content">
         <!--截止日期-->
@@ -50,7 +50,7 @@
       </mt-popup>
     </div>
     <!--隐藏：玩法说明-->
-    <BuyInstruction v-show="isInsShow" :thisPage="39" :thisTitle="'大乐透玩法说明'" @instructionClose="isInstructionShow"></BuyInstruction>
+    <BuyInstruction v-show="isInsShow" :thisPage="38" :thisTitle="'玩法说明'" @instructionClose="isInstructionShow"></BuyInstruction>
   </div>
 </template>
 
@@ -108,20 +108,20 @@
 //            console.log(res.data.data)
           },
           failed: function (err) {
-            console.log('未找到大乐透数据:' + err)
+            console.log('未找到双色球数据:' + err)
           }
         })
       },
       fecthDoubleColorBallRecentData () {
         this.$request({
           type: 'get',
-          url: '/api/Data/Handler.ashx?action=602&params={%22LotteryID%22:%224%22}',
+          url: '/api/Data/Handler.ashx?action=602&params={%22LotteryID%22:%223%22}',
           success: function (res) {
             this.recentArr = res.data.data
 //            console.log(res.data.data)
           },
           failed: function (err) {
-            console.log('未找到排列3最近开奖数据:' + err)
+            console.log('未找到双色球最近开奖数据:' + err)
           }
         })
       },
@@ -153,6 +153,7 @@
       height: 100%;
       width: 100%;
       background-color: #FFFFFF;
+      padding-bottom: 16.33333vmin;
       /*时间*/
       .doubleColorBall_time {
         background-color: @color-background-gray;

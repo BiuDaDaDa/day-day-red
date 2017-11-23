@@ -34,6 +34,11 @@
         blueArr: []
       }
     },
+    watch: {
+      recentArr: function () {
+        this.switchArr()
+      }
+    },
     methods: {
       switchArr () {
         // 拆分数据
@@ -50,9 +55,6 @@
 //          console.log(this.blueArr)
         }
       }
-    },
-    mounted () {
-      this.switchArr()
     }
   }
 </script>

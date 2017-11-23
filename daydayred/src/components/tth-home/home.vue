@@ -199,6 +199,8 @@
           this.$router.push({ path: '/superLotto' })
         } else if (index === 1) {
           this.$router.push({ path: '/doubleColorBall' })
+        } else if (index === 0) {
+          this.$router.push({ path: '/soccer' })
         }
       },
       // 转活动子页面
