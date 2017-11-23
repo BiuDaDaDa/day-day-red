@@ -67,12 +67,17 @@
         </div>
     </div>
   </div>
+  <oxs-footer></oxs-footer>
 </div>
 </template>
 
 <script>
+  import OxsFooter from '../../components/tth-home/Footer.vue'
   export default {
     name: 'home',
+    components: {
+      OxsFooter
+    },
     data () {
       return {
         bannerArr: [],

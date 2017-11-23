@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="BigLt">
     <div class="bl-nav">
       <div class="bl-nav-left">
         <i class="iconfont icon-jiantou" id="turnback" @click="backRl"></i>
@@ -11,7 +11,7 @@
       </div>
     </div>
     <ul id="all-number">
-      <li v-for="(item, index) in ssq" :class="{'active':!index}" class="hehe">
+      <li v-for="(item, index) in ssq" :class="{'active':!index}" @click="test">
         <span>第{{item['Name']}}期 {{EndTime[index]}}</span>
         <div>
           <p id="getMoney">
@@ -19,7 +19,7 @@
           </p>
           <div v-if="!index" id="final-money">
             <div>
-              <span>{{item['Amount']}}<b>注</b>{{item['Money']}}<b>元</b></span>
+              <span>{{item['Amount']}} <b>注</b>{{item['Money']}}<b>元</b></span>
               <p>一等奖</p>
             </div>
             <div>
@@ -70,6 +70,9 @@
       },
       backRl () {
         this.$router.push({path: '/runlottery'})
+      },
+      test () {
+        this.$router.push({path: '/bigltnext'})
       }
     },
     mounted () {
@@ -80,6 +83,11 @@
 
 <style scoped lang="less">
   @import "../../common/css/style";
+  .BigLt{
+    background-color: @color-background-white;
+      max-width: 607px;
+      margin:0 auto;
+  }
   /*头部*/
   .bl-nav {
     width: 100%;
@@ -90,10 +98,11 @@
     display: inline-block;
   }
   .bl-nav-left {
-    width: 30.6%;
+    width: 30.2%;
     height: 100%;
     // background-color: green;
-    margin-left: 2.8vmin;
+   // padding-left: 4vmin;
+    font-size: 5.6vmin;
     overflow: hidden;
     display: flex;
   }
@@ -160,7 +169,7 @@
     height: 6.66667vmin;
     float: right;
     color: @color-text-gray;
-    margin-top: -5.13333vmin;
+    margin-top: -8.13333vmin;
   }
   // 当天号码
   .active{

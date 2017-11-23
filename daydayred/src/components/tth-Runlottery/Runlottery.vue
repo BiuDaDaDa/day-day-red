@@ -95,13 +95,18 @@
                   </li>
                 </ul>
             </div>
+        <wsb-footer></wsb-footer>
       </div>
 </template>
 
 <script>
     import axios from 'axios'
+    import WsbFooter from '../../components/tth-Runlottery/Footer.vue'
     export default {
       name: '',
+      components: {
+        WsbFooter
+      },
       data () {
         return {
           message: {},
@@ -236,6 +241,11 @@
 <style scoped lang="less">
 
   @import "../../common/css/style";
+  .runlottery{
+    background-color:@color-background-white;
+    max-width: 607px;
+    margin:0 auto;
+  }
   .rl-nav{
         width:100%;
         height: 12vmin;
