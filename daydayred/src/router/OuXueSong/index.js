@@ -8,6 +8,8 @@ import DoubleExtraReward from '@/components/tth-home/DoubleExtraReward'
 import Rank3 from '@/components/tth-home/tth-buy/Rank3'
 import Fucai3D from '@/components/tth-home/tth-buy/Fucai3d'
 import SuperLotto from '@/components/tth-home/tth-buy/SuperLotto'
+import DoubleColorBall from '@/components/tth-home/tth-buy/DoubleColorBall'
+import Soccer from '@/components/tth-home/tth-buy/Soccer'
 export default [
   {
     path: '/home',
@@ -58,5 +60,15 @@ export default [
     path: '/superLotto',
     name: 'SuperLotto',
     component: SuperLotto
+  },
+  {
+    path: '/doubleColorBall',
+    name: 'DoubleColorBall',
+    component: DoubleColorBall
+  },
+  {
+    path: '/soccer',
+    name: 'Soccer',
+    component: Soccer
   }
 ]

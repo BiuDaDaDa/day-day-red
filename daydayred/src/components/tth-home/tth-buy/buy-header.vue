@@ -24,7 +24,7 @@
         <!--内容-->
         <div class="buyHeader_pop_table" >
           <div v-for="(mn,index) in MethodsName" :key="index" @click="changeTitle(index)">
-            <span>{{mn}}</span>
+            <span :class="{listActive:isActive === index}">{{mn}}</span>
           </div>
         </div>
       </div>
@@ -46,14 +46,15 @@
 <script>
   export default {
     name: 'BuyHeader',
-    props: ['thisPage', 'MethodsArr', 'MoreArr'],
+    props: ['MethodsArr', 'MoreArr'],
     data () {
       return {
         MethodsName: this.MethodsArr,
         MethodsNormalName: this.MethodsArr[0],
         showPop: false,
         showMorePop: false,
-        showMask: false
+        showMask: false,
+        isActive: 0
       }
     },
     methods: {
@@ -65,11 +66,12 @@
       },
       // 点击玩法改变标题
       changeTitle (index) {
+        this.isActive = index
         this.MethodsNormalName = this.MethodsName[index]
         this.showMask = false
         this.showPop = false
         this.$emit('changeSelectBall', index)
-        console.log(index)
+//        console.log(index)
       },
       // 点击去别的连接
       toOtherPage (index) {
@@ -130,6 +132,7 @@
     }
     /*更多*/
     .buyHeader_more {
+      height: 100%;
       display: flex;
       align-items: center;
       position: absolute;
@@ -195,6 +198,10 @@
           span {
             color: @color-text-black;
           }
+          /*点击变色*/
+          .listActive{
+            color: @color-red;
+          }
         }
       }
     }
@@ -207,7 +214,7 @@
     /*更多*/
     .buyHeader_morePop{
       position: fixed;
-      top:45px;
+      top:50px;
       right: 5px;
       z-index: 100;
       background-color: white;

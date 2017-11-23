@@ -169,7 +169,6 @@
                   success: function (res) {
                     if (res.status === 200) {
                       this.cookieValue = getJsCookie('CP_UserIDGuid')
-                      console.log(this.cookieValue)
                       if (this.cookieValue === Guid) {
                         // 获取用户数据以字符串形式保存在localStorage中
                         let data = JSON.stringify(res.data.data)
@@ -223,7 +222,8 @@
   @import "../common/css/style.less";
   .login-wrap {
     width: 100%;
-    height: 100%;
+    height: 180vmin;
+    background-color: white;
     position: relative;
   }
 

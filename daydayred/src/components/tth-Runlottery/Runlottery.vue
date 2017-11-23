@@ -7,7 +7,7 @@
             </div>
             <div class="rl-detail">
                 <ul>
-                  <li class="double">
+                  <li class="double" @click="dndetail">
                     <p>
                       <span>{{double['LotteryName']}}</span>
                       <span>第{{double['IssueName']}}期 {{dlTimeStr[1]}}-{{dlTimeStr[2]}} {{shijian1}}</span>
@@ -22,7 +22,7 @@
                       <i class="iconfont icon-arrow-right"></i>
                     </div>
                   </li>
-                  <li class="happy">
+                  <li class="happy" @click="hndetail">
                     <p>
                       <span>{{happy['LotteryName']}}</span>
                       <span>第{{happy['IssueName']}}期 {{hpTimeStr[1]}}-{{hpTimeStr[2]}} {{shijian2}}</span>
@@ -37,7 +37,7 @@
                       <i class="iconfont icon-arrow-right"></i>
                     </div>
                   </li>
-                  <li class="football">
+                  <li class="football" @click="fcdetail">
                     <p>
                       <span>{{football['LotteryName']}}</span>
                       <span>第{{football['IssueName']}}期 {{ftTimeStr[1]}}-{{ftTimeStr[2]}} {{shijian3}}</span>
@@ -47,7 +47,7 @@
                       <i class="iconfont icon-arrow-right"></i>
                     </div>
                   </li>
-                  <li class="basketball">
+                  <li class="basketball" @click="bkdetail">
                     <p>
                       <span>{{basketball['LotteryName']}}</span>
                       <span>第{{basketball['IssueName']}}期 {{btTimeStr[1]}}-{{btTimeStr[2]}} {{shijian4}}</span>
@@ -57,7 +57,7 @@
                       <i class="iconfont icon-arrow-right"></i>
                     </div>
                   </li>
-                  <li class="fucai3D">
+                  <li class="fucai3D" @click="fc3detail">
                     <p>
                       <span>{{welfare['LotteryName']}}</span>
                       <span>第{{welfare['IssueName']}}期 {{fcTimeStr[1]}}-{{fcTimeStr[2]}} {{shijian5}}</span>
@@ -69,7 +69,7 @@
                       <i class="iconfont icon-arrow-right"></i>
                     </div>
                   </li>
-                  <li class="line-3">
+                  <li class="line-3" @click="lidetail">
                     <p>
                       <span>{{rank['LotteryName']}}</span>
                       <span>第{{rank['IssueName']}}期 {{rkTimeStr[1]}}-{{rkTimeStr[2]}} {{shijian6}}</span>
@@ -81,7 +81,7 @@
                       <i class="iconfont icon-arrow-right"></i>
                     </div>
                   </li>
-                  <li class="jiangxi">
+                  <li class="jiangxi" @click="jxdetail">
                     <p>
                       <span>{{choose11['LotteryName']}}</span>
                       <span>第{{choose11['IssueName']}}期 {{jxTimeStr[1]}}-{{jxTimeStr[2]}} {{shijian7}}</span>
@@ -206,6 +206,29 @@
             that.try7 = new Date(that.btTimeStr[0], that.jxTimeStr[1], that.jxTimeStr[2]).getDay()
             that.shijian7 = '周' + '五六日一二三四'.charAt(that.try7)
           })
+      },
+      methods: {
+        dndetail () {
+          this.$router.push({path: '/balllist'})
+        },
+        hndetail () {
+          this.$router.push({path: '/biglt'})
+        },
+        fc3detail () {
+          this.$router.push({path: '/fc3d'})
+        },
+        lidetail () {
+          this.$router.push({path: '/line3'})
+        },
+        jxdetail () {
+          this.$router.push({path: '/choose11in5'})
+        },
+        fcdetail () {
+          this.$router.push({path: '/rlfootball'})
+        },
+        bkdetail () {
+          this.$router.push({path: '/rlbasketball'})
+        }
       }
     }
 </script>
@@ -213,6 +236,11 @@
 <style scoped lang="less">
 
   @import "../../common/css/style";
+  .runlottery{
+    background-color:@color-background-white;
+    max-width: 607px;
+    margin:0 auto;
+  }
   .rl-nav{
         width:100%;
         height: 12vmin;
@@ -225,7 +253,7 @@
       }
   .rl-nav-title p{
     text-align: center;
-    font-size: 4.8vmin;
+    font-size: 5.5vmin;
     font-weight: 700;
     color: white;
     line-height: 12vmin;
