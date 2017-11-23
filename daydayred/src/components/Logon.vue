@@ -12,7 +12,6 @@
         <div id="phone-text">
           <mt-field :attr="{ maxlength: 11 }"  label="" placeholder="请输入手机号" type="tel" v-model="phone"></mt-field>
         </div>
-        <!--<input @input="phoneinput" type="text" v-model="phoneValue" placeholder="请输入手机号" class="phone-text">-->
       </div>
       <!--请输入短信验证码-->
       <div class="login-sms">

@@ -1,7 +1,7 @@
 <template>
   <div v-show="pass">
     <div @click="maskA" class="mask"></div>
-    <div class="mask-ul">
+    <div :class="mask">
       <div @click="maskClick(index)" v-for="(value, index) in maskArr" :key="index" :class="value.className">{{value.text}}</div>
     </div>
   </div>
@@ -9,7 +9,7 @@
 <script>
   import {getJsCookie} from '@/common/js/util'
   export default {
-    name: 'Mask',
+    name: 'ChaseMask',
     props: {
       pass: null
     },
@@ -22,7 +22,8 @@
           {className: 'am-action-sheet-button-list-item', text: '最近三月'},
           {className: 'cancel', text: '取消'}
         ],
-        index: null
+        index: null,
+        mask: 'mask-ul'
       }
     },
     methods: {
@@ -39,11 +40,11 @@
       },
       getRecordData (num) {
         this.cookie = getJsCookie('CP_UserIDGuid')
-        let myUrl = `"SchemeState":"0","DateID":"${num}","PageIndex":"1","UserIDGuid":"${this.cookie}","PageSize":"20"`
+        let myUrl = `"State":"0","DateID":"${num}","PageIndex":"1","UserIDGuid":"${this.cookie}","PageSize":"20"`
         let myOtherUrl = encodeURI(myUrl)
         this.$request({
           type: 'get',
-          url: '/api/user/Handler.ashx?action=803&params={' + myOtherUrl + '}',
+          url: '/api/user/Handler.ashx?action=805&params={' + myOtherUrl + '}',
           success: function (res) {
             let itemArr = res.data.data.item
             this.$emit('itemClick', itemArr)
@@ -83,6 +84,27 @@
     animation-name: diagonal-slide;
     animation-duration: 0.3s;
     animation-iteration-count: 1;
+  }
+  .mask-ul-change{
+    color: #333;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 255px;
+    background-color: #E7E7ED;
+    animation-name: diagonal-slide-change;
+    animation-duration: 0.3s;
+    animation-iteration-count: 1;
+  }
+  @keyframes diagonal-slide-change {
+    0% {
+      left: 0;
+      bottom: 0;
+    }
+    100%{
+      left: 0;
+      bottom: -200px;
+    }
   }
   @keyframes diagonal-slide {
     0% {
