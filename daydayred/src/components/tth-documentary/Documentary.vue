@@ -85,7 +85,7 @@
 </template>
 
 <script>
-  import ZjFooter from '../Zj-Footer.vue'
+  import ZjFooter from '../../components/tth-documentary/Footer.vue'
   export default {
     name: 'Documentary',
     data () {

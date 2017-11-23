@@ -95,13 +95,18 @@
                   </li>
                 </ul>
             </div>
+        <wsb-footer></wsb-footer>
       </div>
 </template>
 
 <script>
     import axios from 'axios'
+    import WsbFooter from '../../components/tth-Runlottery/Footer.vue'
     export default {
       name: '',
+      components: {
+        WsbFooter
+      },
       data () {
         return {
           message: {},

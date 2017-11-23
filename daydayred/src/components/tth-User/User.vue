@@ -71,19 +71,19 @@
         </div>
       </div>
     </div>
-    <ZjFooter></ZjFooter>
+    <ykr-footer></ykr-footer>
   </div>
 </template>
 <script>
   import {MessageBox} from 'mint-ui'
   import {fetch} from '@/common/js/localStorage'
   import {getJsCookie, removeJsCookie} from '@/common/js/util'
-  import ZjFooter from '@/components/Zj-Footer'
+  import YkrFooter from '../../components/tth-User/Footer.vue'
   let users = fetch()
   export default {
     name: 'User',
     components: {
-      ZjFooter
+      YkrFooter
     },
     data () {
       return {

@@ -10,8 +10,8 @@
 </template>
 
 <script>
-  import MtTabbar from '../../node_modules/mint-ui/packages/tabbar/src/tabbar.vue'
-  import MtTabItem from '../../node_modules/mint-ui/packages/tab-item/src/tab-item.vue'
+  import MtTabbar from '../../../node_modules/mint-ui/packages/tabbar/src/tabbar.vue'
+  import MtTabItem from '../../../node_modules/mint-ui/packages/tab-item/src/tab-item.vue'
 
   export default {
     components: {
@@ -61,16 +61,18 @@
           this.$refs.clo[i].style.color = '#B8B8B8'
           this.$refs.opc[i].style.opacity = 0
         }
-        this.$refs.clo[index].style.color = 'red'
-        this.$refs.opc[index].style.opacity = 1
         this.$router.push(this.footers[index].to)
       }
+    },
+    mounted () {
+      this.$refs.clo[2].style.color = 'red'
+      this.$refs.opc[2].style.opacity = 1
     }
   }
 </script>
 
 <style scoped lang="less">
-  @import "../common/css/style.less";
+  @import "../../common/css/style.less";
   #footer_wrap{
     width: 100%;
     position: fixed;
