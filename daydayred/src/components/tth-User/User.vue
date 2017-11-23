@@ -5,6 +5,7 @@
       <div class="user-bg"></div>
       <!--用户页面头像部分-->
       <div class="user-head">
+        <div @click="userHead">
           <div class="user-tth-head">
             <img src="../../assets/tth-user/tth-user.png" alt="">
           </div>
@@ -20,6 +21,7 @@
             元
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="right iconfont icon-arrow-right"></i>
           </p>
+        </div>
         <!--充值提款-->
         <div class="user-card">
           <div class="card" @click="cardClick">
@@ -42,13 +44,13 @@
           <i class="arrow-right iconfont icon-arrow-right"></i>
         </div>
         <!--追号记录-->
-        <div class="chase">
+        <div class="chase" @click="chaseClick">
           <i class="jilu iconfont icon-jilu"></i>
           <span>追号记录</span>
           <i class="arrow-right iconfont icon-arrow-right"></i>
         </div>
         <!--我的红包-->
-        <div class="red-packet">
+        <div class="red-packet" @click="redPacket">
           <i class="hongbao iconfont icon-hongbao"></i>
           <span>我的红包</span>
           <i class="arrow-right iconfont icon-arrow-right"></i>
@@ -74,7 +76,6 @@
   import {fetch} from '@/common/js/localStorage'
   import {getJsCookie} from '@/common/js/util'
   let users = fetch()
-  console.log(users)
   export default {
     name: 'User',
     data () {
@@ -126,6 +127,28 @@
           this.$router.push({path: '/login'})
         } else {
           this.$router.push({path: '/userRecord'})
+        }
+      },
+      // 点击追号记录
+      chaseClick () {
+        if (getJsCookie('CP_UserIDGuid') === null) {
+          this.$router.push({path: '/login'})
+        } else {
+          this.$router.push({path: '/userChase'})
+        }
+      },
+      // 点击登陆头像的事件
+      userHead () {
+        if (getJsCookie('CP_UserIDGuid') === null) {
+          this.$router.push({path: '/login'})
+        }
+      },
+      // 点击我的红包
+      redPacket () {
+        if (getJsCookie('CP_UserIDGuid') === null) {
+          this.$router.push({path: '/login'})
+        } else {
+          this.$router.push({path: '/userRedPacket'})
         }
       }
     }

@@ -5,6 +5,8 @@ import About from '@/components/tth-User/About'
 import Download from '@/components/tth-User/Download'
 import UserRecharge from '@/components/tth-User/UserRecharge'
 import UserRecord from '@/components/tth-User/UserRecord'
+import UserChase from '@/components/tth-User/UserChase'
+import UserRedPacket from '@/components/tth-User/UserRedPacket'
 export default [
   {
     path: '/user',
@@ -40,5 +42,15 @@ export default [
     path: '/userRecord',
     name: 'UserRecord',
     component: UserRecord
+  },
+  {
+    path: '/userChase',
+    name: 'UserChase',
+    component: UserChase
+  },
+  {
+    path: '/userRedPacket',
+    name: '/UserRedPacket',
+    component: UserRedPacket
   }
 ]
