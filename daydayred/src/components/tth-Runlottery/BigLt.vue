@@ -5,25 +5,25 @@
         <i class="iconfont icon-jiantou" id="turnback" @click="backRl"></i>
       </div>
       <div class="bl-nav-title">
-        <p>双色球开奖</p>
+        <p>超级大乐透开奖</p>
       </div>
       <div class="bl-nav-right">
       </div>
     </div>
     <ul id="all-number">
-      <li v-for="(item, index) in ssq" :class="{'active':!index}" class="hehe" @click="test">
+      <li v-for="(item, index) in ssq" :class="{'active':!index}" class="hehe">
         <span>第{{item['Name']}}期 {{EndTime[index]}}</span>
         <div>
-        <p id="getMoney">
-          <strong v-for="everyNumber in WinNumber[index]">{{everyNumber}}</strong>
-        </p>
+          <p id="getMoney">
+            <strong v-for="everyNumber in WinNumber[index]">{{everyNumber}}</strong>
+          </p>
           <div v-if="!index" id="final-money">
             <div>
               <span>{{item['Amount']}}<b>注</b>{{item['Money']}}<b>元</b></span>
               <p>一等奖</p>
             </div>
             <div>
-              <span>{{item['TotalMoney']}} <b>元</b></span>
+              <span>{{item['TotalMoney']}}<b>元</b></span>
               <p>奖池</p>
             </div>
           </div>
@@ -53,13 +53,13 @@
         let that = this
         this.$request({
           type: 'get',
-          url: 'api/data/Handler.ashx?action=602&params={%22LotteryID%22:3}',
+          url: 'api/data/Handler.ashx?action=602&params={%22LotteryID%22:4}',
           headers: {},
           params: {},
           success: function (res) {
             this.ssq = res.data.data
             this.ssq.forEach(function (e, index) {
-              that.WinNumber[index] = Test.cutNumber(e['WinNumber'])
+              that.WinNumber[index] = Test.cutBiglt(e['WinNumber'])
               that.EndTime[index] = Test.cutTime(e['EndTime'])
             })
           },
@@ -70,9 +70,6 @@
       },
       backRl () {
         this.$router.push({path: '/runlottery'})
-      },
-      test () {
-        this.$router.push({path: '/test'})
       }
     },
     mounted () {
@@ -106,14 +103,14 @@
     // background-color: blue;
   }
   .bl-nav-title {
-    width: 30.6%;
+    width: 34.6%;
     height: 100%;
     margin: 0 auto;
     overflow: hidden;
   }
   .bl-nav-title p {
     text-align: center;
-    font-size: 5.4vmin;
+    font-size: 4.8vmin;
     font-weight: 700;
     color: white;
     line-height: 12vmin;
@@ -155,6 +152,9 @@
   ul li p>strong:last-child{
     color: #6b8dff;
   }
+  ul li p>strong:nth-child(6){
+    color: #6b8dff;
+  }
   li i{
     width: 6.66667vmin;
     height: 6.66667vmin;
@@ -173,11 +173,8 @@
   .active>span{
     color: #000;
   }
-  .active>div p:first-child{
+  .active>p{
     margin:3.46667vmin 0;
-  }
-  .active i{
-    margin-top: -20vmin;
   }
   .active strong {
     width: 8.26667vmin;
@@ -198,6 +195,16 @@
   .active strong:last-child{
     color: @color-background-white;
     background: @color-blue;
+  }
+  .active>div p:first-child{
+    margin:3.46667vmin 0;
+  }
+  .active strong:nth-child(6){
+    color: @color-background-white;
+    background: @color-blue;
+  }
+  .active i{
+    margin-top: -20vmin;
   }
   #final-money{
     width: 100%;
@@ -227,3 +234,4 @@
     color: @color-text-gray;
   }
 </style>
+

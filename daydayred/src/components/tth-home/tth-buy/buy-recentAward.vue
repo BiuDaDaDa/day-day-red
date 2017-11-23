@@ -3,16 +3,14 @@
   <div class="rencentAward_wrap">
     <h6>近期开奖</h6>
     <ul>
-      <li v-for="(recent,index) in recentArr" :key="index">
-        <!--左-->
+      <li v-for="(recent, index) in recentArr" :key="index">
+        <!--期号-->
         <span><span class="rencentAward_point"></span>{{recent.Name}}期</span>
-        <!--右-->
-
+        <!--中奖号码-->
         <!--没有蓝球-->
         <p v-if="!isHaveBlue">
           <b class="rencentAward_red" v-for="a in recent.WinNumber.split(',')">{{a}}</b>
         </p>
-
         <!--有蓝球-->
         <p v-if="isHaveBlue">
           <!--红-->
@@ -36,23 +34,25 @@
         blueArr: []
       }
     },
-    mounted () {
-      // 拆分数据
-      if (this.isHaveBlue) {
-        console.log(123)
-        for (let i = 0; i < this.recentArr.length; i++) {
-          console.log(i)
-          let redStr = ''
-          let blueStr = ''
-          redStr = (this.recentArr[i].WinNumber.split('+', 1))[0]
-          blueStr = (this.recentArr[i].WinNumber.split('+'))[1]
-//          console.log(blueStr)
-          this.redArr.push(redStr.split(' '))
-          this.blueArr.push(blueStr.split(' '))
+    methods: {
+      switchArr () {
+        // 拆分数据
+        if (this.isHaveBlue) {
+          for (let i = 0; i < this.recentArr.length; i++) {
+            let redStr = ''
+            let blueStr = ''
+            redStr = (this.recentArr[i].WinNumber.split('+', 1))[0]
+            blueStr = (this.recentArr[i].WinNumber.split('+'))[1]
+            this.redArr.push(redStr.split(' '))
+            this.blueArr.push(blueStr.split(' '))
+          }
+//          console.log(this.redArr)
 //          console.log(this.blueArr)
         }
-        console.log(this.redArr)
       }
+    },
+    mounted () {
+      this.switchArr()
     }
   }
 </script>

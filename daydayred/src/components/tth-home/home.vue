@@ -197,6 +197,8 @@
           this.$router.push({ path: '/fucai3d' })
         } else if (index === 3) {
           this.$router.push({ path: '/superLotto' })
+        } else if (index === 1) {
+          this.$router.push({ path: '/doubleColorBall' })
         }
       },
       // 转活动子页面
