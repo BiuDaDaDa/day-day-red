@@ -4,7 +4,7 @@
       <!--头部-->
       <div class="user-record-head">
         <i @click="goBackClick" class="iconfont icon-jiantou jiantou"></i>
-        <span class="record-span">购彩记录</span>
+        <span class="record-span">追号记录</span>
         <span @click="recentlyClickA" class="record-span-two">{{look}} <i class="iconfont icon-jiantou2"></i></span>
       </div>
       <!--购彩记录导航栏-->
@@ -20,25 +20,24 @@
         </div>
       </div>
     </div>
-    <MyMask @itemClick="itemClick" :pass="maskisShow" @maskClicText="maskClicText" @maskClicked="maskClicked"></MyMask>
+    <ChaseMask @itemClick="itemClick" :pass="maskisShow" @maskClicText="maskClicText" @maskClicked="maskClicked"></ChaseMask>
   </div>
 </template>
 <script>
   import {getJsCookie} from '@/common/js/util'
-  import MyMask from '../tth-User/Mask'
+  import ChaseMask from '../tth-User/ChaseMask'
   import {Indicator} from 'mint-ui'
   export default {
-    name: 'UserRecord',
+    name: 'UserChase',
     components: {
-      MyMask
+      ChaseMask
     },
     data () {
       return {
         navArr: [
           {className: 'nav-active', red: 'nav-red', text: '全部'},
-          {className: '', red: '', text: '待出票'},
-          {className: '', red: '', text: '待开奖'},
-          {className: '', red: '', text: '已中奖'}
+          {className: '', red: '', text: '进行中'},
+          {className: '', red: '', text: '已结束/停止'}
         ],
         cookie: '',
         index: null,
@@ -74,11 +73,11 @@
       },
       getRecordData (num) {
         this.cookie = getJsCookie('CP_UserIDGuid')
-        let myUrl = `"SchemeState":"${num}","DateID":"1","tabselected":"${num}","PageIndex":"1","UserIDGuid":"${this.cookie}","PageSize":"20"`
+        let myUrl = `"State":"${num}","DateID":"3","PageIndex":"1","UserIDGuid":"${this.cookie}","PageSize":"20"`
         let myOtherUrl = encodeURI(myUrl)
         this.$request({
           type: 'get',
-          url: '/api/user/Handler.ashx?action=803&params={' + myOtherUrl + '}',
+          url: '/api/user/Handler.ashx?action=805&params={' + myOtherUrl + '}',
           success: function (res) {
             this.itemArr = res.data.data.item
             Indicator.close()
@@ -157,7 +156,7 @@
     position: relative;
     font-size: 4vmin;
     display: inline-block;
-    width: 25%;
+    width: 33.3333%;
     color: #333;
     text-align: center;
     line-height: 35px;
