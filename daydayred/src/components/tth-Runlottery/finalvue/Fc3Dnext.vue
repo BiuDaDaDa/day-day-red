@@ -194,10 +194,6 @@
     background: #ff5f5f;
   }
 
-  .lottery-number strong:last-child {
-    background-color: #6b8dff;
-  }
-
   // 奖池和销量
   .moneyinfo {
     font-size: 3.73333vmin;
