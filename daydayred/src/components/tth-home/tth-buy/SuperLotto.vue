@@ -4,7 +4,7 @@
   <!--main-->
   <div class="superLotto_main" v-show="isMainShow">
     <!--头-->
-    <BuyHeader :thisPage="'39'" :MethodsArr="MethodsArr" :MoreArr="MoreArr" @changeSelectBall="changeSelectBall" @instructionShow="isInstructionShow"></BuyHeader>
+    <BuyHeader :MethodsArr="MethodsArr" :MoreArr="MoreArr" @changeSelectBall="changeSelectBall" @instructionShow="isInstructionShow"></BuyHeader>
     <!--选球-->
     <div class="superLotto_content">
       <!--截止日期-->
