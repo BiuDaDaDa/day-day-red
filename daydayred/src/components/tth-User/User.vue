@@ -80,6 +80,7 @@
   import {getJsCookie, removeJsCookie} from '@/common/js/util'
   import YkrFooter from '../../components/tth-User/Footer.vue'
   let users = fetch()
+  console.log(users)
   export default {
     name: 'User',
     components: {
@@ -176,6 +177,7 @@
         })
         MessageBox.confirm('确定要退出么？').then(action => {
           removeJsCookie('CP_UserIDGuid')
+          localStorage.removeItem('datas')
           window.location.reload()
         }).catch(function (err) {
           console.log(err)
@@ -211,7 +213,7 @@
     height: 7vmin;
     position: absolute;
     right: 3%;
-    top: 2vmin;
+    top: 4vmin;
   }
 
   .user-head {
