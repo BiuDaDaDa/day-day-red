@@ -236,6 +236,11 @@
 <style scoped lang="less">
 
   @import "../../common/css/style";
+  .runlottery{
+    background-color:@color-background-white;
+    max-width: 607px;
+    margin:0 auto;
+  }
   .rl-nav{
         width:100%;
         height: 12vmin;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="Rlbasketball">
     <div class="bl-nav">
       <div class="bl-nav-left">
         <i class="iconfont icon-jiantou" id="turnback" @click="backRl"></i>
@@ -56,6 +56,7 @@
 </template>
 <script>
   import Test from './test'
+  import { Toast, Indicator } from 'mint-ui'
   export default {
     name: 'rlfootball',
     data () {
@@ -69,7 +70,7 @@
         WeekDay: '',
         isShowInfo: true,
         number: 0,
-        IssueName: '20171121'
+        IssueName: '20171122'
       }
     },
     methods: {
@@ -84,14 +85,20 @@
           success: function (res) {
             this.ssq = res.data.data
             this.ssq.forEach(function (e, index) {
+              // 判断让分主胜客胜
               that.RfResult[index] = Test.concede2(e['Rz'], e['Rf'])
+              // 大球小球的胜负比较
               that.BigorSmall[index] = Test.BigorSmall(e['Rz'], e['DXF'])
+              // 判断主胜客胜及分差
               that.isHomeWin[index] = Test.Fencha(e['Rz'])
+              // 比赛具体时间
               that.MatchTime[index] = Test.cutMatchTime(e['MatchTime'])
             })
+            // 当天比赛时间
             that.Today = Test.cutMatchTime2(this.ssq[0]['IssueName'])
+            // 当天是星期几
             that.WeekDay = this.ssq[0]['WKName']
-           // Indicator.close()
+            Indicator.close()
           },
           failed: function (err) {
             console.log(err)
@@ -102,32 +109,35 @@
         this.$router.push({path: '/runlottery'})
       },
       backDay () {
-        if (this.IssueName < 20171115) {
-          this.IssueName = 20171115
-//          Toast({
-//            message: '已到最前一期',
-//            duration: 1500
-//          })
+        // 点击上一期翻看前一天的记录
+        if (this.IssueName < 20171116) {
+          this.IssueName = 20171116
+          Toast({
+            message: '已到最前一期',
+            duration: 1500
+          })
         } else {
           this.IssueName--
           this.testData()
-         // Indicator.open('加载中...')
+          Indicator.open('加载中...')
         }
       },
       goDay () {
-        if (this.IssueName > 20171120) {
-          this.IssueName = 20171121
-//          Toast({
-//            message: '已到最后一期',
-//            duration: 1500
-//          })
+        // 点击下一期翻看后一个记录
+        if (this.IssueName > 20171121) {
+          this.IssueName = 20171122
+          Toast({
+            message: '已到最后一期',
+            duration: 1500
+          })
         } else {
           this.IssueName++
           this.testData()
-         // Indicator.open('加载中...')
+          Indicator.open('加载中...')
         }
       },
       showInfo (index) {
+        // 点击显示隐藏表格
         if (this.$refs.allresult[index].style.display === 'block') {
           this.$refs.allresult[index].style.display = 'none'
         } else {
@@ -143,6 +153,10 @@
 
 <style scoped lang="less">
   @import "../../common/css/style";
+  .Rlbasketball{
+    max-width: 607px;
+    margin:0 auto;
+  }
   /*头部*/
   .bl-nav {
     width: 100%;
@@ -157,12 +171,12 @@
   .bl-nav-left {
     width: 30.6%;
     height: 100%;
-    // background-color: green;
-    margin-left: 2.8vmin;
     overflow: hidden;
     display: flex;
   }
-
+  .bl-nav-left i{
+    padding-left: 4vmin;
+  }
   .bl-nav-title {
     width: 34.6%;
     height: 100%;

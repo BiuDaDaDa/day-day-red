@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="RlFootball">
     <div class="bl-nav">
       <div class="bl-nav-left">
         <i class="iconfont icon-jiantou" id="turnback" @click="backRl"></i>
@@ -13,7 +13,7 @@
         <i class="iconfont icon-jiantou"></i>
         <b>上一期</b>
       </span>
-      <div @click="openPicker">
+      <div>
         <span>{{Today[0]}}-{{Today[1]}}-{{Today[2]}} {{WeekDay}}({{ssq.length}})场</span>
         <i class="iconfont icon-jiantou2"></i>
       </div>
@@ -55,18 +55,11 @@
         </table>
       </li>
     </ul>
-    <!--<datetime-picker-->
-    <!--ref="picker"-->
-    <!--type="date"-->
-    <!--year-format="{value}"-->
-    <!--month-format="{value}"-->
-    <!--date-format="{value}"-->
-    <!--@confirm="handleConfirm"-->
-    <!--&gt;</datetime-picker>-->
   </div>
 </template>
 <script>
   import Test from './test'
+  import { Toast, Indicator } from 'mint-ui'
   export default {
     name: 'rlfootball',
     data () {
@@ -79,7 +72,8 @@
         concedes: [],
         Today: [],
         WeekDay: '',
-        IssueName: '20171121',
+        // id拼接字符
+        IssueName: '20171122',
         isShowInfo: true
       }
     },
@@ -94,14 +88,19 @@
           success: function (res) {
             this.ssq = res.data.data
             this.ssq.forEach(function (e, index) {
+              // 修改比赛时间
               that.MatchTime[index] = Test.cutMatchTime(e['MatchTime'])
+              // 计算总进球数
               that.allGoals[index] = Test.allGoal(e['Rz'])
+              // 修改半场比分
               that.HRz[index] = Test.halfResult(e['HRz'])
+              // 让球计算胜负
               that.concedes[index] = Test.concede(e['Rz'], e['RQ'])
             })
+            // 今天的比赛时间
             that.Today = Test.cutMatchTime2(this.ssq[0]['IssueName'])
             that.WeekDay = this.ssq[0]['WKName']
-             // Indicator.close()
+            Indicator.close()
           },
           failed: function (err) {
             console.log(err)
@@ -109,47 +108,44 @@
         })
       },
       backDay () {
+        // 上一期
         if (this.IssueName < 20171115) {
           this.IssueName = 20171115
-//          Toast({
-//            message: '已到最前一期',
-//            duration: 1500
-//          })
+          Toast({
+            message: '已到最前一期',
+            duration: 1500
+          })
         } else {
           this.IssueName--
           this.testData()
-        //  Indicator.open('加载中...')
+          Indicator.open('加载中...')
         }
       },
       goDay () {
+        // 下一期
         if (this.IssueName > 20171120) {
           this.IssueName = 20171121
-//          Toast({
-//            message: '已到最后一期',
-//            duration: 1500
-//          })
+          Toast({
+            message: '已到最后一期',
+            duration: 1500
+          })
         } else {
           this.IssueName++
           this.testData()
-         // Indicator.open('加载中...')
+          Indicator.open('加载中...')
         }
       },
+      // 返回键路由跳转
       backRl () {
         this.$router.push({path: '/runlottery'})
       },
+      // 比赛详情表格点击关闭打开
       showInfo (index) {
         if (this.$refs.allresult[index].style.display === 'block') {
           this.$refs.allresult[index].style.display = 'none'
         } else {
           this.$refs.allresult[index].style.display = 'block'
         }
-      },
-      openPicker () {
-        console.log('asd')
-        this.$refs.picker.open()
-      },
-      handleConfirm (value) {
-        console.log(value)
       }
     },
     mounted () {
@@ -160,6 +156,10 @@
 
 <style scoped lang="less">
   @import "../../common/css/style";
+  .RlFootball{
+    max-width: 607px;
+    margin:0 auto;
+  }
   /*头部*/
   .bl-nav {
     width: 100%;
@@ -172,14 +172,14 @@
   }
 
   .bl-nav-left {
-    width: 30.6%;
+    width: 33.1%;
     height: 100%;
-    // background-color: green;
-    margin-left: 2.8vmin;
     overflow: hidden;
     display: flex;
   }
-
+  .bl-nav-left i{
+    padding-left: 4vmin;
+  }
   .bl-nav-title {
     width: 34.6%;
     height: 100%;

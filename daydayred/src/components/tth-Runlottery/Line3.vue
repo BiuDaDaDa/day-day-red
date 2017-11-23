@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="Line3">
     <div class="bl-nav">
       <div class="bl-nav-left">
         <i class="iconfont icon-jiantou" id="turnback" @click="backRl"></i>
@@ -70,6 +70,11 @@
 
 <style scoped lang="less">
   @import "../../common/css/style";
+  .Line3{
+    background-color: @color-background-white;
+    max-width: 607px;
+    margin:0 auto;
+  }
   /*头部*/
   .bl-nav {
     width: 100%;

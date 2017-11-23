@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="Balllist">
     <div class="bl-nav">
       <div class="bl-nav-left">
         <i class="iconfont icon-jiantou" id="turnback" @click="backRl"></i>
@@ -72,7 +72,7 @@
         this.$router.push({path: '/runlottery'})
       },
       test () {
-        this.$router.push({path: '/test'})
+        this.$router.push({path: '/balllistnext'})
       }
     },
     mounted () {
@@ -83,6 +83,11 @@
 
 <style scoped lang="less">
   @import "../../common/css/style";
+  .Balllist{
+    background-color:@color-background-white;
+    max-width: 607px;
+    margin:0 auto;
+  }
   /*头部*/
   .bl-nav {
     width: 100%;
