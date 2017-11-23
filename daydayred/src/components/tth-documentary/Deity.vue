@@ -11,7 +11,7 @@
       <span>命中率 : <strong>{{userData.hitRate}}</strong></span>
       <span>盈利率 : <strong>{{userData.profitRate}}</strong></span>
     </div>
-    <div id="user_attention">
+    <div id="user_attention" @click="attentionClick">
       +关注
     </div>
   </div>
@@ -56,7 +56,7 @@
   </div>
   <div id="deity_footer" v-if="content.state === 'begin'">
     <div>投</div>
-    <input type="text" v-model:value="num">
+    <input type="text" v-model:value="num" maxlength="5">
     <div>倍</div>
     <div id="common">共<span>{{num*2}}</span>元</div>
     <button>立即跟单</button>
@@ -66,6 +66,7 @@
 </template>
 
 <script>
+  import {getJsCookie, removeJsCookie} from '@/common/js/util'
   export default {
     name: '',
     data () {
@@ -131,6 +132,13 @@
       },
       returnP () {
         this.$router.push('/documentary')
+      },
+      attentionClick () {
+        if (getJsCookie('CP_UserIDGuid') === null) {
+          this.$router.push({path: '/login'})
+        } else {
+          alert(1)
+        }
       }
     },
     mounted () {
