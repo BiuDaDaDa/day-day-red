@@ -147,6 +147,7 @@
   #footer_wrap{
     width: 100%;
     position: fixed;
+    z-index: 1000;
     bottom: 0;
     background-color: @color-background-white;
     display: flex;

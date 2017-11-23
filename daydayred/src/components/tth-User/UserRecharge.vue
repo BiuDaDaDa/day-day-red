@@ -73,7 +73,6 @@
 <script>
   import {fetch} from '@/common/js/localStorage'
   let users = fetch()
-  console.log(users)
   export default {
     name: 'UserRecharge',
     data () {

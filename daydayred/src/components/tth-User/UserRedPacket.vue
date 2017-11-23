@@ -18,16 +18,22 @@
           <span>暂无数据</span>
         </div>
       </div>
-      <div class="tabcon___3QxAV">
+      <div v-else="" class="tabcon">
         <ul>
-          <li class="overdue___1oV2n">
-            <div class="imgcon___vSGK4"><b>余额</b><strong><em>￥</em><i>1</i></strong></div>
-            <div class="redinfo___3Fh0A">
+          <li>
+            <div class="imgcon">
+              <b>余额</b>
+              <em>￥</em>
+              <strong>
+              <span>{{itemArr[0].Money}}</span>
+              </strong>
+            </div>
+            <div class="redinfo">
               <dl>
-                <dd class="colorred___uFEKD">全场通用</dd>
-                <dd class="secborder___3cZfU">金额：1.0元（可多次使用）</dd>
-                <dd>新人注册红包</dd>
-                <dd class="little___366o6">有效期至11-16 23:59:59</dd>
+                <dd class="colorred">{{itemArr[0].LimitLottery}}</dd>
+                <dd class="secborder">{{itemArr[0].LimitMoneyMsg}}</dd>
+                <dd>{{itemArr[0].Name}}</dd>
+                <dd class="little">{{itemArr[0].EndTime}}</dd>
               </dl>
             </div>
           </li>
@@ -38,7 +44,7 @@
 </template>
 <script>
   import {getJsCookie} from '@/common/js/util'
-
+  import {Indicator} from 'mint-ui'
   export default {
     name: 'UserRedPacket',
     data () {
@@ -61,6 +67,7 @@
       },
       // 点击导航栏切换事件
       navTabClick (index) {
+        Indicator.open('加载中...')
         this.index = index
         for (let i = 0; i < this.navArr.length; i++) {
           this.navArr[i].className = ''
@@ -68,12 +75,9 @@
           this.navArr[index].red = 'nav-red'
           this.navArr[index].className = 'nav-active'
         }
-        if (this.animated === '') {
-          this.animated = 'animated fadeInLeft'
-        } else if (this.animated === 'animated fadeInLeft') {
-          this.animated = 'animated fadeInRight'
-        } else {
-          this.animated = 'animated fadeInLeft'
+        if (index === 0) {
+          index = 1101
+          this.getRecordData(index)
         }
         if (index === 1) {
           index = 1103
@@ -82,6 +86,17 @@
         if (index === 2) {
           index = 1102
           this.getRecordData(index)
+          return false
+        }
+        if (this.itemArr.length !== 0) {
+          return false
+        }
+        if (this.animated === '') {
+          this.animated = 'animated fadeInLeft'
+        } else if (this.animated === 'animated fadeInLeft') {
+          this.animated = 'animated fadeInRight'
+        } else {
+          this.animated = 'animated fadeInLeft'
         }
       },
       getRecordData (num) {
@@ -92,10 +107,10 @@
           type: 'get',
           url: '/api/hd/Handler.ashx?action=' + num + '&params={' + myOtherUrl + '}',
           success: function (res) {
-            console.log(res)
             this.navArr[0].text = `可使用(${res.data.code})`
             this.navArr[1].text = `待派发(${res.data.code})`
             this.itemArr = res.data.data.Item
+            Indicator.close()
           },
           failed: function (err) {
             console.log(err)
@@ -191,5 +206,107 @@
     left: 0;
     top: 20%;
   }
-
+  .tabcon{
+    box-sizing: border-box;
+    width: 100%;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+  }
+  .tabcon ul {
+    margin: 2.13333vmin auto;
+    width: 94%;
+    background-color: @color-background-white;
+  }
+  .tabcon ul li {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    height: 35.33333vmin;
+    background: #fff;
+    position: relative;
+    margin-top: 2.66667vmin;
+  }
+  .imgcon{
+    background-color: #d8d8d8;
+    width: 24.26667vmin;
+    height: 100%;
+    color: @color-background-white;
+  }
+  .imgcon b{
+    display: block;
+    line-height: 1;
+    font-size: 3.73333vmin;
+    margin:6.66667vmin 2.4vmin 2.4vmin;
+  }
+  .imgcon em {
+    letter-spacing:-5px;
+    margin-left: 2.5vmin;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 3.46667vmin;
+  }
+  .imgcon strong{
+    line-height: 1;
+    font-size: 6.4vmin;
+  }
+  .imgcon span {
+    font-style: normal;
+    font-weight: 400;
+  }
+  .redinfo {
+    font-size: 4.26667vmin;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    padding-top: 3.73333vmin;
+  }
+  .redinfo dl{
+    position: relative;
+    padding: 0 4vmin;
+  }
+  .tabcon ul li .redinfo dl .colorred{
+    color: #999;
+    font-size: 4.26667vmin;
+  }
+  .redinfo dd:before {
+    content: " ";
+    width: 1.33333vmin;
+    height: 1.33333vmin;
+    border-radius: 50%;
+    background: #e6e6e6;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 1.33333vmin;
+  }
+  .redinfo dd:nth-child(1):before {
+    background: #999;
+  }
+  .redinfo dd:nth-child(2):before {
+    background: #999;
+  }
+  .secborder{
+    color: #999;
+    font-size: 4.26667vmin;
+  }
+  .tabcon ul li .redinfo dd.secborder {
+    border-bottom: 1px dotted #e6e6e6;
+    padding-bottom: 2.4vmin;
+  }
+  .tabcon ul li .redinfo dd {
+    position: relative;
+    color: #999;
+    font-size: 3.46667vmin;
+    margin-bottom: 2.66667vmin;
+    line-height: 1;
+  }
+  .tabcon ul li dl:after {
+    position: absolute;
+    content: " ";
+    width: 18.66667vmin;
+    height: 12.66667vmin;
+    background: url('../../assets/tth-user/20170608100256.png') transparent no-repeat 50%;
+    background-size: cover;
+    right: 2.66667vmin;
+    top: -2.4vmin;
+  }
 </style>

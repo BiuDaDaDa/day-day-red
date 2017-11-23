@@ -26,6 +26,7 @@
 <script>
   import {getJsCookie} from '@/common/js/util'
   import ChaseMask from '../tth-User/ChaseMask'
+  import {Indicator} from 'mint-ui'
   export default {
     name: 'UserChase',
     components: {
@@ -53,6 +54,7 @@
       },
       // 点击导航栏切换事件
       navTabClick (index) {
+        Indicator.open('加载中...')
         this.index = index
         for (let i = 0; i < this.navArr.length; i++) {
           this.navArr[i].className = ''
@@ -78,6 +80,7 @@
           url: '/api/user/Handler.ashx?action=805&params={' + myOtherUrl + '}',
           success: function (res) {
             this.itemArr = res.data.data.item
+            Indicator.close()
           },
           failed: function (err) {
             console.log(err)

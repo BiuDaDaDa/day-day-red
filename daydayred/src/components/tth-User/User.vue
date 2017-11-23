@@ -2,7 +2,9 @@
   <div>
     <div class="user-body">
       <!--用户页面背景颜色-->
-      <div class="user-bg"></div>
+      <div class="user-bg">
+        <img @click="outClick" class="logout" src="../../assets/tth-user/out.png"/>
+      </div>
       <!--用户页面头像部分-->
       <div class="user-head">
         <div @click="userHead">
@@ -56,7 +58,7 @@
           <i class="arrow-right iconfont icon-arrow-right"></i>
         </div>
         <!--我的跟单-->
-        <div class="my-documentary">
+        <div class="my-documentary" @click="myDocumentary">
           <i class="gendanwang iconfont icon-gendanwang"></i>
           <span>我的跟单</span>
           <i class="arrow-right iconfont icon-arrow-right"></i>
@@ -69,15 +71,20 @@
         </div>
       </div>
     </div>
+    <ZjFooter></ZjFooter>
   </div>
 </template>
 <script>
   import {MessageBox} from 'mint-ui'
   import {fetch} from '@/common/js/localStorage'
-  import {getJsCookie} from '@/common/js/util'
+  import {getJsCookie, removeJsCookie} from '@/common/js/util'
+  import ZjFooter from '@/components/Zj-Footer'
   let users = fetch()
   export default {
     name: 'User',
+    components: {
+      ZjFooter
+    },
     data () {
       return {
         users: users,
@@ -150,6 +157,29 @@
         } else {
           this.$router.push({path: '/userRedPacket'})
         }
+      },
+      // 点击我的跟单
+      myDocumentary () {
+        if (getJsCookie('CP_UserIDGuid') === null) {
+          this.$router.push({path: '/login'})
+        } else {
+          this.$router.push({path: '/userDocumentary'})
+        }
+      },
+      // 点击退出登陆
+      outClick () {
+        MessageBox({
+          title: '退出提示',
+          message: '确定要退出么？',
+          showCancelButton: true,
+          confirmButtonClass: 'mint-msgbox-confirm'
+        })
+        MessageBox.confirm('确定要退出么？').then(action => {
+          removeJsCookie('CP_UserIDGuid')
+          window.location.reload()
+        }).catch(function (err) {
+          console.log(err)
+        })
       }
     }
   }
@@ -157,12 +187,12 @@
 <style scoped lang="less">
   @import "../../common/css/style.less";
   .yanjing {
-    font-size: 30px;
+    font-size: 8vmin;
     color: @color-text-gray;
   }
   .icons{
     color: @color-text-gray;
-    font-size: 30px;
+    font-size: 8vmin;
   }
   .user-body {
     position: relative;
@@ -171,9 +201,17 @@
     background-color: @color-background-gray;
   }
   .user-bg {
+    position: relative;
     width: 100%;
     height: 29.33333vmin;
     background-color: @color-red;
+  }
+  .logout{
+    width: 7vmin;
+    height: 7vmin;
+    position: absolute;
+    right: 3%;
+    top: 2vmin;
   }
 
   .user-head {
@@ -220,6 +258,7 @@
   }
 
   .user-balance {
+    font-size: 4vmin;
     display: -webkit-box;
     display: -webkit-flex;
     display: flex;
@@ -263,6 +302,7 @@
   }
 
   .card {
+    font-size: 4vmin;
     position: absolute;
     left: 0;
   }
@@ -272,6 +312,7 @@
   }
 
   .money p {
+    font-size: 4vmin;
     margin-top: 3px;
   }
 
@@ -304,7 +345,6 @@
     top: 5%;
     left: 5%;
   }
-
   .chase {
     width:90%;
     height: 8vmin;
@@ -338,33 +378,33 @@
     left: 5%;
   }
   .my-about span {
-    font-size: 18px;
+    font-size: 5vmin;
     font-weight: 400;
-    margin-left: 40px;
+    margin-left: 10vmin;
   }
 
   .my-documentary span {
-    font-size: 18px;
+    font-size: 5vmin;
     font-weight: 400;
-    margin-left: 40px;
+    margin-left: 10vmin;
   }
 
   .red-packet span {
-    font-size: 18px;
+    font-size: 5vmin;
     font-weight: 400;
-    margin-left: 40px;
+    margin-left: 10vmin;
   }
 
   .record span {
-    font-size: 18px;
+    font-size: 5vmin;
     font-weight: 400;
-    margin-left: 40px;
+    margin-left: 10vmin;
   }
 
   .chase span {
-    font-size: 18px;
+    font-size: 5vmin;
     font-weight: 400;
-    margin-left: 40px;
+    margin-left: 10vmin;
   }
 
   .zhuanhuan {
@@ -372,7 +412,7 @@
     left: 0;
     top: -5px;
     color: @color-text-red;
-    font-size: 28px;
+    font-size: 7vmin;
   }
 
   .jilu {
@@ -380,7 +420,7 @@
     left: 0;
     top: -5px;
     color: @color-text-red;
-    font-size: 28px;
+    font-size: 6.8vmin;
   }
 
   .hongbao {
@@ -388,7 +428,7 @@
     left: -4px;
     top: -6px;
     color: @color-text-red;
-    font-size: 35px;
+    font-size: 8.6vmin;
   }
 
   .gendanwang {
@@ -396,19 +436,19 @@
     left: 0;
     top: -4px;
     color: @color-text-red;
-    font-size: 24px;
+    font-size: 6vmin;
   }
   .guanyu{
     position: absolute;
     left: 0;
     top: -4px;
     color: @color-text-red;
-    font-size: 24px;
+    font-size: 6.8vmin;
   }
 
   .arrow-right {
    float: right;
-    font-size: 20px;
+    font-size:5.2vmin;
     color: @color-text-gray;
   }
 
