@@ -37,14 +37,16 @@
 
   .about-head .jiantou {
     text-align: left;
-    margin-left: 15px;
+    margin-left: 5vmin;
     color: @color-background-white;
     font-weight: 700;
+    font-size:5vmin;
   }
 
   .about-head span {
-    margin-left: 30%;
-    font-size: 22px;
+    margin-left: 28vmin;
+    font-size:7vmin;
+    font-weight: bold;
     color: @color-background-white;
   }
   .about-main{
@@ -54,8 +56,8 @@
     background-color: #fff;
   }
   .about-main p{
-    margin: 10px 0;
-    line-height: 20px;
+    margin: 2.66667vmin 0;
     font-size: 3.73333vmin;
+    line-height: 5.5vmin;
   }
 </style>
