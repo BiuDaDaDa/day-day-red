@@ -3,13 +3,13 @@
     <div class="user-body">
       <!--用户页面背景颜色-->
       <div class="user-bg">
-        <img @click="outClick" class="logout" src="../../assets/tth-user/out.png"/>
+          <img v-show="logout" @click="outClick" class="logout" src="../../assets/tth-user/out.png"/>
       </div>
       <!--用户页面头像部分-->
       <div class="user-head">
         <div @click="userHead">
           <div class="user-tth-head">
-            <img src="../../assets/tth-user/tth-user.png" alt="">
+            <img  src="../../assets/tth-user/tth-user.png" alt="">
           </div>
           <!--头像下面登陆注册文字-->
           <span v-if="users.length === 0" class="user-login">登陆/注册</span>
@@ -18,10 +18,12 @@
           <p class="user-balance">
             <!--<i v-if="users !== ''" class="iconfont icon-yanjing yanjing"></i>-->
             <i @click="iconsClick($event)" v-if="users.length !== 0" class="iconfont icon-yanjing yanjing"></i>
-            余额：<strong>{{air}}</strong>
-            <!--<strong v-else="">{{users.Balance}}</strong>-->
+            <span @click="balanceClick">
+                 余额：<strong>{{air}}</strong>
+              <!--<strong v-else="">{{users.Balance}}</strong>-->
             元
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="right iconfont icon-arrow-right"></i>
+            </span>
           </p>
         </div>
         <!--充值提款-->
@@ -80,6 +82,7 @@
   import {getJsCookie, removeJsCookie} from '@/common/js/util'
   import YkrFooter from '../../components/tth-User/Footer.vue'
   let users = fetch()
+  console.log(users)
   export default {
     name: 'User',
     components: {
@@ -88,7 +91,8 @@
     data () {
       return {
         users: users,
-        air: '--'
+        air: '--',
+        logout: false
       }
     },
     methods: {
@@ -166,21 +170,30 @@
           this.$router.push({path: '/userDocumentary'})
         }
       },
+      // 点击余额跳转用户明细
+      balanceClick () {
+        if (getJsCookie('CP_UserIDGuid') !== null) {
+          this.$router.push({path: '/UserDetail'})
+        }
+      },
       // 点击退出登陆
       outClick () {
-        MessageBox({
-          title: '退出提示',
-          message: '确定要退出么？',
-          showCancelButton: true,
-          confirmButtonClass: 'mint-msgbox-confirm'
-        })
         MessageBox.confirm('确定要退出么？').then(action => {
           removeJsCookie('CP_UserIDGuid')
+          localStorage.removeItem('datas')
           window.location.reload()
         }).catch(function (err) {
           console.log(err)
         })
+      },
+      getCookie () {
+        if (getJsCookie('CP_UserIDGuid') !== null) {
+          this.logout = true
+        }
       }
+    },
+    mounted () {
+      this.getCookie()
     }
   }
 </script>
@@ -211,9 +224,8 @@
     height: 7vmin;
     position: absolute;
     right: 3%;
-    top: 2vmin;
+    top: 4vmin;
   }
-
   .user-head {
     position: relative;
     margin: -14.66667vmin auto;

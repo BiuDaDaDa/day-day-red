@@ -1,11 +1,11 @@
 <template>
   <div id="documentary_patiuclars_wrap">
-    <router-link to="/documentary">
-    <div id="documentary_particulars_title">
+    <!--<router-link to="/documentary">-->
+    <div id="documentary_particulars_title" @click="returnGo">
       <i class="iconfont icon-jiantou"></i>
       彩帝详情
     </div>
-    </router-link>
+    <!--</router-link>-->
     <div id="documentary_particulars_user">
       <div id="user_avatar">
         <img :src="titledata.avatar">
@@ -14,8 +14,11 @@
         <div>{{titledata.nick}}</div>
         <span>粉丝数: {{titledata.fans}}</span>
       </div>
-      <div id="user_attention">
+      <div class="user_attention" @click="unattentionClick" v-show="unattention === false">
         +关注
+      </div>
+      <div class="user_attention" @click="unattentionClick" v-show="unattention === true">
+        √已关注
       </div>
     </div>
     <div id="recommend_and_grade">
@@ -114,6 +117,7 @@
 </template>
 
 <script>
+  import {getJsCookie} from '@/common/js/util'
   export default {
     name: 'Particulars',
     data () {
@@ -131,7 +135,9 @@
         gDisplay: false,
         fDisplay: false,
         four: 5,
-        Num: ''
+        Num: '',
+        login: getJsCookie('CP_UserIDGuid'),
+        unattention: false
       }
     },
     methods: {
@@ -228,6 +234,16 @@
         this.$router.push('/deity/' + uId + '/' + masterSchemeId)
 //        console.log(masterSchemeId)
 //        console.log(uId)
+      },
+      unattentionClick () {
+        if (this.login === null) {
+          this.$router.push({path: '/login'})
+        } else {
+          this.unattention = !this.unattention
+        }
+      },
+      returnGo () {
+        this.$router.go(-1)
       }
     },
     mounted () {
@@ -281,7 +297,7 @@
   }
   #user_nick{
     color: white;
-    width: 64vmin;
+    width: 61vmin;
     padding-top: 3vmin;
   }
   #user_nick div{
@@ -293,7 +309,7 @@
     font-weight: 400;
     font-size: 3.73333vmin;
   }
-  #user_attention{
+  .user_attention{
     background: #fff;
     padding: 0 2.66667vmin;
     height: 6.66667vmin;

@@ -100,11 +100,12 @@
   .bl-nav-left {
     width: 30.2%;
     height: 100%;
-    // background-color: green;
-   // padding-left: 4vmin;
     font-size: 5.6vmin;
     overflow: hidden;
     display: flex;
+  }
+  .bl-nav-left i{
+    padding-left: 4vmin;
   }
   .bl-nav-right {
     width: 30.6%;
