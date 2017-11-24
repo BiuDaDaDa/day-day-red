@@ -9,7 +9,7 @@
 <script>
   import {getJsCookie} from '@/common/js/util'
   export default {
-    name: 'Mask',
+    name: 'DetailMask',
     props: {
       pass: null
     },
@@ -39,11 +39,11 @@
       },
       getRecordData (num) {
         this.cookie = getJsCookie('CP_UserIDGuid')
-        let myUrl = `"SchemeState":"0","DateID":"${num}","PageIndex":"1","UserIDGuid":"${this.cookie}","PageSize":"20"`
+        let myUrl = `"TypeID":"2","DateID":"${num}","PageIndex":"1","UserIDGuid":"${this.cookie}","PageSize":"20"`
         let myOtherUrl = encodeURI(myUrl)
         this.$request({
           type: 'get',
-          url: '/api/user/Handler.ashx?action=803&params={' + myOtherUrl + '}',
+          url: '/api/user/Handler.ashx?action=812&params={' + myOtherUrl + '}',
           success: function (res) {
             let itemArr = res.data.data.item
             this.$emit('itemClick', itemArr)
@@ -57,9 +57,6 @@
       maskA () {
         this.$emit('maskClicked', false)
       }
-    },
-    monted () {
-      this.getRecordData(0)
     }
   }
 </script>

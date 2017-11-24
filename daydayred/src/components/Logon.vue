@@ -10,7 +10,7 @@
       <div class="login-phone">
         <i class="iconfont icon-shouji shouji"></i>
         <div id="phone-text">
-          <mt-field :attr="{ maxlength: 11 }"  label="" placeholder="请输入手机号" type="tel" v-model="phone"></mt-field>
+          <mt-field  :attr="{ maxlength: 11 }"  label="" placeholder="请输入手机号" type="tel" v-model="phone"></mt-field>
         </div>
       </div>
       <!--请输入短信验证码-->
@@ -137,7 +137,7 @@
   .jiantouZ {
     line-height: 12vmin;
     color: white;
-    font-size: 16px;
+    font-size: 4.5vmin;
     font-weight: bold;
     margin-left: 5%;
   }
@@ -145,10 +145,12 @@
   .welcome-logon {
     line-height: 10vmin;
     color: #F2F2F2;
-    font-size: 22px;
+    font-size: 6vmin;
     margin-left: 30%;
   }
-
+  .phone{
+    font-size: 5vmin;
+  }
   .login-user-dl {
     width: 50%;
     height: 10vmin;
@@ -207,7 +209,7 @@
 
   .shouji {
     margin-left: 18px;
-    font-size: 30px;
+    font-size: 7vmin;
     color: @color-text-red;
   }
 
@@ -223,12 +225,12 @@
 
   .weibiaoti {
     margin-left: 18px;
-    font-size: 30px;
+    font-size: 7vmin;
     color: @color-text-red;
   }
   .mima {
     margin-left: 20px;
-    font-size: 25px;
+    font-size: 6.2vmin;
     color: @color-text-red;
   }
   #phone-text {
@@ -242,24 +244,25 @@
   .send-yzm {
     outline: none;
     color: @color-text-red;
-    font-size: 16px;
+    font-size: 4.8vmin;
+    line-height: 12vmin;
   }
   .login-login {
-    margin-top: 25px;
+    margin-top: 5vmin;
     width: 80vmin;
     height: 10vmin;
     background-color: @color-text-red;
     border: none;
     outline: none;
     color: @color-background-white;
-    font-size: 20px;
+    font-size: 4vmin;
     border-radius: 5px;
   }
   .celerity-logon {
     width: 75vmin;
     text-align: center;
     color: @color-text-gray;
-    font-size: 12px;
+    font-size: 3.3vmin;
     margin: 6% 2%;
   }
   .logon-password {

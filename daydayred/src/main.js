@@ -7,7 +7,7 @@ import router from './router'
 import request from './common/js/requestServerSetting'
 import { Swipe, SwipeItem, Field, Toast, Button, Tabbar, TabItem, MessageBox, Popup, Picker, Navbar, DatetimePicker, Indicator } from 'mint-ui'
 import VueBus from 'vue-bus'
-import 'mint-ui/lib/style.css'
+import '../src/common/css/mint-ui/style.css'
 import '../src/common/css/animate.css'
 import isLogin from './common/js/isLogin'
 isLogin()
