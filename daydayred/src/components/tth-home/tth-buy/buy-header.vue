@@ -46,7 +46,7 @@
 <script>
   export default {
     name: 'BuyHeader',
-    props: ['MethodsArr', 'MoreArr'],
+    props: ['thisPage', 'MethodsArr', 'MoreArr'],
     data () {
       return {
         MethodsName: this.MethodsArr,
@@ -67,6 +67,7 @@
       // 点击玩法改变标题
       changeTitle (index) {
         this.isActive = index
+        console.log(index)
         this.MethodsNormalName = this.MethodsName[index]
         this.showMask = false
         this.showPop = false
@@ -214,8 +215,8 @@
     /*更多*/
     .buyHeader_morePop{
       position: fixed;
-      top:50px;
-      right: 5px;
+      top:12vmin;
+      right: 1.5vmin;
       z-index: 100;
       background-color: white;
       padding: 0 2.66667vmin;
