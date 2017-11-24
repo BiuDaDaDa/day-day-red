@@ -5,14 +5,17 @@
     神单详情
   </div>
   <div id="deity_user">
-    <img id="user_avatar" :src="userData.avatar">
-    <div id="user_body">
+    <img id="user_avatar" :src="userData.avatar" @click="toPatiuclars">
+    <div id="user_body" @click="toPatiuclars">
       <div id="body_nick">{{userData.nick}}</div>
       <span>命中率 : <strong>{{userData.hitRate}}</strong></span>
       <span>盈利率 : <strong>{{userData.profitRate}}</strong></span>
     </div>
-    <div id="user_attention" @click="attentionClick">
+    <div class="user_attention" @click="unattentionClick" v-show="unattention === false">
       +关注
+    </div>
+    <div class="user_attention" @click="unattentionClick" v-show="unattention === true">
+      √已关注
     </div>
   </div>
   <div id="deity_content">
@@ -35,7 +38,8 @@
           <p>VS</p>
           <p>{{contentData.visitingName}}</p>
         </div>
-        <div class="number">登录查看</div>
+        <div class="number" v-show="login === null">登录查看</div>
+        <div class="number" v-show="login !== null">{{contentData.bet}}</div>
         <div class="number" v-if="content.state !== 'begin'">{{contentData.result}}</div>
       </div>
       <div id="body_footer">
@@ -59,7 +63,7 @@
     <input type="text" v-model:value="num" maxlength="5">
     <div>倍</div>
     <div id="common">共<span>{{num*2}}</span>元</div>
-    <button>立即跟单</button>
+    <button @click="nowDocumentary">立即跟单</button>
   </div>
   <div id="deity_footer1" v-if="content.state !== 'begin'">方案已截止投注</div>
 </div>
@@ -75,7 +79,10 @@
         title2Data: {},
         contentDatas: [],
         content: {},
-        num: ''
+        num: 5,
+        unattention: false,
+        attention: '',
+        login: getJsCookie('CP_UserIDGuid')
       }
     },
     methods: {
@@ -84,7 +91,7 @@
           type: 'get',
           url: `/api/master/master/${this.$route.params.uId}/info`,
           success: function (res) {
-//            console.log(res.data.data)
+//            console.log(res.data.data.uid)
             this.userData = res.data.data
             if (this.userData.avatar === '') {
               this.userData.avatar = '../../src/assets/tth-documentary/tth-user.png'
@@ -131,14 +138,24 @@
         })
       },
       returnP () {
-        this.$router.push('/documentary')
+        this.$router.go(-1)
+//        this.$router.push('/documentary')
       },
-      attentionClick () {
-        if (getJsCookie('CP_UserIDGuid') === null) {
+      unattentionClick () {
+        if (this.login === null) {
           this.$router.push({path: '/login'})
         } else {
-          alert(1)
+          this.unattention = !this.unattention
         }
+      },
+      nowDocumentary () {
+        if (this.login === null) {
+          this.$router.push({path: '/login'})
+        }
+      },
+      toPatiuclars () {
+        let uId = this.userData.uid
+        this.$router.push('/particulars/' + uId)
       }
     },
     mounted () {
@@ -149,7 +166,6 @@
     }
   }
 </script>
-
 <style scoped lang="less">
   #deityWrap{
     width: 100%;
@@ -197,7 +213,7 @@
     margin: 1.33333vmin 0 2.4vmin;
   }
   #user_body{
-    width: 66vmin;
+    width: 62vmin;
   }
   #user_body span{
     font-size: 3.6vmin;
@@ -206,7 +222,7 @@
   #user_body strong{
     color: red;
   }
-  #user_attention{
+  .user_attention{
     padding: 0 1.33333vmin;
     height: 6.66667vmin;
     line-height: 6.66667vmin;
@@ -277,7 +293,6 @@
     border-bottom: .1vmin solid #E6E6E6;
     font-size: 3.46667vmin;
     box-sizing: border-box;
-
   }
   .body_body div{
     width: 31vmin;
@@ -385,11 +400,4 @@
     left: 0;
     width: 100%;
   }
-
-
-
-
-
-
-
 </style>
