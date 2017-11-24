@@ -66,7 +66,7 @@
 </template>
 
 <script>
-  import {getJsCookie, removeJsCookie} from '@/common/js/util'
+  import {getJsCookie} from '@/common/js/util'
   export default {
     name: '',
     data () {

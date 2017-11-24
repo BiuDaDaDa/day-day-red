@@ -65,8 +65,8 @@
       }
     },
     mounted () {
-      this.$refs.clo[2].style.color = 'red'
-      this.$refs.opc[2].style.opacity = 1
+      this.$refs.clo[3].style.color = 'red'
+      this.$refs.opc[3].style.opacity = 1
     }
   }
 </script>
