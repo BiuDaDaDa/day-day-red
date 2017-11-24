@@ -7,6 +7,7 @@
   </div>
 </template>
 <script>
+  import {Indicator} from 'mint-ui'
   import {getJsCookie} from '@/common/js/util'
   export default {
     name: 'DetailMask',
@@ -28,6 +29,7 @@
     methods: {
       // 点击历史发送接口事件
       maskClick (index) {
+        Indicator.open('加载中...')
         this.index = index
         this.$emit('maskClicked', false)
         if (index === 4) {
@@ -45,8 +47,10 @@
           type: 'get',
           url: '/api/user/Handler.ashx?action=812&params={' + myOtherUrl + '}',
           success: function (res) {
+            console.log(res)
             let itemArr = res.data.data.item
             this.$emit('itemClick', itemArr)
+            Indicator.close()
           },
           failed: function (err) {
             console.log(err)

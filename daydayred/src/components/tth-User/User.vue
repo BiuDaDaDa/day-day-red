@@ -3,7 +3,7 @@
     <div class="user-body">
       <!--用户页面背景颜色-->
       <div class="user-bg">
-        <img v-show="logout" @click="outClick" class="logout" src="../../assets/tth-user/out.png"/>
+          <img v-show="logout" @click="outClick" class="logout" src="../../assets/tth-user/out.png"/>
       </div>
       <!--用户页面头像部分-->
       <div class="user-head">
@@ -24,7 +24,6 @@
             元
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="right iconfont icon-arrow-right"></i>
             </span>
-
           </p>
         </div>
         <!--充值提款-->
@@ -179,12 +178,6 @@
       },
       // 点击退出登陆
       outClick () {
-        MessageBox({
-          title: '退出提示',
-          message: '确定要退出么？',
-          showCancelButton: true,
-          confirmButtonClass: 'mint-msgbox-confirm'
-        })
         MessageBox.confirm('确定要退出么？').then(action => {
           removeJsCookie('CP_UserIDGuid')
           localStorage.removeItem('datas')
@@ -233,7 +226,6 @@
     right: 3%;
     top: 4vmin;
   }
-
   .user-head {
     position: relative;
     margin: -14.66667vmin auto;

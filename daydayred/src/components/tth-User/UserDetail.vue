@@ -40,6 +40,14 @@
           </div>
         </div>
       </div>
+      <div v-else>
+        <div  class="nodate___1lEuU">
+          <div :class="animated">
+            <img src="../../assets/tth-documentary/NoDate.png"/>
+            <span>暂无数据</span>
+          </div>
+        </div>
+      </div>
     </div>
     <DetailMask @itemClick="itemClick" :pass="maskisShow" @maskClicText="maskClicText" @maskClicked="maskClicked"></DetailMask>
   </div>
@@ -163,8 +171,8 @@
 
   .user-record-head {
     width: 100%;
-    height: 14vmin;
-    line-height: 13vmin;
+    height: 15vmin;
+    line-height: 15vmin;
     background-color: @color-text-red;
   }
 
@@ -178,7 +186,7 @@
   .record-span-two {
     float: right;
     margin-right: 3%;
-    font-size: 4vmin;
+    font-size: 3.4vmin;
     color: @color-background-white;
   }
 

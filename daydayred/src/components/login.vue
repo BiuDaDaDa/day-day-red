@@ -49,7 +49,6 @@
 //  import guid from '@/common/js/guid'
   import {getJsCookie} from '@/common/js/util'
   import TrimJs from '@/common/js/trimJs'
-//  import guid from '@/common/js/guid'
   export default {
     name: 'Login',
     data () {
@@ -194,7 +193,7 @@
                         // 获取用户数据以字符串形式保存在localStorage中
                         let data = JSON.stringify(res.data.data)
                         window.localStorage.setItem('datas', data)
-                        this.$router.push({path: '/user'})
+                        this.$router.go(-1)
                         window.location.reload()
                       } else {
                         window.localStorage.removeItem('datas')
