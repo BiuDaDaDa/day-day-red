@@ -94,12 +94,8 @@
 </template>
 
 <script>
-<<<<<<< HEAD
     import Test from './test'
-=======
-    import axios from 'axios'
     import WsbFooter from '../../components/tth-Runlottery/Footer.vue'
->>>>>>> d159bec62c58152f68630106dc1b79a0eb666001
     export default {
       name: '',
       components: {
