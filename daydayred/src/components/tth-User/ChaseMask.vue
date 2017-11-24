@@ -135,6 +135,6 @@
     line-height: 13.33333vmin;
     background-color: #FFFFFF;
     text-align: center;
-    font-size: 18px;
+    font-size: 4.8vmin;
   }
 </style>

@@ -5,7 +5,7 @@
       <div class="user-record-head">
         <i @click="goBackClick" class="iconfont icon-jiantou jiantou"></i>
         <span class="record-span">购彩记录</span>
-        <span @click="recentlyClickA" class="record-span-two">{{look}} <i class="iconfont icon-jiantou2"></i></span>
+        <span @click="recentlyClickA" class="record-span-two">{{look}} <i class="iconfont icon-jiantou2 jiantou2"></i></span>
       </div>
       <!--购彩记录导航栏-->
       <ul class="navBar">
@@ -128,8 +128,8 @@
   }
 
   .record-span {
-    margin-left: 25%;
-    font-size: 22px;
+    margin-left: 28vmin;
+    font-size: 5.5vmin;
     font-weight: 900;
     color: @color-background-white;
   }
@@ -137,19 +137,24 @@
   .record-span-two {
     float: right;
     margin-right: 3%;
-    font-size: 14px;
+    font-size: 4vmin;
     color: @color-background-white;
   }
 
   .jiantou {
+    font-size: 4.5vmin;
     margin-left: 5%;
     color: @color-background-white;
+    font-weight: 700;
+  }
+  .jiantou2{
+    font-size: 3.5vmin;
     font-weight: 700;
   }
 
   .navBar {
     width: 100%;
-    height: 35px;
+    height: 10vmin;
     background-color: @color-background-white;
   }
 
@@ -160,7 +165,7 @@
     width: 25%;
     color: #333;
     text-align: center;
-    line-height: 35px;
+    line-height: 10vmin;
   }
 
   .user-record-body ul .nav-red {
@@ -179,6 +184,9 @@
   .nodate___1lEuU{
     background: #f2f2f2;
     text-align: center;
+  }
+  .nodate___1lEuU span{
+    font-size: 5vmin;
   }
   .nodate___1lEuU img{
     width: 100%;
