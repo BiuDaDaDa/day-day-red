@@ -82,7 +82,7 @@
             <b>{{gradedata.orderCounts7d}}单<strong>{{gradedata.hit7d}}红</strong>{{gradedata.unHit7d}}黑</b>
           </div>
           <div class="grade_recent_body_state">
-            <span>近3场状态</span>
+            <span>近{{hitstates1.length}}场状态</span>
             <b v-for="(hitstate,index,key) in hitstates1" :class="[{red1:hitstate === '红'},{black1:hitstate === '黑'}]">{{hitstate}}</b>
           </div>
         </div>
@@ -137,7 +137,8 @@
         four: 5,
         Num: '',
         login: getJsCookie('CP_UserIDGuid'),
-        unattention: false
+        unattention: false,
+        allorhit: 'all'
       }
     },
     methods: {
@@ -160,7 +161,7 @@
       recommendData () {
         this.$request({
           type: 'get',
-          url: `/api/master/master/${this.$route.params.godsrankUid}/plan/recommend`,
+          url: `/api/master/master/${this.$route.params.godsrankUid}/plan/recommend?filter=${this.allorhit}&page=1&pageSize=100`,
           headers: {},
           params: {},
           success: function (res) {
@@ -187,7 +188,7 @@
           success: function (res) {
 //            console.log(res.data.data)
             this.gradedata = res.data.data
-            this.hitstates = (res.data.data.hitState).split('').slice(0, 3)
+            this.hitstates = res.data.data.hitState
             this.hitstates1 = []
             for (let i = 0; i < this.hitstates.length; i++) {
               if (this.hitstates[i] === '1') {
@@ -221,12 +222,15 @@
         this.fDisplay = !this.fDisplay
         this.all = '全部推荐'
         this.Num = this.allNum
+        this.allorhit = 'all'
       },
       wonclick (res) {
         this.four = 3
         this.fDisplay = !this.fDisplay
         this.all = '中奖推荐'
         this.Num = this.wonNum
+        this.allorhit = 'hit'
+        console.log(this.allorhit)
       },
       deity (index) {
         let masterSchemeId = this.plans[index].masterSchemeId
@@ -244,6 +248,11 @@
       },
       returnGo () {
         this.$router.go(-1)
+      }
+    },
+    watch: {
+      allorhit () {
+        this.recommendData()
       }
     },
     mounted () {
