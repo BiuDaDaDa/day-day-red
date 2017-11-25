@@ -159,12 +159,12 @@
             let thisDate = new Date()
             let thisWeek = parseInt(thisDate.getDay())
 //            console.log(thisWeek)
-            if (thisWeek === 1 || thisWeek === 3 || thisWeek === 5) {
+            if (thisWeek === 1 || thisWeek === 3 || thisWeek === 6) {
               // 当为大乐透时
               this.randomRedTimes = 5
               this.randomRedMax = 35
               this.randomBlueMax = 12
-            } else if (thisWeek === 2 || thisWeek === 4 || thisWeek === 6) {
+            } else if (thisWeek === 2 || thisWeek === 4 || thisWeek === 7) {
               // 当为双色球时
               this.randomRedTimes = 6
               this.randomRedMax = 33

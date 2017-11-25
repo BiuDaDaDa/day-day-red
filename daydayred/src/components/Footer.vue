@@ -28,7 +28,7 @@
 //            src: 图片地址
             src: '../../src/assets/tth-footer/home_red.png',
 //            to: 路由跳转地址
-            to: '/home',
+            to: '/',
 //            id: 让在v-for数组中绑定一个id,我也不知道干嘛用,不绑定就报警告
             id: 'one'
           },
