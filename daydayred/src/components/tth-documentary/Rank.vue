@@ -27,6 +27,7 @@
 </template>
 
 <script>
+  import {Indicator} from 'mint-ui'
   export default {
     name: 'Rank',
     data () {
@@ -52,6 +53,7 @@
                 res.data.data.gods[i].avatar = '../../src/assets/tth-documentary/tth-user.png'
               }
             }
+            Indicator.close()
           },
           failed: function () {}
         })
@@ -63,6 +65,7 @@
       }
     },
     mounted () {
+      Indicator.open('加载中')
       this.rankingData()
     }
   }

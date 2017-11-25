@@ -83,9 +83,9 @@
     <my-footer></my-footer>
   </div>
 </template>
-
 <script>
   import MyFooter from '../../components/Footer.vue'
+  import {Indicator} from 'mint-ui'
   export default {
     name: 'Documentary',
     data () {
@@ -138,6 +138,7 @@
               }
             }
             this.counts = counts
+            Indicator.close()
           },
           failed: function () {}
         })
@@ -162,6 +163,7 @@
       MyFooter
     },
     mounted () {
+      Indicator.open('加载中')
       this.rankingData()
       this.recommendData()
     }

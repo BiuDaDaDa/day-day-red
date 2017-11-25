@@ -118,6 +118,7 @@
 
 <script>
   import {getJsCookie} from '@/common/js/util'
+  import {Indicator} from 'mint-ui'
   export default {
     name: 'Particulars',
     data () {
@@ -154,6 +155,7 @@
             if (this.titledata.avatar === '') {
               this.titledata.avatar = '../../src/assets/tth-documentary/tth-user.png'
             }
+            Indicator.close()
           },
           failed: function () {}
         })
@@ -175,6 +177,7 @@
               num += parseInt(this.wonNums[i])
             }
             this.wonNum = num
+//            Indicator.close()
           },
           failed: function () {}
         })
@@ -197,6 +200,7 @@
                 this.hitstates1.push('黑')
               }
             }
+            Indicator.close()
 //            console.log(this.hitstates1)
           },
           failed: function () {}
@@ -230,7 +234,7 @@
         this.all = '中奖推荐'
         this.Num = this.wonNum
         this.allorhit = 'hit'
-        console.log(this.allorhit)
+//        console.log(this.allorhit)
       },
       deity (index) {
         let masterSchemeId = this.plans[index].masterSchemeId
@@ -256,6 +260,7 @@
       }
     },
     mounted () {
+      Indicator.open('加载中')
       this.titleData()
       this.recommendData()
       this.gradeData()

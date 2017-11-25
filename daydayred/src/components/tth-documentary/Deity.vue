@@ -71,6 +71,7 @@
 
 <script>
   import {getJsCookie} from '@/common/js/util'
+  import {Indicator} from 'mint-ui'
   export default {
     name: '',
     data () {
@@ -108,6 +109,7 @@
           success: function (res) {
 //            console.log(res.data.data.followedBet)
             this.title2Data = res.data.data.followedBet
+            Indicator.close()
           },
           failed: function () {
           }
@@ -159,6 +161,7 @@
       }
     },
     mounted () {
+      Indicator.open('加载中')
       this.deityUserData()
       this.deityTitle2Data()
       this.deityContentData()

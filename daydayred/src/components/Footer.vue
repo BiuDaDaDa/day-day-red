@@ -2,7 +2,7 @@
   <!--footer最父级-->
   <div id="footer_wrap">
     <!--路由跳转   footer_body: v-for生成的每一页,一共五页-->
-    <router-link :to='foot.to' class="footer_body" v-for="foot in footers" :key="foot.id" >
+    <router-link :to='foot.to' class="footer_body" v-for="foot in footers" :key="foot.id">
       <!--生成一个div,设置一个背景图-->
       <div class="footer_body_img" :style="{backgroundImage:'url('+ foot.url +')'}">
         <!--在生成的div中添加图片,默认透明度为0,改变后透明度为1显示-->
