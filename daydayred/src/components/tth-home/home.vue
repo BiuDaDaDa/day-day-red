@@ -73,8 +73,7 @@
 </template>
 
 <script>
-  import OxsFooter from '../../components/tth-home/Footer.vue'
-
+  import OxsFooter from '../../components/Footer.vue'
   export default {
     name: 'home',
     components: {

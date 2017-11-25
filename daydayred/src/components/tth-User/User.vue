@@ -80,7 +80,7 @@
   import {MessageBox} from 'mint-ui'
   import {fetch} from '@/common/js/localStorage'
   import {getJsCookie, removeJsCookie} from '@/common/js/util'
-  import YkrFooter from '../../components/tth-User/Footer.vue'
+  import YkrFooter from '../../components/Footer.vue'
   let users = fetch()
   console.log(users)
   export default {

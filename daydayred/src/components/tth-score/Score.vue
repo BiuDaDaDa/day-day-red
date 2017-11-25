@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  import ScoreFooter from '../../components/tth-score/Footer.vue'
+  import ScoreFooter from '../../components/Footer.vue'
   export default {
     name: 'Score',
     components: {

@@ -80,12 +80,12 @@
     <img id="documengtary_bgimg" src="../../assets/tth-documentary/NoDate.png" v-if="this.plans.length <= 0">
     <!-- 暂无彩帝数据 -->
     <div id="documengtary_no" v-if="this.plans.length <= 0">暂无彩帝数据</div>
-    <zj-footer></zj-footer>
+    <my-footer></my-footer>
   </div>
 </template>
 
 <script>
-  import ZjFooter from '../../components/tth-documentary/Footer.vue'
+  import MyFooter from '../../components/Footer.vue'
   export default {
     name: 'Documentary',
     data () {
@@ -159,7 +159,7 @@
       }
     },
     components: {
-      ZjFooter
+      MyFooter
     },
     mounted () {
       this.rankingData()
