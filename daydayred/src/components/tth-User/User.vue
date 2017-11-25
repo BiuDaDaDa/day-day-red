@@ -73,7 +73,7 @@
         </div>
       </div>
     </div>
-    <ykr-footer></ykr-footer>
+    <YkrFooter></YkrFooter>
   </div>
 </template>
 <script>

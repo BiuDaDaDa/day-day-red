@@ -50,12 +50,8 @@
             name: '比分',
             url: '../../src/assets/tth-footer/score_gary.png',
             src: '../../src/assets/tth-footer/score_red.png',
-<<<<<<< HEAD:daydayred/src/components/tth-User/Footer.vue
-            to: '/score'
-=======
             to: '/score',
             id: 'one'
->>>>>>> 1815417601832cc4f99a3f792749ee685c57cc4e:daydayred/src/components/Footer.vue
           },
           {
             name: '我的',
@@ -66,7 +62,6 @@
           }
         ]
       }
-<<<<<<< HEAD:daydayred/src/components/tth-User/Footer.vue
     },
     methods: {
       clicked (index) {
@@ -84,8 +79,6 @@
     mounted () {
       this.$refs.clo[4].style.color = 'red'
       this.$refs.opc[4].style.opacity = 1
-=======
->>>>>>> 1815417601832cc4f99a3f792749ee685c57cc4e:daydayred/src/components/Footer.vue
     }
   }
 </script>
@@ -96,7 +89,7 @@
   #footer_wrap{
     width: 100%;
     position: fixed;
-    z-index: 1000;
+    z-index: 999;
     bottom: 0;
     background-color: white;
     display: flex;

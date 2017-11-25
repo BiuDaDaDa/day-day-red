@@ -65,19 +65,19 @@
             </div>
             <div style="background-color: rgb(204, 204, 204); height: 1px;"></div>
           </div>
-
         </div>
       </div>
     </div>
+    <ScoreFooter></ScoreFooter>
   </div>
 </template>
 <script>
-<<<<<<< HEAD
 //  import {Indicator} from 'mint-ui'
-=======
-  import ScoreFooter from '../../components/Footer.vue'
->>>>>>> 1815417601832cc4f99a3f792749ee685c57cc4e
+  import ScoreFooter from '@/components/Footer'
   export default {
+    components: {
+      ScoreFooter
+    },
     name: 'Score',
     data () {
       return {
