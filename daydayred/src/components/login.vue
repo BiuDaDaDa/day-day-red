@@ -193,7 +193,24 @@
                         // 获取用户数据以字符串形式保存在localStorage中
                         let data = JSON.stringify(res.data.data)
                         window.localStorage.setItem('datas', data)
-                        this.$router.go(-1)
+//                        switch (this.index) {
+//                          case 0:
+//                            this.$router.push({path: '/home'})
+//                            break
+//                          case 1:
+//                            this.$router.push({path: '/runlottery'})
+//                            break
+//                          case 2:
+//                            this.$router.push({path: '/documentary'})
+//                            break
+//                          case 3:
+//                            this.$router.push({path: '/score'})
+//                            break
+//                          case 4:
+//                            this.$router.push({path: '/user'})
+//                            break
+//                        }
+                        this.$router.push({path: '/user'})
                         window.location.reload()
                       } else {
                         window.localStorage.removeItem('datas')

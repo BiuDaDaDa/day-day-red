@@ -92,7 +92,8 @@
       return {
         users: users,
         air: '--',
-        logout: false
+        logout: false,
+        index: null
       }
     },
     methods: {

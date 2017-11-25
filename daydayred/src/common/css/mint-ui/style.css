@@ -1641,7 +1641,7 @@ display: inline-block;
   -webkit-transform: translate3d(-50%, -50%, 0);
           transform: translate3d(-50%, -50%, 0);
   background-color: #fff;
-  width: 75%;
+  width: 85%;
   border-radius: 5px;
   font-size: 4.5vmin;
   -webkit-user-select: none;
@@ -1649,22 +1649,7 @@ display: inline-block;
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
   -webkit-transition: .2s;
-  transition: .2s;
-  animation: bounce-in 0.5s;
-}
-@keyframes bounce-in {
-  0% {
-    width: 75vmin;
-    height: 35vmin;
-  }
-  50% {
-    width: 80vmin;
-    height: 40vmin;
-  }
-  100% {
-    width: 75vmin;
-    height: 35vmin;
-  }
+  transition: .3s;
 }
 .mint-msgbox-header {
   padding: 15px 0 0;

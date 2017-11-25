@@ -8,16 +8,8 @@
       </div>
   </div>
 </template>
-
 <script>
-  import MtTabbar from '../../../node_modules/mint-ui/packages/tabbar/src/tabbar.vue'
-  import MtTabItem from '../../../node_modules/mint-ui/packages/tab-item/src/tab-item.vue'
-
   export default {
-    components: {
-      MtTabItem,
-      MtTabbar
-    },
     name: '',
     data () {
       return {
@@ -44,7 +36,7 @@
             name: '比分',
             url: '../../src/assets/tth-footer/score_gary.png',
             src: '../../src/assets/tth-footer/score_red.png',
-            to: '/home'
+            to: '/score'
           },
           {
             name: '我的',
@@ -61,7 +53,11 @@
           this.$refs.clo[i].style.color = '#B8B8B8'
           this.$refs.opc[i].style.opacity = 0
         }
+        console.log(index)
+        document.cookie = 'index' + '=' + index
         this.$router.push(this.footers[index].to)
+        this.$refs.clo[index].style.color = 'red'
+        this.$refs.opc[index].style.opacity = 1
       }
     },
     mounted () {
