@@ -30,8 +30,6 @@
       return {
         ssq: {},
         getNumbers: [],
-        getWeekDay: '',
-        getMTime: '',
         WinNumber: [],
         EndTime: []
       }
@@ -78,12 +76,14 @@
     width: 100%;
     height: 12vmin;
     background-color: @color-red;
+    display: flex;
+    justify-content: space-between;
   }
   .bl-nav > div {
     display: inline-block;
   }
   .bl-nav-left {
-    width: 30.6%;
+    width: 25%;
     height: 100%;
     overflow: hidden;
     display: flex;
@@ -92,19 +92,18 @@
     padding-left: 4vmin;
   }
   .bl-nav-right {
-    width: 30.6%;
+    width: 25%;
     height: 100%;
     // background-color: blue;
   }
   .bl-nav-title {
-    width: 30.6%;
     height: 100%;
     margin: 0 auto;
     overflow: hidden;
   }
   .bl-nav-title p {
     text-align: center;
-    font-size: 5.2vmin;
+    font-size: 5.5vmin;
     font-weight: bold;
     color: white;
     line-height: 12vmin;

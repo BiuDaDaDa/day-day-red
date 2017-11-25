@@ -9,6 +9,7 @@ import RlBasketball from '../../components/tth-Runlottery/RlBasketball'
 import BalllistNext from '../../components/tth-Runlottery/finalvue/Balllistnext'
 import Fc3Dnext from '../../components/tth-Runlottery/finalvue/Fc3Dnext'
 import BigLtnext from '../../components/tth-Runlottery/finalvue/BigLtnext'
+import Line3next from '../../components/tth-Runlottery/finalvue/Line3next'
 export default [
   {
     path: '/runlottery',
@@ -64,5 +65,11 @@ export default [
     path: '/bigltnext',
     name: 'bigltnext',
     component: BigLtnext
+  },
+  {
+    path: '/line3next',
+    name: 'line3next',
+    component: Line3next
   }
+
 ]

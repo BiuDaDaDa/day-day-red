@@ -95,46 +95,56 @@
       <tr id="level4">
         <td><span>四等奖</span></td>
         <td>
+          <p>
           <i></i>
           <i></i>
           <i></i>
           <i></i>
           <i></i>
-          <br>
+          </p>
+          <p>
           <i></i>
           <i></i>
           <i></i>
           <i></i>
           <b></b>
+          </p>
         </td>
         <td><span>200</span></td>
       </tr>
       <tr id="level5">
         <td><span>五等奖</span></td>
         <td>
+          <p>
           <i></i>
           <i></i>
           <i></i>
           <i></i>
-          <br>
+          </p>
+          <p>
           <i></i>
           <i></i>
           <i></i>
           <b></b>
+          </p>
         </td>
         <td><span>10</span></td>
       </tr>
       <tr id="level6">
         <td><span>六等奖</span></td>
         <td>
+          <p>
           <i></i>
           <i></i>
           <b></b>
-          <br>
+          </p>
+          <p>
           <i></i>
           <b></b>
-          <br>
+          </p>
+          <p>
           <b></b>
+          </p>
         </td>
         <td><span>5</span></td>
       </tr>
@@ -147,7 +157,6 @@
 
 <script>
   import Test from '../test'
-
   export default {
     name: '',
     data () {
@@ -159,14 +168,15 @@
         saleMoney: '',
         totalMoney: '',
         moneydetail: true,
-        isGetMoney: false
+        isGetMoney: false,
+        localId: 462506
       }
     },
     methods: {
       testData () {
         this.$request({
           type: 'get',
-          url: 'api/data/Handler.ashx?action=601&params={%22IssueID%22:462507}',
+          url: 'api/data/Handler.ashx?action=601&params={%22IssueID%22:' + this.localId + '}',
           headers: {},
           params: {},
           success: function (res) {
@@ -201,10 +211,19 @@
       },
       backBalllist () {
         this.$router.push({path: '/balllist'})
+      },
+      myhandle (val) {
+        this.localId = val['changeID']
       }
     },
     mounted () {
       this.testData()
+    },
+    created () {
+      this.$bus.on('get', this.myhandle)
+    },
+    beforeDestroy () {
+      this.$bus.off('get', this.myhandle)
     }
   }
 </script>
@@ -333,6 +352,7 @@
     color: #999;
     font-weight: 400;
     text-align: center;
+    font-size: 3.73333vmin;
   }
 
   .moneyinfo strong b {
@@ -376,7 +396,7 @@
     height: 7.2vmin;
     border: 1px solid #e6e6e6;
     display: table-cell;
-    vertical-align: inherit;
+    vertical-align: middle;
     line-height: 1.5;
   }
   td{
@@ -385,7 +405,7 @@
     height: 7.2vmin;
     border: 1px solid #e6e6e6;
     display: table-cell;
-    vertical-align: inherit;
+    vertical-align: middle;
     line-height: 1.5;
   }
   th span{
@@ -430,5 +450,6 @@
     border: none;
     text-align: center;
     line-height: 10.66667vmin;
+    outline: none;
   }
 </style>

@@ -11,7 +11,7 @@
       </div>
     </div>
     <ul id="all-number">
-      <li v-for="(item, index) in ssq" :class="{'active':!index}" class="hehe">
+      <li v-for="(item, index) in ssq" :class="{'active':!index}" @click="numberDetail(index)">
         <span>第{{item['Name']}}期 {{EndTime[index]}}</span>
         <div>
           <p id="getMoney">
@@ -60,10 +60,19 @@
       },
       backRl () {
         this.$router.push({path: '/runlottery'})
+      },
+      numberDetail (index) {
+        this.$router.push({path: '/Fc3Dnext'})
+        this.localID = this.ssq[index]['ID']
       }
     },
     mounted () {
       this.testData()
+    },
+    beforeDestroy () {
+      this.$bus.emit('get', {
+        changeID: this.localID
+      })
     }
   }
 </script>
@@ -80,12 +89,14 @@
     width: 100%;
     height: 12vmin;
     background-color: @color-red;
+    justify-content:space-between;
+    display: flex;
   }
   .bl-nav > div {
     display: inline-block;
   }
   .bl-nav-left {
-    width: 30.6%;
+    width: 29%;
     height: 100%;
     // background-color: green;
     overflow: hidden;
@@ -100,14 +111,13 @@
     // background-color: blue;
   }
   .bl-nav-title {
-    width: 30.6%;
     height: 100%;
     margin: 0 auto;
     overflow: hidden;
   }
   .bl-nav-title p {
     text-align: center;
-    font-size: 5.2vmin;
+    font-size: 5.5vmin;
     font-weight: bold;
     color: white;
     line-height: 12vmin;
@@ -151,7 +161,7 @@
     height: 6.66667vmin;
     float: right;
     color: @color-text-gray;
-    margin-top: -5.13333vmin;
+    margin-top: -8.13333vmin;
   }
   // 当天号码
   .active{

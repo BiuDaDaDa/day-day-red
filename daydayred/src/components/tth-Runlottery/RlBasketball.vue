@@ -5,7 +5,9 @@
         <i class="iconfont icon-jiantou" id="turnback" @click="backRl"></i>
       </div>
       <div class="bl-nav-title">
-        <p>竞彩篮球开奖</p>
+        <h3>竞彩篮球开奖</h3>
+      </div>
+      <div class="bl-nav-right">
       </div>
     </div>
     <header>
@@ -24,19 +26,17 @@
     </header>
     <ul>
       <li v-for="(item, index) in ssq"
-          :class="{'active':!index}"
-          class="hehe"
-          @click="showInfo(index)">
+          @click="toggle(index)">
         <p>{{WeekDay}} {{item['MNO']}} {{item['LeagueName']}} {{MatchTime[index][0]}}:{{MatchTime[index][1]}}</p>
-        <i class="iconfont icon-jiantou2" id="down"></i>
         <div>
+          <i class="iconfont icon-jiantou2" id="down" ref="turnover"></i>
           <span id="HomeT">{{item['VTeam']}}</span>
           <div id="allRz">
             <p id="Rz">{{item['Rz']}}</p>
           </div>
           <span id="ValueT">{{item['HTeam']}}</span>
         </div>
-          <table ref="allresult">
+          <table ref="allresult" v-show="index == i">
             <tr>
               <td>比分</td>
               <td>让分胜负</td>
@@ -70,7 +70,8 @@
         WeekDay: '',
         isShowInfo: true,
         number: 0,
-        IssueName: '20171122'
+        IssueName: '20171124',
+        i: -1
       }
     },
     methods: {
@@ -78,7 +79,6 @@
         let that = this
         this.$request({
           type: 'get',
-          // http://m.tthong.cn/data/Handler.ashx?action=606&params={'IssueName':'20171120'}
           url: 'api/data/Handler.ashx?action=607&params={' + 'IssueName' + ':' + this.IssueName + '}',
           headers: {},
           params: {},
@@ -98,6 +98,7 @@
             that.Today = Test.cutMatchTime2(this.ssq[0]['IssueName'])
             // 当天是星期几
             that.WeekDay = this.ssq[0]['WKName']
+            // 第一个样式
             Indicator.close()
           },
           failed: function (err) {
@@ -124,8 +125,8 @@
       },
       goDay () {
         // 点击下一期翻看后一个记录
-        if (this.IssueName > 20171121) {
-          this.IssueName = 20171122
+        if (this.IssueName > 20171123) {
+          this.IssueName = 20171123
           Toast({
             message: '已到最后一期',
             duration: 1500
@@ -136,13 +137,10 @@
           Indicator.open('加载中...')
         }
       },
-      showInfo (index) {
+      toggle (index) {
         // 点击显示隐藏表格
-        if (this.$refs.allresult[index].style.display === 'block') {
-          this.$refs.allresult[index].style.display = 'none'
-        } else {
-          this.$refs.allresult[index].style.display = 'block'
-        }
+        this.i = index
+        this.$refs.turnover.id = 'down'
       }
     },
     mounted () {
@@ -162,6 +160,8 @@
     width: 100%;
     height: 12vmin;
     background-color: @color-red;
+    display: flex;
+    justify-content: space-between;
   }
 
   .bl-nav > div {
@@ -169,7 +169,7 @@
   }
 
   .bl-nav-left {
-    width: 30.6%;
+    width: 29%;
     height: 100%;
     overflow: hidden;
     display: flex;
@@ -178,20 +178,24 @@
     padding-left: 4vmin;
   }
   .bl-nav-title {
-    width: 34.6%;
+  //  width: 34.6%;
     height: 100%;
     margin: 0 auto;
     overflow: hidden;
   }
 
-  .bl-nav-title p {
+  .bl-nav-title h3 {
     text-align: center;
-    font-size: 4.8vmin;
+    font-size: 5.5vmin;
     font-weight: 700;
     color: white;
     line-height: 12vmin;
   }
-
+  .bl-nav-right {
+    width: 29%;
+    height: 100%;
+    // background-color: blue;
+  }
   /*返回键*/
   #turnback {
     width: 5.86667vmin;
@@ -287,10 +291,18 @@
     margin-right: 8.66667vmin;
   }
 
-  .active table {
-    display: block;
-  }
+  /*.active table {*/
+    /*display: block;*/
+  /*}*/
 
+  #up{
+    transform:rotate(-180deg);
+    vertical-align: middle;
+    color: #6b8dff;
+    margin-top: 1.33333vmin;
+    display: inline-block;
+    margin-right: 8.66667vmin;
+  }
   /*图表*/
   td {
     width: 23.3333vmin;
@@ -304,10 +316,6 @@
     Helvetica Neue, STHeiti, Microsoft Yahei, Tahoma, Simsun, sans-serif;
   }
 
-  table {
-    margin-top: 2vmin;
-    display: none;
-  }
 
   table tr:first-child {
     color: @color-text-gray;
