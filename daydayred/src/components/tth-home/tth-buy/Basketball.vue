@@ -1,14 +1,14 @@
 <template>
-  <div class="soccer_wrap">
-    <!--main-->
-    <div class="soccer_main" v-show="isMainShow">
+  <div class="basketball_wrap">
+    <!--主要内容-->
+    <div class="basketball_main" v-show="isMainShow">
       <!--头-->
       <BuyHeader :MethodsArr="MethodsArr" :MoreArr="MoreArr" @changeSelectBall="changeSelectBall"
                  @instructionShow="isInstructionShow"></BuyHeader>
-      <!--混合过关-->
-      <div class="soccer_hunheguoguan" v-if="changeBall == 0">
+      <!--1混合过关-->
+      <div class="basketball_hunheguoguan" v-if="changeBall == 0">
         <!--每周比赛-->
-        <div class="soccer_weekGame" v-for="(wk,index) in weekGameArr" :key="index">
+        <div class="basketball_weekGame" v-for="(wk,index) in weekGameArr" :key="index">
           <!--比赛折叠条-->
           <div class="weekGame_banner" @click="clickBanner(index)">
             <div class="banner_left">
@@ -30,32 +30,45 @@
               <div class="games_right">
                 <!--比赛队伍-->
                 <span class="right_title">
-                  <b>让球</b>
-                  <span>{{game.HTeam}}<strong>vs</strong>{{game.VTeam}}</span>
-                </span>
+                  <span>{{game.VTeam}}<b>(客)</b><strong>vs</strong><b>(主)</b>{{game.HTeam}}</span>
+              </span>
                 <!--表格-->
                 <table>
+                  <!--胜负-->
                   <tr>
-                    <td class="burangqiu">0</td>
-                    <td class="sheng_top">
-                      <p>
-                        <span>主胜 {{game.SPSPF.split(",")[0]}}</span>
-                        <span>平 {{game.SPSPF.split(",")[1]}}</span>
-                        <span>客胜 {{game.SPSPF.split(",")[2]}}</span>
+                    <td class="table_left">胜负</td>
+                    <td class="table_center">
+                      <p v-if="game.SPSF === ''">
+                        <span>未开售</span>
+                        <span>未开售</span>
+                      </p>
+                      <p v-if="game.SPSF != ''">
+                        <span><b>客胜</b><b>{{game.SPSF.split(',')[0]}}</b></span>
+                        <span><b>主胜</b><b>{{game.SPSF.split(',')[1]}}</b></span>
                       </p>
                     </td>
                     <!--点击更多玩法时 传递：接口相关编号、队伍名-->
-                    <td class="morePlay" rowspan="2" @click="morePlay(game.IssueNo, game.HTeam, game.VTeam)"><span>更多<br>玩法</span></td>
+                    <td class="morePlay" rowspan="3" @click="morePlay(game.IssueNo, game.HTeam, game.VTeam)">
+                      <span>更多<br>玩法</span></td>
                   </tr>
+                  <!--让分-->
                   <tr>
-                    <td class="rangqiu" :class="{rangqiuBlue:parseInt(game.SPRQS.split(',')[3]) < 0}">
-                      {{game.SPRQS.split(",")[3]}}
-                    </td>
-                    <td class="sheng_top">
+                    <td class="table_left table_left_two">让分</td>
+                    <td class="table_center">
                       <p>
-                        <span>主胜 {{game.SPRQS.split(",")[0]}}</span>
-                        <span>平 {{game.SPRQS.split(",")[1]}}</span>
-                        <span>客胜 {{game.SPRQS.split(",")[2]}}</span>
+                        <span><b>客胜</b><b>{{game.SPRFSF.split(',')[0]}}</b></span>
+                        <span><b>主胜 <strong
+                          :class="{fenRed: game.SPRFSF.split(',')[2] > 0}">({{game.SPRFSF.split(',')[2]}})</strong></b><b>{{game.SPRFSF.split(',')[1]}}</b></span>
+                      </p>
+                    </td>
+                  </tr>
+                  <!--大小分-->
+                  <tr>
+                    <td class="table_left table_left_three">胜负</td>
+                    <td class="table_center">
+                      <p>
+                        <span><b>大于{{parseInt(game.SPDXF.split(',')[2])}}分</b><b>{{game.SPDXF.split(',')[0]}}</b></span>
+                        <span><b>小于{{parseInt(game.SPDXF.split(',')[2])}}分</b><b>{{game.SPDXF.split(',')[1]}}</b></span>
                       </p>
                     </td>
                   </tr>
@@ -65,9 +78,9 @@
           </div>
         </div>
       </div>
-      <!--胜平负-->
-      <div class="soccer_shengpingfu" v-if="changeBall == 1">
-        <div class="soccer_weekGame" v-for="(wk,index) in weekGameArr" :key="index">
+      <!--2胜负-->
+      <div class="basketball_shengpingfu" v-if="changeBall == 1">
+        <div class="basketball_weekGame" v-for="(wk,index) in weekGameArr" :key="index">
           <!--比赛折叠条-->
           <div class="weekGame_banner" @click="clickBanner(index)">
             <div class="banner_left">
@@ -89,25 +102,20 @@
               <div class="games_right">
                 <!--比赛队伍-->
                 <span class="right_title">
-                  <span>{{game.HTeam}}<strong>vs</strong>{{game.VTeam}}</span>
-                </span>
+                  <span>{{game.VTeam}}<b>(客)</b><strong>vs</strong><b>(主)</b>{{game.HTeam}}</span>
+              </span>
                 <!--表格-->
                 <table>
+                  <!--胜负-->
                   <tr>
-                    <td class="sheng_top">
-                      <p>
-                        <span class="sheng_top_block">
-                          <span>主胜</span>
-                          <span>{{game.SPSPF.split(",")[0]}}</span>
-                        </span>
-                        <span class="sheng_top_block">
-                          <span>平</span>
-                          <span> {{game.SPSPF.split(",")[1]}}</span>
-                        </span>
-                        <span class="sheng_top_block">
-                          <span>客胜</span>
-                          <span>{{game.SPSPF.split(",")[2]}}</span>
-                        </span>
+                    <td class="table_center">
+                      <p v-if="game.SPSF === ''">
+                        <span>未开售</span>
+                        <span>未开售</span>
+                      </p>
+                      <p v-if="game.SPSF != ''">
+                        <span><b>客胜</b><b>{{game.SPSF.split(',')[0]}}</b></span>
+                        <span><b>主胜</b><b>{{game.SPSF.split(',')[1]}}</b></span>
                       </p>
                     </td>
                   </tr>
@@ -117,9 +125,9 @@
           </div>
         </div>
       </div>
-      <!--让球平负-->
-      <div class="soccer_shengpingfu" v-if="changeBall == 2">
-        <div class="soccer_weekGame" v-for="(wk,index) in weekGameArr" :key="index">
+      <!--3让分胜负-->
+      <div class="basketball_shengpingfu" v-if="changeBall == 2">
+        <div class="basketball_weekGame" v-for="(wk,index) in weekGameArr" :key="index">
           <!--比赛折叠条-->
           <div class="weekGame_banner" @click="clickBanner(index)">
             <div class="banner_left">
@@ -141,25 +149,22 @@
               <div class="games_right">
                 <!--比赛队伍-->
                 <span class="right_title">
-                  <span>{{game.HTeam}}<strong>vs</strong>{{game.VTeam}}</span>
-                </span>
+                  <span>{{game.VTeam}}<b>(客)</b><strong>vs</strong><b>(主)</b>{{game.HTeam}}</span>
+                  <strong class="title_Num"
+                          :class="{title_Num_red:game.SPRFSF.split(',')[2] > 0}">{{game.SPRFSF.split(',')[2]}}</strong>
+              </span>
                 <!--表格-->
                 <table>
+                  <!--胜负-->
                   <tr>
-                    <td class="sheng_top">
-                      <p>
-                        <span class="sheng_top_block">
-                          <span>主胜</span>
-                          <span>{{game.SPRQS.split(",")[0]}}</span>
-                        </span>
-                        <span class="sheng_top_block">
-                          <span>平</span>
-                          <span> {{game.SPRQS.split(",")[1]}}</span>
-                        </span>
-                        <span class="sheng_top_block">
-                          <span>客胜</span>
-                          <span>{{game.SPRQS.split(",")[2]}}</span>
-                        </span>
+                    <td class="table_center">
+                      <p v-if="game.SPRFSF === ''">
+                        <span>未开售</span>
+                        <span>未开售</span>
+                      </p>
+                      <p v-if="game.SPRFSF != ''">
+                        <span><b>客胜</b><b>{{game.SPRFSF.split(',')[0]}}</b></span>
+                        <span><b>主胜</b><b>{{game.SPRFSF.split(',')[1]}}</b></span>
                       </p>
                     </td>
                   </tr>
@@ -169,8 +174,8 @@
           </div>
         </div>
       </div>
-      <!--总进球-->
-      <div class="soccer_zongjinqiu" v-if="changeBall == 3">
+      <!--4胜分差-->
+      <div class="basketball_fencha" v-if="changeBall == 3">
         <div class="soccer_weekGame" v-for="(wk,index) in weekGameArr" :key="index">
           <!--比赛折叠条-->
           <div class="weekGame_banner" @click="clickBanner(index)">
@@ -194,65 +199,18 @@
               <div class="games_right">
                 <!--比赛队伍-->
                 <span class="right_title">
-                  <span>{{game.HTeam}}<strong>vs</strong>{{game.VTeam}}</span>
-                </span>
-                <!--表格-->
-                <table>
-                  <tr>
-                    <td class="gameInfoSpan" v-if="index < 4" v-for="(gameInfo,index) in game.SPJQS.split(',')"
-                        :key="index">
-                      <span><b>{{index}}</b>{{gameInfo}}</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="gameInfoSpan" v-if="index >= 4" v-for="(gameInfo,index) in game.SPJQS.split(',')"
-                        :key="index">
-                      <span><b>{{index}}<span v-if="index === 7">+</span></b>{{gameInfo}}</span>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--比分-->
-      <div class="soccer_bifen" v-if="changeBall == 4">
-        <div class="soccer_weekGame" v-for="(wk,index) in weekGameArr" :key="index">
-          <!--比赛折叠条-->
-          <div class="weekGame_banner" @click="clickBanner(index)">
-            <div class="banner_left">
-              <span>{{wk.WkName}}</span>
-              <span>{{wk.Data}}</span>
-              <span>共有{{wk.MatchCount}}场比赛可投</span>
-            </div>
-            <i class="iconfont icon-jiantou2 " :class="{'icon-jiantou2-change':  isChangeIcon === index}"></i>
-          </div>
-          <!--比赛-->
-          <div class="weekGame_games" v-show="isShowGames === index">
-            <!--每个比赛-->
-            <div class="games" v-for="game in wk.Item">
-              <img src="../../../assets/tth-home/dan.png"/>
-              <div class="games_left">
-                <span>{{game.LeagueName}}</span>
-                <span>{{game.WkName}}<b> {{game.MNo}}</b></span>
-                <span>{{game.EndTime}} 截止</span>
-              </div>
-              <div class="games_right">
-                <!--比赛队伍-->
-                <span class="right_title">
-                  <span>{{game.HTeam}}<strong>vs</strong>{{game.VTeam}}</span>
+                  <span>{{game.VTeam}}<strong>vs</strong>{{game.HTeam}}</span>
                 </span>
                 <!--投注区-->
-                <div @click="morePlay(game.IssueNo, game.HTeam, game.VTeam)"><span>点击展开比分投注区</span></div>
+                <div @click="morePlay(game.IssueNo, game.HTeam, game.VTeam)"><span>请选择投注内容</span></div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!--半全场-->
-      <div class="soccer_bifen" v-if="changeBall == 5">
-        <div class="soccer_weekGame" v-for="(wk,index) in weekGameArr" :key="index">
+      <!--5大小分-->
+      <div class="basketball_shengpingfu" v-if="changeBall == 4">
+        <div class="basketball_weekGame" v-for="(wk,index) in weekGameArr" :key="index">
           <!--比赛折叠条-->
           <div class="weekGame_banner" @click="clickBanner(index)">
             <div class="banner_left">
@@ -266,7 +224,6 @@
           <div class="weekGame_games" v-show="isShowGames === index">
             <!--每个比赛-->
             <div class="games" v-for="game in wk.Item">
-              <img src="../../../assets/tth-home/dan.png"/>
               <div class="games_left">
                 <span>{{game.LeagueName}}</span>
                 <span>{{game.WkName}}<b> {{game.MNo}}</b></span>
@@ -275,10 +232,24 @@
               <div class="games_right">
                 <!--比赛队伍-->
                 <span class="right_title">
-                  <span>{{game.HTeam}}<strong>vs</strong>{{game.VTeam}}</span>
-                </span>
-                <!--投注区-->
-                <div @click="morePlay(game.IssueNo, game.HTeam, game.VTeam)"><span>点击展开半全场</span></div>
+                  <span>{{game.VTeam}}<b>(客)</b><strong>vs</strong><b>(主)</b>{{game.HTeam}}</span>
+              </span>
+                <!--表格-->
+                <table>
+                  <!--胜负-->
+                  <tr>
+                    <td class="table_center">
+                      <p v-if="game.SPRFSF === ''">
+                        <span>未开售</span>
+                        <span>未开售</span>
+                      </p>
+                      <p v-if="game.SPRFSF != ''">
+                        <span><b>大于{{parseFloat(game.SPDXF.split(',')[2])}}分</b><b>{{game.SPDXF.split(',')[0]}}</b></span>
+                        <span><b>小于{{parseFloat(game.SPDXF.split(',')[2])}}分</b><b>{{game.SPDXF.split(',')[0]}}</b></span>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
@@ -286,115 +257,92 @@
       </div>
       <BuyFooterSport :isShowCount="false"></BuyFooterSport>
     </div>
-    <!--隐藏：玩法说明-->
-    <BuyInstruction v-show="isInsShow" :thisPage="44" :thisTitle="'竞彩足球玩法说明'"
-                    @instructionClose="isInstructionShow"></BuyInstruction>
+
     <!--隐藏：更多玩法 根据index更改数据 根据isShowMorePlay控制显示-->
     <mt-popup class="morePlays" v-model="isShowMorePlay" position="bottom">
       <div class="morePlay">
         <!--队伍-->
         <h5 class="morePlay_title">
-          {{Hteam}}
+          {{Vteam}}(客)
           <span>VS</span>
-          {{Vteam}}
+          {{Hteam}}(主)
         </h5>
         <!--玩法:根据头部index切换更多玩法显示内容-->
         <div class="morePlay_select">
-          <!--1混合-->
-          <div v-show="changeBall === 0" class="morePlay_hunhe">
+          <!--1胜负-->
+          <div v-show="changeBall === 0" class="morePlay_shengfu">
             <!--左-->
-            <div class="hunhe_left">
-              <span class="hunhe_left_top">0</span>
-              <span class="hunhe_left_bottom" :class="{'hunhe_left_bottom_add': rqArr[3] === '-1'}">{{rqArr[3]}}</span>
+            <div class="shengfu_left">
+              <span class="shengfu_left_top">胜负</span>
             </div>
             <!--右-->
-            <div class="hunhe_right">
-              <span><b>主胜</b> <b>{{brqArr[0]}}</b></span>
-              <span><b>平</b> <b>{{brqArr[1]}}</b></span>
-              <span><b>客胜</b> <b>{{brqArr[2]}}</b></span>
-              <span><b>主胜</b> <b>{{rqArr[0]}}</b></span>
-              <span><b>平</b> <b>{{rqArr[1]}}</b></span>
-              <span><b>客胜</b> <b>{{rqArr[2]}}</b></span>
+            <div class="shengfu_right">
+              <span><b>客胜</b> <b>{{sfArr[0]}}</b></span>
+              <span><b>主胜</b> <b>{{sfArr[1]}}</b></span>
             </div>
           </div>
-          <!--2总进球-->
-          <div v-show="changeBall === 0" class="morePlay_zongjinqiu">
+          <!--2让分胜负-->
+          <div v-show="changeBall === 0" class="morePlay_rangfen">
             <!--左-->
-            <div class="zongjinqiu_left">
-              <span>总进球</span>
+            <div class="rangfen_left">
+              <span class="rangfen_left_top">让分胜负</span>
             </div>
             <!--右-->
-            <div class="zongjinqiu_right">
-              <span v-for="(a,index) in zjqArr" :key="index"><b>{{index}}<em v-if="index === 7">+</em></b> <b>{{a}}</b></span>
+            <div class="rangfen_right">
+              <div>
+                <span><b>客胜</b> <b>{{rfsfArr[0]}}</b></span>
+                <span><b>主胜</b> <b>{{rfsfArr[1]}}</b></span>
+              </div>
+              <p class="right_bottom">让分胜负(主队<b>{{rfsfArr[2]}}</b>)</p>
             </div>
           </div>
-          <!--3半全场-->
-          <div v-show="changeBall === 0 || changeBall === 5" class="morePlay_banquanchang">
+          <!--3让分胜负-->
+          <div v-show="changeBall === 0" class="morePlay_yushezongfen">
             <!--左-->
-            <div class="banquanchang_left">
-              <span>半全场</span>
+            <div class="yushezongfen_left">
+              <span class="yushezongfen_left_top">让分胜负</span>
             </div>
             <!--右-->
-            <div class="banquanchang_right">
-              <span v-for="(a,index) in bqcArr"><b>{{bqcItems[index]}}</b> <b>{{a}}</b></span>
+            <div class="yushezongfen_right">
+              <div>
+                <span><b>大于{{parseFloat(yszfArr[2])}}分</b> <b>{{yszfArr[0]}}</b></span>
+                <span><b>小于{{parseFloat(yszfArr[2])}}分</b> <b>{{yszfArr[1]}}</b></span>
+              </div>
+              <p class="right_bottom">预设总分(<b>{{parseFloat(yszfArr[2])}}</b>)</p>
             </div>
           </div>
-          <!--4比分-->
-          <div v-show="changeBall === 0" class="morePlay_bifen">
+          <!--4胜分差 客-->
+          <div v-show="changeBall === 0 || changeBall === 3" class="morePlay_shengfencha">
             <!--左-->
-            <div class="bifen_left">
-              <span>比分</span>
+            <div class="shengfencha_left">
+              <span class="shengfencha_left_top">胜分差</span>
             </div>
             <!--右-->
-            <div class="bifen_right">
-              <span v-for="(b,index) in bfArr" :key="index"
-                    :class="{doubleW:index === 12 || index === 30, treW:index === 17}">
-                <b>{{bifenItems[index]}}</b>
-                <b>{{b}}</b>
-              </span>
+            <div class="shengfencha_right">
+              <div>
+                <span v-if="index <= 2 " v-for="(a,index) in sfcArr" :key="index"><b>{{shengfenchaArr[index]}}</b><b>{{a}}</b></span>
+              </div>
+              <div>
+                <span v-if="index <= 5 && index >2 " v-for="(a,index) in sfcArr" :key="index"><b>{{shengfenchaArr[index]}}</b><b>{{a}}</b></span>
+              </div>
+              <p class="right_bottom">{{Vteam}}(客胜)</p>
             </div>
           </div>
-          <!--5比分拆分版-->
-          <div v-show="changeBall === 4" class="morePlay_bifen_zhusheng">
+          <!--5胜分差 主-->
+          <div v-show="changeBall === 0 || changeBall === 3" class="morePlay_shengfencha">
             <!--左-->
-            <div class="bifen_left">
-              <span>主胜</span>
+            <div class="shengfencha_left fenchaBlue">
+              <span class="shengfencha_left_top ">胜分差</span>
             </div>
             <!--右-->
-            <div class="bifen_right">
-              <span v-if="index <= 12" v-for="(b,index) in bfArr" :key="index"
-                    :class="{doubleW:index === 12}">
-                <b>{{bifenItems[index]}}</b>
-                <b>{{b}}</b>
-              </span>
-            </div>
-          </div>
-          <div v-show="changeBall === 4" class="morePlay_bifen_ping">
-            <!--左-->
-            <div class="bifen_left">
-              <span>平</span>
-            </div>
-            <!--右-->
-            <div class="bifen_right">
-              <span v-if="index > 12 && index <= 17" v-for="(b,index) in bfArr" :key="index"
-                    :class="{treW:index === 17}">
-                <b>{{bifenItems[index]}}</b>
-                <b>{{b}}</b>
-              </span>
-            </div>
-          </div>
-          <div v-show="changeBall === 4" class="morePlay_bifen_kesheng">
-            <!--左-->
-            <div class="bifen_left">
-              <span>客胜</span>
-            </div>
-            <!--右-->
-            <div class="bifen_right">
-              <span v-if="index > 17" v-for="(b,index) in bfArr" :key="index"
-                    :class="{doubleW:index === 30}">
-                <b>{{bifenItems[index]}}</b>
-                <b>{{b}}</b>
-              </span>
+            <div class="shengfencha_right">
+              <div>
+                <span v-if="index >= 6 && index < 9" v-for="(a,index) in sfcArr" :key="index"><b>{{shengfenchaArr[index]}}</b><b>{{a}}</b></span>
+              </div>
+              <div>
+                <span v-if="index >= 9 " v-for="(a,index) in sfcArr" :key="index"><b>{{shengfenchaArr[index]}}</b><b>{{a}}</b></span>
+              </div>
+              <p class="right_bottom">{{Hteam}}(主胜)</p>
             </div>
           </div>
         </div>
@@ -405,6 +353,10 @@
         </div>
       </div>
     </mt-popup>
+
+    <!--隐藏：玩法说明-->
+    <BuyInstruction v-show="isInsShow" :thisPage="44" :thisTitle="'竞彩蓝球玩法说明'"
+                    @instructionClose="isInstructionShow"></BuyInstruction>
   </div>
 </template>
 
@@ -412,8 +364,9 @@
   import BuyHeader from '../tth-buy/buy-header'
   import BuyInstruction from '../tth-buy/buy-instruction.vue'
   import BuyFooterSport from '../tth-buy/buy-footer-sport.vue'
+
   export default {
-    name: 'Soccer',
+    name: 'Basketball',
     components: {
       BuyHeader,
       BuyInstruction,
@@ -421,26 +374,23 @@
     },
     data () {
       return {
+        sfcArr: [],
+        yszfArr: [],
+        rfsfArr: [],
+        sfArr: [],
+        morePlayArr: [],
         Vteam: '',
         Hteam: '',
         clickIndex: '',
-        morePlayArr: [],
-        bfArr: [],
-        zjqArr: [],
-        brqArr: [],
-        rqArr: [],
-        bqcArr: [],
-        bifenItems: ['1:0', '2:0', '2:1', '3:0', '3:1', '3:2', '4:0', '4:1', '4:2', '5:0', '5:1', '5:2', '胜其他', '0:0', '1:1', '2:2', '3:3', '平其他', '0:1', '0:2', '1:2', '0:3', '1:3', '2:3', '0:4', '1:4', '2:4', '0:5', '1:5', '2:5', '负其他'],
-        bqcItems: ['胜胜', '胜平', '胜负', '平胜', '平平', '平负', '负胜', '负平', '负负'],
         // 混合玩法-更多玩法
         isShowMorePlay: false,
-        changeBall: 0,
         isChangeIcon: 0,
         isShowGames: 0,
         weekGameArr: [],
         isMainShow: true,
         isInsShow: false,
-        MethodsArr: ['混合过关', '胜负平', '让球胜平负', '总进球', '比分', '半全场'],
+        changeBall: 0,
+        MethodsArr: ['混合过关', '胜负', '让分胜负', '胜分差', '大小分'],
         MoreArr: [
           {
             'moreName': '开奖详情',
@@ -450,50 +400,50 @@
             'moreName': '玩法说明',
             'moreIndex': 'shuoming'
           }
-        ]
+        ],
+        shengfenchaArr: ['1-5', '6-10', '11-15', '16-20', '21-25', '26分+', '1-5', '6-10', '11-15', '16-20', '21-25', '26分+']
       }
     },
     methods: {
-      // 获取竞彩足球数据
-      fecthSoccerData () {
+      // 获取竞彩蓝球数据
+      fecthBasketballData () {
         this.$request({
           type: 'get',
-          url: '/api/data/Handler.ashx?action=401&params={}',
+          url: '/api/data/Handler.ashx?action=410&params={}',
           success: function (res) {
             this.weekGameArr = res.data.data
 //            console.log(res.data.data)
           },
           failed: function (err) {
-            console.log('未找到竞彩足球数据:' + err)
+            console.log('未找到竞彩蓝球数据:' + err)
           }
         })
       },
-      // 获取更多玩法数据
+      // 获取竞彩蓝球数据
       fecthMorePlayData () {
         this.$request({
           type: 'get',
-          url: '/api/data/Handler.ashx?action=405&params={%22IssueNo%22:' + this.clickIndex + '}',
+          url: '/api/data/Handler.ashx?action=415&params={%22IssueNo%22:' + this.clickIndex + '}',
           success: function (res) {
             this.morePlayArr = res.data.data
-            this.bfArr = this.morePlayArr.SPCBF.split(',')
-            this.zjqArr = this.morePlayArr.SPJQS.split(',')
-            this.rqArr = this.morePlayArr.SPRQS.split(',')
-            this.brqArr = this.morePlayArr.SPSPF.split(',')
-            this.bqcArr = this.morePlayArr.SPBQC.split(',')
+            this.sfArr = this.morePlayArr.SPSF.split(',')
+            this.rfsfArr = this.morePlayArr.SPRFSF.split(',')
+            this.yszfArr = this.morePlayArr.SPDXF.split(',')
+            this.sfcArr = this.morePlayArr.SPSFC.split(',')
           },
           failed: function (err) {
-            console.log('未找到竞彩足球更多玩法数据:' + err)
+            console.log('未找到竞彩蓝球更多玩法数据:' + err)
           }
         })
-      },
-      // 不同玩法对应投注
-      changeSelectBall (index) {
-        this.changeBall = index
       },
       // 玩法介绍显示
       isInstructionShow () {
         this.isMainShow = !this.isMainShow
         this.isInsShow = !this.isInsShow
+      },
+      // 不同玩法对应投注
+      changeSelectBall (index) {
+        this.changeBall = index
       },
       // 点击折叠条
       clickBanner (index) {
@@ -521,25 +471,27 @@
       }
     },
     mounted () {
-      this.fecthSoccerData()
+      this.fecthBasketballData()
     }
   }
 </script>
 
 <style scoped lang="less">
   @import "../../../common/css/style.less";
-  .soccer_wrap {
+
+  .basketball_wrap {
     width: 100%;
     height: 169vmin;
     background-color: #f7f9fa;
-    .soccer_main {
+    /*主内容*/
+    .basketball_main {
       background-color: #f7f9fa;
       width: 100%;
       padding-top: 11.73333vmin;
-      /*混合过关*/
-      .soccer_hunheguoguan {
+      /*混合*/
+      .basketball_hunheguoguan {
         width: 100%;
-        .soccer_weekGame {
+        .basketball_weekGame {
           width: 100%;
           /*比赛折叠条*/
           .weekGame_banner {
@@ -561,7 +513,6 @@
             i {
               font-size: 5.26667vmin;
               color: #c7c7c7;
-              /*transform: rotate(180deg);*/
             }
             .icon-jiantou2-change {
               transform: rotate(180deg);
@@ -570,12 +521,13 @@
           /*比赛*/
           .weekGame_games {
             width: 100%;
+            border-bottom: 1px solid #e6e6e6;
             .games {
               box-sizing: border-box;
               display: flex;
               align-items: center;
               justify-content: flex-start;
-              height: 30.66667vmin;
+              height: 48.66667vmin;
               margin: 0 2.66667vmin;
               border-bottom: 1px solid #e6e6e6;
               /*box-sizing: border-box;*/
@@ -604,22 +556,8 @@
                   /*box-sizing: border-box;*/
                   display: flex;
                   align-items: center;
-                  justify-content: flex-start;
-                  position: relative;
-                  b {
-                    position: absolute;
-                    left: 0;
-                    top: -4vmin;
-                    width: 3.73333vmin;
-                    display: inline-block;
-                    font-weight: 400;
-                    font-size: 5.33333vmin;
-                    -webkit-transform: scale(.5);
-                    transform: scale(.5);
-                    line-height: 1.2;
-                  }
+                  justify-content: center;
                   span {
-                    margin-left: 7.66667vmin;
                     margin-bottom: 2.66667vmin;
                     font-size: 3.73333vmin;
                     display: inline-block;
@@ -628,6 +566,11 @@
                     white-space: nowrap;
                     strong {
                       margin: 0 4vmin;
+                      font-weight: 400;
+                    }
+                    b {
+                      font-size: 3.2vmin;
+                      color: @color-text-gray;
                       font-weight: 400;
                     }
                   }
@@ -642,33 +585,26 @@
                       font-size: 3.46667vmin;
                       background-color: white;
                     }
-                    .burangqiu {
+                    .table_left {
                       border: none;
+                      height: 11.73333vmin;
                       width: 3.73333vmin;
                       font-size: 2.93333vmin;
                       text-align: center;
-                      background: #e6e6e6;
-                      height: 9.6vmin;
-                      vertical-align: middle
-                    }
-                    .rangqiu {
+                      background: #34ccc3;
+                      vertical-align: middle;
                       color: white;
-                      border: none;
-                      width: 3.73333vmin;
-                      font-size: 2.93333vmin;
-                      text-align: center;
-                      background: @color-red;
-                      height: 9.6vmin;
-                      vertical-align: middle
                     }
-                    .rangqiuBlue {
-                      background: @color-blue;
+                    .table_left_two {
+                      background-color: #fbb52f;
                     }
-                    .sheng_top {
-                      height: 9.6vmin;
+                    .table_left_three {
+                      background-color: #36a8f8;
+                    }
+                    .table_center {
+                      height: 11.73333vmin;
                       box-sizing: border-box;
                       border: 1px solid #e6e6e6;
-                      font-size: 3.46667vmin;
                       text-align: center;
                       p {
                         display: flex;
@@ -677,12 +613,22 @@
                         box-sizing: border-box;
                         /*text-align: center;*/
                         span {
-                          width: 20.5vmin;
+                          width: 31.5vmin;
                           display: flex;
                           align-items: center;
                           justify-content: center;
+                          flex-direction: column;
                           height: 100%;
                           border-right: 1px solid #e6e6e6;
+                          strong {
+                            color: @color-blue;
+                          }
+                          .fenRed {
+                            color: @color-red;
+                          }
+                          b:first-child {
+                            margin-bottom: 1.5vmin;
+                          }
                         }
                         span:last-child {
                           border: none;
@@ -707,15 +653,15 @@
             }
           }
         }
-        .soccer_weekGame:last-child {
+        .basketball_weekGame:last-child {
           margin-bottom: 13.33333vmin;
         }
       }
-      /*胜平负\让球胜平负*/
-      .soccer_shengpingfu {
-        background-color: white;
+      /*胜负\让分胜负\大小分*/
+      .basketball_shengpingfu {
+        background-color: #f7f9fa;
         width: 100%;
-        .soccer_weekGame {
+        .basketball_weekGame {
           width: 100%;
           /*比赛折叠条*/
           .weekGame_banner {
@@ -784,7 +730,6 @@
                   justify-content: center;
                   position: relative;
                   span {
-                    margin-left: 7.66667vmin;
                     margin-bottom: 2.66667vmin;
                     font-size: 3.73333vmin;
                     display: inline-block;
@@ -795,6 +740,21 @@
                       margin: 0 4vmin;
                       font-weight: 400;
                     }
+                    b {
+                      font-size: 3.2vmin;
+                      color: #999;
+                    }
+                  }
+                  .title_Num {
+                    font-size: 3.73333vmin;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    margin-right: 1.33333vmin;
+                    color: @color-blue;
+                  }
+                  .title_Num_red {
+                    color: @color-red;
                   }
                 }
                 table {
@@ -807,11 +767,10 @@
                       font-size: 3.46667vmin;
                       background-color: white;
                     }
-                    .sheng_top {
+                    .table_center {
                       height: 11.73333vmin;
                       box-sizing: border-box;
                       border: 1px solid #e6e6e6;
-                      font-size: 3.73333vmin;
                       text-align: center;
                       p {
                         display: flex;
@@ -819,22 +778,26 @@
                         height: 100%;
                         box-sizing: border-box;
                         /*text-align: center;*/
-                        .sheng_top_block {
-                          width: 25.3vmin;
+                        span {
+                          width: 38vmin;
                           display: flex;
                           align-items: center;
                           justify-content: center;
+                          flex-direction: column;
                           height: 100%;
                           border-right: 1px solid #e6e6e6;
-                          flex-direction: column;
-                          span {
-                            margin-bottom: .66667vmin;
+                          strong {
+                            color: @color-blue;
                           }
-                          span:last-child{
-                            color: #666;
+                          b:first-child {
+                            font-size: 3.73333vmin;
+                            margin-bottom: 1.1vmin;
+                          }
+                          b:last-child {
+                            color: #666
                           }
                         }
-                        .sheng_top_block:last-child {
+                        span:last-child {
                           border: none;
                         }
                       }
@@ -848,140 +811,13 @@
             }
           }
         }
-        .soccer_weekGame:last-child {
+        .basketball_weekGame:last-child {
           margin-bottom: 13.33333vmin;
         }
       }
-      /*总进球*/
-      .soccer_zongjinqiu {
-        background-color: white;
-        width: 100%;
-        .soccer_weekGame {
-          width: 100%;
-          /*比赛折叠条*/
-          .weekGame_banner {
-            width: 100%;
-            background-color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 4vmin;
-            height: 12.8vmin;
-            box-sizing: border-box;
-            border-bottom: 1px solid #eee;
-            .banner_left {
-              span {
-                margin-left: 3.46667vmin;
-                font-size: 3.46667vmin;
-              }
-            }
-            i {
-              font-size: 5.26667vmin;
-              color: #c7c7c7;
-              /*transform: rotate(180deg);*/
-            }
-            .icon-jiantou2-change {
-              transform: rotate(180deg);
-            }
-          }
-          /*比赛*/
-          .weekGame_games {
-            width: 100%;
-            .games {
-              padding: 1.2vmin 0;
-              position: relative;
-              /*box-sizing: border-box;*/
-              display: flex;
-              align-items: center;
-              justify-content: flex-start;
-              height: 25.33333vmin;
-              margin: 0 2.66667vmin;
-              border-bottom: 1px solid #e6e6e6;
-              img {
-                position: absolute;
-                top: 0;
-                left: -11px;
-                width: 5.06667vmin;
-                height: 3.2vmin;
-              }
-              .games_left {
-                width: 15vmin;
-                height: 100%;
-                font-size: 2.93333vmin;
-                font-weight: 400;
-                margin-right: 2.4vmin;
-                color: @color-text-black;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                span {
-                  text-overflow: ellipsis;
-                  display: block;
-                  margin-bottom: 1.8vmin;
-                  white-space: nowrap;
-                }
-              }
-              .games_right {
-                box-sizing: border-box;
-                .right_title {
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  position: relative;
-                  span {
-                    /*margin-left: 7.66667vmin;*/
-                    margin-bottom: 2.66667vmin;
-                    font-size: 3.73333vmin;
-                    display: inline-block;
-                    font-weight: 700;
-                    color: #5d5d5d;
-                    white-space: nowrap;
-                    strong {
-                      margin: 0 4vmin;
-                      font-weight: 400;
-                    }
-                  }
-                }
-                table {
-                  width: 100%;
-                  border: 1px solid #e6e6e6;
-                  color: @color-text-black;
-                  tr {
-                    border: 1px solid #e6e6e6;
-                    background-color: white;
-                    td {
-                      color: #666;
-                      width: 20.73333vmin;
-                      height: 7.73333vmin;
-                      box-sizing: border-box;
-                      font-size: 3.2vmin;
-                      text-align: center;
-                      border-right: 1px solid #e6e6e6;
-                      vertical-align: middle;
-                      span {
-                        font-weight: 400;
-                        b {
-                          margin-right: 2vmin;
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-            .games:last-child {
-              border: none;
-            }
-          }
-        }
-        .soccer_weekGame:last-child {
-          margin-bottom: 13.33333vmin;
-        }
-      }
-      /*比分*/
-      .soccer_bifen {
-        background-color: white;
+      /*胜分差*/
+      .basketball_fencha {
+        background-color: #f7f9fa;
         width: 100%;
         .soccer_weekGame {
           width: 100%;
@@ -1057,8 +893,7 @@
                   justify-content: center;
                   position: relative;
                   span {
-                    /*margin-left: 7.66667vmin;*/
-                    margin-bottom: 2.66667vmin;
+                    margin-bottom: 3.66667vmin;
                     font-size: 3.73333vmin;
                     display: inline-block;
                     font-weight: 700;
@@ -1095,13 +930,9 @@
           margin-bottom: 13.33333vmin;
         }
       }
-      .weekGame_games{
-        border-bottom: 1px solid #e6e6e6;
-      }
     }
     /*更多玩法*/
     .morePlays {
-      /*height: 500px;*/
       width: 100%;
       .morePlay {
         background-color: @color-background-gray;
@@ -1126,9 +957,8 @@
         .morePlay_select {
           margin: 0 2.93333vmin;
           font-size: 1.86667vmin;
-          /*混合*/
-          .morePlay_hunhe {
-            /*height: 18.13333vmin;*/
+          /*胜负*/
+          .morePlay_shengfu {
             width: 100%;
             font-size: 3.46667vmin;
             color: @color-text-black;
@@ -1136,372 +966,244 @@
             align-items: center;
             margin-bottom: 2.3vmin;
             /*左*/
-            .hunhe_left {
+            .shengfu_left {
+              background-color: #36a8f8;
+              width: 6.9vmin;
+              height: 11.73333vmin;
+              display: flex;
+              justify-content: center;
+              text-align: center;
+              font-size: 1.86667vmin;
               span {
-                width: 6.9vmin;
-                height: 18.13333vmin/2;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              }
-              .hunhe_left_top {
-                background-color: rgb(224, 224, 224);
-              }
-              .hunhe_left_bottom {
-                background-color: @color-red;
+                writing-mode: vertical-rl;
                 color: white;
-              }
-              .hunhe_left_bottom_add {
-                background-color: @color-blue;
               }
             }
             /*右*/
-            .hunhe_right {
+            .shengfu_right {
               border-top: 1px solid #e6e6e6;
               display: flex;
               align-items: center;
               flex-wrap: wrap;
               span {
                 background-color: white;
-                height: 8.9vmin;
-                width: 28.8vmin;
+                height: 11.73333vmin;
+                width: 43.33333vmin;
                 border-right: 1px solid #e6e6e6;
                 border-bottom: 1px solid #e6e6e6;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                b:last-child{
+                flex-direction: column;
+                b:last-child {
                   color: #666;
                 }
                 b:first-child {
-                  margin-right: 7vmin;
+                  margin-bottom: 1.2vmin;
                 }
               }
             }
           }
-          /*总进球*/
-          .morePlay_zongjinqiu {
-            margin-bottom: 2.3vmin;
-            /*height: 18.13333vmin;*/
+          /*让分胜负*/
+          .morePlay_rangfen {
             width: 100%;
             font-size: 3.46667vmin;
             color: @color-text-black;
             display: flex;
             align-items: center;
+            margin-bottom: 2.3vmin;
+            box-sizing: border-box;
             /*左*/
-            .zongjinqiu_left {
-              height: 18.13333vmin;
+            .rangfen_left {
               background-color: #34ccc3;
+              width: 6.9vmin;
+              height: 19.6vmin;
+              display: flex;
+              justify-content: center;
+              text-align: center;
+              font-size: 1.86667vmin;
               span {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                height: 100%;
                 writing-mode: vertical-rl;
-                letter-spacing: .53333vmin;
-                font-size: 3.2vmin;
-                width: 6.9vmin;
                 color: white;
               }
             }
-            .zongjinqiu_right {
+            /*右*/
+            .rangfen_right {
               border-top: 1px solid #e6e6e6;
               display: flex;
               align-items: center;
+              flex-direction: column;
+              /*justify-content: center;*/
               flex-wrap: wrap;
-              span {
-                background-color: white;
-                height: 18.13333vmin/2;
-                width: 21.5vmin;
-                border-right: 1px solid #e6e6e6;
-                border-bottom: 1px solid #e6e6e6;
+              div{
                 display: flex;
                 align-items: center;
-                justify-content: center;
-                b{
-                  width:21.5vmin/2;
+                span {
+                  background-color: white;
+                  height: 11.73333vmin;
+                  width: 43.33333vmin;
+                  border-right: 1px solid #e6e6e6;
+                  border-bottom: 1px solid #e6e6e6;
                   display: flex;
+                  align-items: center;
                   justify-content: center;
-                  em{
-                    font-style: normal;
+                  flex-direction: column;
+                  b:last-child {
+                    color: #666;
+                  }
+                  b:first-child {
+                    margin-bottom: 1.2vmin;
                   }
                 }
-                b:last-child{
-                  color: #666;
-                }
               }
-            }
-          }
-          /*半全场*/
-          .morePlay_banquanchang {
-            margin-bottom: 2.13333vmin;
-            /*height: 18.13333vmin;*/
-            width: 100%;
-            font-size: 3.46667vmin;
-            color: @color-text-black;
-            display: flex;
-            align-items: center;
-            /*左*/
-            .banquanchang_left {
-              height: 27.06667vmin;
-              background-color: #36a8f8;
-              span {
+              p{
+                width: 43.33333vmin*2;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                height: 100%;
-                writing-mode: vertical-rl;
-                letter-spacing: .53333vmin;
-                font-size: 3.2vmin;
-                width: 6.9vmin;
-                color: white;
-              }
-            }
-            .banquanchang_right {
-              border-top: 1px solid #e6e6e6;
-              display: flex;
-              align-items: center;
-              flex-wrap: wrap;
-              span {
-                background-color: white;
-                height: 8.8vmin;
-                width: 28.82vmin;
                 border-right: 1px solid #e6e6e6;
                 border-bottom: 1px solid #e6e6e6;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                background-color: #f7f9fa;
+                color: #666;
+                height: 7.73333vmin;
                 b{
-                  width:28.82vmin/2;
+                  color:@color-red;
+                }
+              }
+            }
+          }
+          /*预设总分*/
+          .morePlay_yushezongfen {
+            width: 100%;
+            font-size: 3.46667vmin;
+            color: @color-text-black;
+            display: flex;
+            align-items: center;
+            margin-bottom: 2.3vmin;
+            box-sizing: border-box;
+            /*左*/
+            .yushezongfen_left {
+              background-color: #6b8dff;
+              width: 6.9vmin;
+              height: 19.6vmin;
+              display: flex;
+              justify-content: center;
+              text-align: center;
+              font-size: 1.86667vmin;
+              span {
+                writing-mode: vertical-rl;
+                color: white;
+              }
+            }
+            /*右*/
+            .yushezongfen_right {
+              border-top: 1px solid #e6e6e6;
+              display: flex;
+              align-items: center;
+              flex-direction: column;
+              flex-wrap: wrap;
+              div{
+                display: flex;
+                align-items: center;
+                span {
+                  background-color: white;
+                  height: 11.73333vmin;
+                  width: 43.33333vmin;
+                  border-right: 1px solid #e6e6e6;
+                  border-bottom: 1px solid #e6e6e6;
                   display: flex;
+                  align-items: center;
                   justify-content: center;
+                  flex-direction: column;
+                  b:last-child {
+                    color: #666;
+                  }
+                  b:first-child {
+                    margin-bottom: 1.2vmin;
+                  }
                 }
-                b:last-child{
-                  color: #666;
+              }
+              p{
+                width: 43.33333vmin*2;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-right: 1px solid #e6e6e6;
+                border-bottom: 1px solid #e6e6e6;
+                background-color: #f7f9fa;
+                color: #666;
+                height: 7.73333vmin;
+                b{
+                  color:@color-red;
                 }
               }
             }
           }
-          /*比分*/
-          .morePlay_bifen {
-            margin-bottom: 2.13333vmin;
-            /*height: 18.13333vmin;*/
+          /*胜分差1*/
+          .morePlay_shengfencha {
             width: 100%;
             font-size: 3.46667vmin;
             color: @color-text-black;
             display: flex;
             align-items: center;
+            margin-bottom: 2.3vmin;
+            box-sizing: border-box;
             /*左*/
-            .bifen_left {
-              height: 54.13333vmin;
+            .shengfencha_left {
               background-color: #fbb52f;
+              width: 6.9vmin;
+              height: 31.2vmin;
+              display: flex;
+              justify-content: center;
+              text-align: center;
+              font-size: 1.86667vmin;
               span {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                height: 100%;
                 writing-mode: vertical-rl;
-                letter-spacing: .53333vmin;
-                font-size: 3.2vmin;
-                width: 6.9vmin;
                 color: white;
               }
             }
+            .fenchaBlue{
+              background-color: #36a8f8;
+            }
             /*右*/
-            .bifen_right {
+            .shengfencha_right {
               border-top: 1px solid #e6e6e6;
               display: flex;
               align-items: center;
+              flex-direction: column;
               flex-wrap: wrap;
-              span {
-                background-color: white;
-                height: 10.5vmin;
-                width: 12.2vmin;
+              div{
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                span {
+                  background-color: white;
+                  height: 11.73333vmin;
+                  width: 28.8vmin;
+                  border-right: 1px solid #e6e6e6;
+                  border-bottom: 1px solid #e6e6e6;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  flex-direction: column;
+                  b:last-child {
+                    color: #666;
+                  }
+                  b:first-child {
+                    margin-bottom: 1.2vmin;
+                  }
+                }
+              }
+              p{
+                width: 43.33333vmin*2;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 border-right: 1px solid #e6e6e6;
                 border-bottom: 1px solid #e6e6e6;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                b:first-child {
-                  margin-bottom: 1.6vmin;
-                }
-                b:last-child {
-                  color: #666;
-                }
-              }
-              .doubleW {
-                width: 12.3vmin*2;
-              }
-              .treW {
-                width: 37vmin;
-              }
-            }
-          }
-          /*比分-主胜*/
-          .morePlay_bifen_zhusheng {
-            margin-bottom: 2.13333vmin;
-            /*height: 18.13333vmin;*/
-            width: 100%;
-            font-size: 3.46667vmin;
-            color: @color-text-black;
-            display: flex;
-            align-items: center;
-            /*左*/
-            .bifen_left {
-              height: 54.13333vmin/5*2;
-              background-color: #fbb52f;
-              span {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                height: 100%;
-                writing-mode: vertical-rl;
-                letter-spacing: .53333vmin;
-                font-size: 3.2vmin;
-                width: 6.9vmin;
-                color: white;
-              }
-            }
-            /*右*/
-            .bifen_right {
-              border-top: 1px solid #e6e6e6;
-              display: flex;
-              align-items: center;
-              flex-wrap: wrap;
-              span {
-                background-color: white;
-                height: 10.5vmin;
-                width: 12.2vmin;
-                border-right: 1px solid #e6e6e6;
-                border-bottom: 1px solid #e6e6e6;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                b:first-child {
-                  margin-bottom: 1.6vmin;
-                }
-                b:last-child {
-                  color: #666;
-                }
-              }
-              .doubleW {
-                width: 12.3vmin*2;
-              }
-              .treW {
-                width: 37vmin;
-              }
-            }
-          }
-          /*比分-平*/
-          .morePlay_bifen_ping {
-            margin-bottom: 2.13333vmin;
-            /*height: 18.13333vmin;*/
-            width: 100%;
-            font-size: 3.46667vmin;
-            color: @color-text-black;
-            display: flex;
-            align-items: center;
-            /*左*/
-            .bifen_left {
-              height: 54.13333vmin/5;
-              background-color: @color-blue;
-              span {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                height: 100%;
-                writing-mode: vertical-rl;
-                letter-spacing: .53333vmin;
-                font-size: 3.2vmin;
-                width: 6.9vmin;
-                color: white;
-              }
-            }
-            /*右*/
-            .bifen_right {
-              border-top: 1px solid #e6e6e6;
-              display: flex;
-              align-items: center;
-              flex-wrap: wrap;
-              span {
-                background-color: white;
-                height: 10.5vmin;
-                width: 12.2vmin;
-                border-right: 1px solid #e6e6e6;
-                border-bottom: 1px solid #e6e6e6;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                b:first-child {
-                  margin-bottom: 1.6vmin;
-                }
-                b:last-child {
-                  color: #666;
-                }
-              }
-              .doubleW {
-                width: 12.3vmin*2;
-              }
-              .treW {
-                width: 37vmin;
-              }
-            }
-          }
-          /*比分-客胜*/
-          .morePlay_bifen_kesheng {
-            margin-bottom: 2.13333vmin;
-            width: 100%;
-            font-size: 3.46667vmin;
-            color: @color-text-black;
-            display: flex;
-            align-items: center;
-            /*左*/
-            .bifen_left {
-              height: 54.13333vmin/5*2;
-              background-color: #34ccc3;
-              span {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                height: 100%;
-                writing-mode: vertical-rl;
-                letter-spacing: .53333vmin;
-                font-size: 3.2vmin;
-                width: 6.9vmin;
-                color: white;
-              }
-            }
-            /*右*/
-            .bifen_right {
-              border-top: 1px solid #e6e6e6;
-              display: flex;
-              align-items: center;
-              flex-wrap: wrap;
-              span {
-                background-color: white;
-                height: 10.5vmin;
-                width: 12.2vmin;
-                border-right: 1px solid #e6e6e6;
-                border-bottom: 1px solid #e6e6e6;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                b:first-child {
-                  margin-bottom: 1.6vmin;
-                }
-                b:last-child {
-                  color: #666;
-                }
-              }
-              .doubleW {
-                width: 12.3vmin*2;
-              }
-              .treW {
-                width: 37vmin;
+                background-color: #f7f9fa;
+                color: #666;
+                height: 7.73333vmin;
               }
             }
           }

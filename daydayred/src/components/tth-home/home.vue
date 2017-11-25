@@ -207,6 +207,8 @@
           this.$router.push({path: '/doubleColorBall'})
         } else if (index === 0) {
           this.$router.push({path: '/soccer'})
+        } else if (index === 2) {
+          this.$router.push({path: '/basketball'})
         }
       },
       // 转活动子页面
