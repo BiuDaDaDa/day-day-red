@@ -10,9 +10,10 @@ import Fucai3D from '@/components/tth-home/tth-buy/Fucai3d'
 import SuperLotto from '@/components/tth-home/tth-buy/SuperLotto'
 import DoubleColorBall from '@/components/tth-home/tth-buy/DoubleColorBall'
 import Soccer from '@/components/tth-home/tth-buy/Soccer'
+import Basketball from '@/components/tth-home/tth-buy/Basketball'
 export default [
   {
-    path: '/home',
+    path: '/',
     name: 'Home',
     component: Home
   },
@@ -70,5 +71,10 @@ export default [
     path: '/soccer',
     name: 'Soccer',
     component: Soccer
+  },
+  {
+    path: '/basketball',
+    name: 'Basketball',
+    component: Basketball
   }
 ]

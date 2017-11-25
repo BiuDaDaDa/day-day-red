@@ -80,12 +80,12 @@
     <img id="documengtary_bgimg" src="../../assets/tth-documentary/NoDate.png" v-if="this.plans.length <= 0">
     <!-- 暂无彩帝数据 -->
     <div id="documengtary_no" v-if="this.plans.length <= 0">暂无彩帝数据</div>
-    <zj-footer></zj-footer>
+    <my-footer></my-footer>
   </div>
 </template>
-
 <script>
-  import ZjFooter from '../../components/tth-documentary/Footer.vue'
+  import MyFooter from '../../components/Footer.vue'
+  import {Indicator} from 'mint-ui'
   export default {
     name: 'Documentary',
     data () {
@@ -138,6 +138,7 @@
               }
             }
             this.counts = counts
+            Indicator.close()
           },
           failed: function () {}
         })
@@ -159,9 +160,10 @@
       }
     },
     components: {
-      ZjFooter
+      MyFooter
     },
     mounted () {
+      Indicator.open('加载中')
       this.rankingData()
       this.recommendData()
     }

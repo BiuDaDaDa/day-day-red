@@ -72,7 +72,11 @@
   </div>
 </template>
 <script>
+<<<<<<< HEAD
 //  import {Indicator} from 'mint-ui'
+=======
+  import ScoreFooter from '../../components/Footer.vue'
+>>>>>>> 1815417601832cc4f99a3f792749ee685c57cc4e
   export default {
     name: 'Score',
     data () {
