@@ -80,7 +80,7 @@
         WeekDay: '',
         isShowInfo: true,
         number: 0,
-        IssueName: '20171124',
+        IssueName: '20171125',
         i: -1,
         // 下拉列表
         slots: [
@@ -148,8 +148,8 @@
       },
       goDay () {
         // 点击下一期翻看后一个记录
-        if (this.IssueName > 20171123) {
-          this.IssueName = 20171123
+        if (this.IssueName > 20171124) {
+          this.IssueName = 20171124
           Toast({
             message: '已到最后一期',
             duration: 1500

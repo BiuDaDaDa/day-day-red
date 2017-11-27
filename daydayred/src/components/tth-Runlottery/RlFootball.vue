@@ -85,7 +85,7 @@
         Today: [],
         WeekDay: '',
         // id拼接字符
-        IssueName: '20171126',
+        IssueName: '20171127',
         isShowInfo: true,
         // 头部第一个li
         i: -1,
@@ -155,8 +155,8 @@
       },
       goDay () {
         // 下一期
-        if (parseInt(this.IssueName) > 20171125) {
-          this.IssueName = '20171125'
+        if (parseInt(this.IssueName) > 20171126) {
+          this.IssueName = '20171126'
           console.log(this.IssueName)
           Toast({
             message: '已到最后一期',
