@@ -10,27 +10,28 @@
       <img src="../../assets/tth-documentary/join.png">
       </router-link>
     </div>
+    <new-documentaryrank></new-documentaryrank>
     <!-- ranking:彩帝排行 -->
-    <div id="documengtary_ranking_wrap">
-      <!-- title -->
-      <router-link to="/rank">
-      <h6>
-        <span>彩帝排行</span>
-        <i class="iconfont icon-arrow-right"></i>
-      </h6>
-      </router-link>
+    <!--<div id="documengtary_ranking_wrap">-->
+      <!--&lt;!&ndash; title &ndash;&gt;-->
+      <!--<router-link to="/rank">-->
+      <!--<h6>-->
+        <!--<span>彩帝排行</span>-->
+        <!--<i class="iconfont icon-arrow-right"></i>-->
+      <!--</h6>-->
+      <!--</router-link>-->
       <!-- body  -->
-      <div id="documengtary_ranking_body-wrap">
-        <div class="documengtary_ranking_body" v-for="(god,index,key) in halfgods" @click="clicked(index)">
-          <div class="documengtary_ranking_body_avatar"><img :src="god.avatar"></div>
-          <div class="documengtary_ranking_body_username">{{(god.nick).split('',5).join('')}}</div>
-          <div class="documengtary_ranking_body_grade">近{{(god.hitState).split('').length}}中{{parseInt((god.hitState.split('').length) * parseInt(god.hitRate) / 100)}}</div>
-          <div class="now" v-if="god.recommend > 0">
-            {{god.recommend}}
-          </div>
-        </div>
-      </div>
-    </div>
+      <!--<div id="documengtary_ranking_body-wrap">-->
+        <!--<div class="documengtary_ranking_body" v-for="(god,index,key) in halfgods" @click="clicked(index)">-->
+          <!--<div class="documengtary_ranking_body_avatar"><img :src="god.avatar"></div>-->
+          <!--<div class="documengtary_ranking_body_username">{{(god.nick).split('',5).join('')}}</div>-->
+          <!--<div class="documengtary_ranking_body_grade">近{{(god.hitState).split('').length}}中{{parseInt((god.hitState.split('').length) * parseInt(god.hitRate) / 100)}}</div>-->
+          <!--<div class="now" v-if="god.recommend > 0">-->
+            <!--{{god.recommend}}-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
     <!-- recommend:彩帝推荐 -->
     <div id="documengtary_recommend_wrap">
       <div id="documengtary_recommend_title">
@@ -86,35 +87,36 @@
 <script>
   import MyFooter from '../../components/Footer.vue'
   import {Indicator} from 'mint-ui'
+  import NewDocumentaryrank from '../../components/tth-documentary/NewDocumentaryRank.vue'
   export default {
     name: 'Documentary',
     data () {
       return {
-        halfgods: [],
+//        halfgods: [],
         plans: [],
         counts: [],
         gods: []
       }
     },
     methods: {
-      rankingData () {
-        this.$request({
-          type: 'get',
-          url: 'api/master/master/rank',
-          headers: {},
-          params: {},
-          success: function (res) {
-//            console.log(parseInt((res.data.data.gods[2].hitState.split('').length) * parseInt(res.data.data.gods[1].hitRate) / 100))
-            this.halfgods = (res.data.data.gods).slice(0, 5)
-            for (let i = 0; i < (res.data.data.gods).length; i++) {
-              if (res.data.data.gods[i].avatar === '') {
-                res.data.data.gods[i].avatar = '../../src/assets/tth-documentary/tth-user.png'
-              }
-            }
-          },
-          failed: function () {}
-        })
-      },
+//      rankingData () {
+//        this.$request({
+//          type: 'get',
+//          url: 'api/master/master/rank',
+//          headers: {},
+//          params: {},
+//          success: function (res) {
+//           console.log(parseInt((res.data.data.gods[2].hitState.split('').length) * parseInt(res.data.data.gods[1].hitRate) / 100))
+//            this.halfgods = (res.data.data.gods).slice(0, 5)
+//            for (let i = 0; i < (res.data.data.gods).length; i++) {
+//              if (res.data.data.gods[i].avatar === '') {
+//                res.data.data.gods[i].avatar = '../../src/assets/tth-documentary/tth-user.png'
+//              }
+//            }
+//          },
+//          failed: function () {}
+//        })
+//      },
       recommendData () {
         this.$request({
           type: 'get',
@@ -143,11 +145,11 @@
           failed: function () {}
         })
       },
-      clicked (index) {
-        let godsrankUid = this.halfgods[index].uid
-        this.$router.push('/particulars/' + godsrankUid)
+//      clicked (index) {
+//        let godsrankUid = this.halfgods[index].uid
+//        this.$router.push('/particulars/' + godsrankUid)
 //        console.log(godsrankUid)
-      },
+//      },
       recommendClick (index) {
         let godsrankUid = this.plans[index].uid
         this.$router.push('/particulars/' + godsrankUid)
@@ -160,11 +162,12 @@
       }
     },
     components: {
-      MyFooter
+      MyFooter,
+      NewDocumentaryrank
     },
     mounted () {
       Indicator.open('加载中')
-      this.rankingData()
+//      this.rankingData()
       this.recommendData()
     }
   }
@@ -203,90 +206,90 @@
   }
 
   /* 彩帝排行 */
-  #documengtary_ranking_wrap{
-    width: 100%;
-    background: @color-background-white;
-    padding: 4vmin 3.2vmin;
-    margin-bottom: 2.66667vmin;
-    box-sizing: border-box;
-  }
+  /*#documengtary_ranking_wrap{*/
+    /*width: 100%;*/
+    /*background: @color-background-white;*/
+    /*padding: 4vmin 3.2vmin;*/
+    /*margin-bottom: 2.66667vmin;*/
+    /*box-sizing: border-box;*/
+  /*}*/
   /* title */
-  #documengtary_ranking_wrap h6{
-    display: flex;
-    line-height: 1;
-    height: 4.26667vmin;
-    font-size: 4.26667vmin;
-    border-left: .8vmin solid #ff5f5f;
-    padding-left: 1.6vmin;
-    margin-bottom: 4vmin;
-  }
-  #documengtary_ranking_wrap h6 span{
-    width: 85vmin;
-    font-weight: bold;
-    color: @color-text-black;
-  }
-  .icon-arrow-right{
-    color: #CFCFCF;
-    font-size: 4vmin;
-    margin-top: .2vmin;
-  }
+  /*#documengtary_ranking_wrap h6{*/
+    /*display: flex;*/
+    /*line-height: 1;*/
+    /*height: 4.26667vmin;*/
+    /*font-size: 4.26667vmin;*/
+    /*border-left: .8vmin solid #ff5f5f;*/
+    /*padding-left: 1.6vmin;*/
+    /*margin-bottom: 4vmin;*/
+  /*}*/
+  /*#documengtary_ranking_wrap h6 span{-->*/
+    /*<!--width: 85vmin;-->*/
+    /*<!--font-weight: bold;-->*/
+    /*<!--color: @color-text-black;-->*/
+  /*<!--}*/
+  /*.icon-arrow-right{*/
+    /*color: #CFCFCF;*/
+    /*font-size: 4vmin;*/
+    /*margin-top: .2vmin;*/
+  /*}*/
   /* body */
-  #documengtary_ranking_body-wrap{
-    width: 100%;
-    overflow: hidden;
-    display: flex;
-    justify-content: space-between;
-    box-sizing: border-box;
-  }
-  .documengtary_ranking_body{
-    width: 21.33333vmin;
-    position: relative;
-  }
-  .now{
-    position: absolute;
-    width: 4vmin;
-    height: 4vmin;
-    line-height: 4vmin;
-    text-align: center;
-    background: #ff5f5f;
-    font-size: 3.2vmin;
-    color: #fff;
-    border-radius: 50%;
-    display: block;
-    top: 0;
-    right: 1.93333vmin;
-    font-weight: 400;
-  }
-  .documengtary_ranking_body_avatar{
-    width: 13.06667vmin;
-    height: 13.06667vmin;
-    margin: 0 auto;
-  }
-  .documengtary_ranking_body_avatar img{
-    width: 13.06667vmin;
-    height: 13.06667vmin;
-    border-radius: 50%;
-  }
-  .documengtary_ranking_body_username{
-    margin-top: 2.06667vmin;
-    font-size: 3.2vmin;
-    height: 3.2vmin;
-    color: #666;
-    line-height: 1;
-    font-weight: 400;
-    text-align: center;
-  }
-  .documengtary_ranking_body_grade{
-    height: 4vmin;
-    background: #ff5f5f;
-    color: #fff;
-    border-radius: 4vmin;
-    margin: 1.33333vmin 1.33333vmin 0;
-    text-align: center;
-    font-weight: 400;
-    font-size: 3vmin;
-    line-height: 1.3;
-  }
+  /*#documengtary_ranking_body-wrap{*/
+    /*width: 100%;*/
+    /*overflow: hidden;*/
+    /*display: flex;*/
+    /*justify-content: space-between;*/
+    /*box-sizing: border-box;*/
+  /*}*/
+  /*.documengtary_ranking_body{*/
+    /*width: 21.33333vmin;*/
+    /*position: relative;*/
+  /*}*/
+  /*.now{*/
+    /*position: absolute;*/
+    /*width: 4vmin;*/
+    /*height: 4vmin;*/
+    /*line-height: 4vmin;*/
+    /*text-align: center;*/
+    /*background: #ff5f5f;*/
+    /*font-size: 3.2vmin;*/
+    /*color: #fff;*/
+    /*border-radius: 50%;*/
+    /*display: block;*/
+    /*top: 0;*/
+    /*right: 1.93333vmin;*/
+    /*font-weight: 400;*/
+  /*}*/
+  /*.documengtary_ranking_body_avatar{*/
+    /*width: 13.06667vmin;*/
+    /*height: 13.06667vmin;*/
+    /*margin: 0 auto;*/
+  /*}*/
+  /*.documengtary_ranking_body_avatar img{*/
+    /*width: 13.06667vmin;*/
+    /*height: 13.06667vmin;*/
+    /*border-radius: 50%;*/
+  /*}*/
+  /*.documengtary_ranking_body_username{*/
+    /*margin-top: 2.06667vmin;*/
+    /*font-size: 3.2vmin;*/
+    /*height: 3.2vmin;*/
+    /*color: #666;*/
+    /*line-height: 1;*/
+    /*font-weight: 400;*/
+    /*text-align: center;*/
+  /*}*/
+  /*.documengtary_ranking_body_grade{*/
+    /*height: 4vmin;*/
+    /*background: #ff5f5f;*/
+    /*color: #fff;*/
+    /*border-radius: 4vmin;*/
+    /*margin: 1.33333vmin 1.33333vmin 0;*/
+    /*text-align: center;*/
+    /*font-weight: 400;*/
+    /*font-size: 3vmin;*/
+    /*line-height: 1.3;*/
+  /*}*/
 
   /* 彩帝推荐 */
   #documengtary_recommend_wrap{
