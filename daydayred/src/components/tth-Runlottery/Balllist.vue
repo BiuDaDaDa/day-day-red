@@ -11,7 +11,7 @@
       </div>
     </div>
     <ul id="all-number">
-      <li v-for="(item, index) in ssq" :class="{'active':!index}" class="hehe" @click="test">
+      <li v-for="(item, index) in ssq" :class="{'active':!index}"  @click="numberDetail(index)">
         <span>第{{item['Name']}}期 {{EndTime[index]}}</span>
         <div>
         <p id="getMoney">
@@ -19,11 +19,11 @@
         </p>
           <div v-if="!index" id="final-money">
             <div>
-              <span>{{item['Amount']}}<b>注</b>{{item['Money']}}<b>元</b></span>
+              <span>{{item['Amount']}}<b>注</b> {{item['Money']}}<b>元</b></span>
               <p>一等奖</p>
             </div>
             <div>
-              <span>{{item['TotalMoney']}} <b>元</b></span>
+              <span>{{item['TotalMoney']}}<b>元</b></span>
               <p>奖池</p>
             </div>
           </div>
@@ -41,11 +41,9 @@
     data () {
       return {
         ssq: {},
-        getNumbers: [],
-        getWeekDay: '',
-        getMTime: '',
         WinNumber: [],
-        EndTime: []
+        EndTime: [],
+        localID: ''
       }
     },
     methods: {
@@ -71,12 +69,18 @@
       backRl () {
         this.$router.push({path: '/runlottery'})
       },
-      test () {
+      numberDetail (index) {
         this.$router.push({path: '/balllistnext'})
+        this.localID = this.ssq[index]['ID']
       }
     },
     mounted () {
       this.testData()
+    },
+    beforeDestroy () {
+      this.$bus.emit('get', {
+        changeID: this.localID
+      })
     }
   }
 </script>
@@ -93,12 +97,14 @@
     width: 100%;
     height: 12vmin;
     background-color: @color-red;
+    display: flex;
+    justify-content: space-between;
   }
   .bl-nav > div {
     display: inline-block;
   }
   .bl-nav-left {
-    width: 30.6%;
+    width: 20%;
     height: 100%;
     // background-color: green;
     overflow: hidden;
@@ -108,19 +114,19 @@
     padding-left: 4vmin;
   }
   .bl-nav-right {
-    width: 30.6%;
+    width: 20%;
     height: 100%;
     // background-color: blue;
   }
   .bl-nav-title {
-    width: 30.6%;
+   // width: 30.6%;
     height: 100%;
     margin: 0 auto;
     overflow: hidden;
   }
   .bl-nav-title p {
     text-align: center;
-    font-size: 5.4vmin;
+    font-size: 5.5vmin;
     font-weight: 700;
     color: white;
     line-height: 12vmin;
@@ -167,7 +173,7 @@
     height: 6.66667vmin;
     float: right;
     color: @color-text-gray;
-    margin-top: -5.13333vmin;
+    margin-top: -8.13333vmin;
   }
   // 当天号码
   .active{
@@ -219,6 +225,7 @@
   }
   #final-money>div:first-child{
     margin-left: 4vmin;
+    margin-right: 1vmin;
   }
   #final-money>div p{
     font-size: 4vmin;
@@ -229,6 +236,7 @@
     font-size: 4vmin;
     text-align: center;
     color: #ff5f5f;
+    margin-bottom: 1.03333vmin;
   }
   #final-money>div b{
     color: @color-text-gray;

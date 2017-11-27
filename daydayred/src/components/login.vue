@@ -118,7 +118,6 @@
             type: 'get',
             url: '/api/user/Handler.ashx?action=702&params={' + myOtherUrl + '}',
             success: function (res) {
-              console.log(res)
               let Guid = res.data.data.Guid
               let myUrl = `"UserIDGuid":"${Guid}"`
               let myOtherUrl = encodeURI(myUrl)

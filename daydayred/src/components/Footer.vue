@@ -2,7 +2,7 @@
   <!--footer最父级-->
   <div id="footer_wrap">
     <!--路由跳转   footer_body: v-for生成的每一页,一共五页-->
-    <router-link :to='foot.to' class="footer_body" v-for="foot in footers" :key="foot.id">
+    <router-link :to='foot.to' class="footer_body" v-for="foot in footers" :key="foot.num">
       <!--生成一个div,设置一个背景图-->
       <div class="footer_body_img" :style="{backgroundImage:'url('+ foot.url +')'}">
         <!--在生成的div中添加图片,默认透明度为0,改变后透明度为1显示-->
@@ -28,57 +28,40 @@
 //            src: 图片地址
             src: '../../src/assets/tth-footer/home_red.png',
 //            to: 路由跳转地址
-            to: '/',
-//            id: 让在v-for数组中绑定一个id,我也不知道干嘛用,不绑定就报警告
-            id: 'one'
+            to: '/home',
+//            id: 让在v-for数组中绑定一个id,不绑定就报警告
+            num: 'one'
           },
           {
             name: '开奖',
             url: '../../src/assets/tth-footer/runlottery_gray.png',
             src: '../../src/assets/tth-footer/runlottery_red.png',
             to: '/runlottery',
-            id: 'one'
+            num: 'two'
           },
           {
             name: '跟单',
             url: '../../src/assets/tth-footer/documentary_gray.png',
             src: '../../src/assets/tth-footer/documentary_red.png',
             to: '/documentary',
-            id: 'one'
+            num: 'three'
           },
           {
             name: '比分',
             url: '../../src/assets/tth-footer/score_gary.png',
             src: '../../src/assets/tth-footer/score_red.png',
             to: '/score',
-            id: 'one'
+            num: 'four'
           },
           {
             name: '我的',
             url: '../../src/assets/tth-footer/user_gray.png',
             src: '../../src/assets/tth-footer/user_red.png',
             to: '/user',
-            id: 'one'
+            num: 'five'
           }
         ]
       }
-    },
-    methods: {
-      clicked (index) {
-        for (let i in this.footers) {
-          this.$refs.clo[i].style.color = '#B8B8B8'
-          this.$refs.opc[i].style.opacity = 0
-        }
-        console.log(index)
-        document.cookie = 'index' + '=' + index
-        this.$router.push(this.footers[index].to)
-        this.$refs.clo[index].style.color = 'red'
-        this.$refs.opc[index].style.opacity = 1
-      }
-    },
-    mounted () {
-      this.$refs.clo[4].style.color = 'red'
-      this.$refs.opc[4].style.opacity = 1
     }
   }
 </script>

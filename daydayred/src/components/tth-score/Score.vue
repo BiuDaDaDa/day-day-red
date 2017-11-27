@@ -42,7 +42,7 @@
           <i class="iconfont icon-arrow-right arrow"></i>
         </div>
       </div>
-      <div class="am-list-view-scrollview">
+      <div :class="animated" class="am-list-view-scrollview">
         <div class="am-list-body">
           <div class="list-view-section-body" v-for="(value,index) in scores.scores">
             <div class="battleBox">
@@ -55,8 +55,10 @@
                   {{value.homeName}}
                 </div>
                 <div class="vs_football">
-                  <div><span style="color: rgb(154, 199, 67);">{{value.score}}</span></div>
-                  <div><span style="color: rgb(255, 95, 95);">进行中{{value.step}}'</span></div>
+                  <div v-if="value.score !== '--'"><span style="color: rgb(154, 199, 67);">{{value.score}}</span></div>
+                  <div v-if="value.score === '--'"><span>VS</span></div>
+                  <div v-if="value.score !== '--'"><span style="color: rgb(255, 95, 95);">进行中{{value.step}}'</span></div>
+                  <div v-if="value.score === '--'"><span>未开始</span></div>
                 </div>
                 <div class="teamAlign-up">
                   {{value.visitingName}}
@@ -66,13 +68,17 @@
             <div style="background-color: rgb(204, 204, 204); height: 1px;"></div>
           </div>
         </div>
+        <div class="am-list-footer">
+          <div style="padding: 30px; text-align: center;">已显示全部内容</div>
+        </div>
       </div>
+      <!--已显示全部内容-->
     </div>
     <ScoreFooter></ScoreFooter>
   </div>
 </template>
 <script>
-//  import {Indicator} from 'mint-ui'
+  import {Indicator} from 'mint-ui'
   import ScoreFooter from '@/components/Footer'
   export default {
     components: {
@@ -95,6 +101,7 @@
             values: []
           }
         ],
+        animated: '',
         value: null,
         slotsShow: false
       }
@@ -102,7 +109,7 @@
     methods: {
       // 点击导航栏切换事件
       navTabClick (index) {
-      //  Indicator.open('加载中...')
+        Indicator.open('加载中...')
         this.index = index
         for (let i = 0; i < this.navArr.length; i++) {
           this.navArr[i].className = ''
@@ -117,34 +124,45 @@
         } else {
           this.animated = 'animated fadeInLeft'
         }
-//        this.getRecordData(index)
+        switch (index) {
+          case 0:
+            this.getScoreData('/api/master/score/instant?lotteryId=1&page=1&pageSize=20')
+            break
+          case 1:
+            this.getScoreData('/api/master/score/ending?lotteryId=1&page=1&pageSize=20')
+            break
+          case 2:
+            this.getScoreData('/api/master/score/follow?lotteryId=1&page=1&pageSize=20')
+            break
+        }
       },
-      // 点击篮球事件
+      // 点击足球事件
       football () {
         this.whiteBall = 'score-title-body-whiteball'
         this.redBall = 'score-title-body-redball'
+        this.getScoreData('/api/master/score/instant?lotteryId=1&page=1&pageSize=20')
       },
-      // 点击足球事件
+      // 点击篮球事件
       basketball () {
         this.whiteBall = 'score-title-body-redball'
         this.redBall = 'score-title-body-whiteball'
+        this.getScoreData('/api/master/score/instant?lotteryId=2&page=1&pageSize=20')
       },
       // 加载封装函数
-      getScoreData (num) {
-        let myUrl = `lotteryId=${num}&page=${num}&pageSize=20`
+      getScoreData (url) {
         this.$request({
           type: 'get',
           headers: {
             deviceCode: 'd5fa17e7-3074-4183-b40d-db9678b12a5e'
           },
-          url: '/api/master/score/instant?' + myUrl,
+          url: url,
           success: function (res) {
             console.log(res)
             if (res.status === 200) {
               this.slots[0].values = res.data.data.issues
               this.scores = res.data.data
             }
-//            Indicator.close()
+            Indicator.close()
           },
           failed: function (err) {
             console.log(err)
@@ -173,7 +191,8 @@
       }
     },
     mounted () {
-      this.getScoreData(1)
+      Indicator.open('加载中...')
+      this.getScoreData('/api/master/score/instant?lotteryId=1&page=1&pageSize=20')
     }
   }
 </script>
@@ -399,5 +418,11 @@
     margin-top: 1.33333vmin;
     font-size: 2.66667vmin;
     color: #ccc;
+  }
+  .am-list-footer {
+    margin-bottom: 10vmin;
+    padding: 2.66667vmin 4vmin 4vmin;
+    font-size: 3.73333vmin;
+    color: #a1afb4;
   }
 </style>

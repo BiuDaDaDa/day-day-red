@@ -30,6 +30,7 @@
 </template>
 
 <script>
+  import {Indicator} from 'mint-ui'
   import {getJsCookie} from '@/common/js/util'
   export default {
     name: 'UserDocumentary',
@@ -96,6 +97,7 @@
             if (res.data.data.plans) {
               this.plansArr = res.data.data.plans
             }
+            Indicator.close()
           },
           failed: function (err) {
             console.log(err)
@@ -112,6 +114,7 @@
       }
     },
     mounted () {
+      Indicator.open('加载中...')
       this.getRecordData('/api/master/master/followed')
       this.getRecordData('/api/master/master/plan/betted?page=1&pageSize=20')
     }

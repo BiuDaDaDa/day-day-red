@@ -11,7 +11,7 @@
       </div>
     </div>
     <ul id="all-number">
-      <li v-for="(item, index) in ssq" :class="{'active':!index}" @click="test">
+      <li v-for="(item, index) in ssq" :class="{'active':!index}" @click="numberDetail(index)">
         <span>第{{item['Name']}}期 {{EndTime[index]}}</span>
         <div>
           <p id="getMoney">
@@ -19,7 +19,7 @@
           </p>
           <div v-if="!index" id="final-money">
             <div>
-              <span>{{item['Amount']}} <b>注</b>{{item['Money']}}<b>元</b></span>
+              <span>{{item['Amount']}}<b>注</b> {{item['Money']}}<b>元</b></span>
               <p>一等奖</p>
             </div>
             <div>
@@ -45,7 +45,8 @@
         getWeekDay: '',
         getMTime: '',
         WinNumber: [],
-        EndTime: []
+        EndTime: [],
+        localID: ''
       }
     },
     methods: {
@@ -71,12 +72,18 @@
       backRl () {
         this.$router.push({path: '/runlottery'})
       },
-      test () {
+      numberDetail (index) {
         this.$router.push({path: '/bigltnext'})
+        this.localID = this.ssq[index]['ID']
       }
     },
     mounted () {
       this.testData()
+    },
+    beforeDestroy () {
+      this.$bus.emit('get', {
+        changeID: this.localID
+      })
     }
   }
 </script>
@@ -93,34 +100,36 @@
     width: 100%;
     height: 12vmin;
     background-color: @color-red;
+    display: flex;
+    justify-content: space-between;
   }
   .bl-nav > div {
     display: inline-block;
   }
   .bl-nav-left {
-    width: 30.2%;
+    width: 28.2%;
     height: 100%;
     font-size: 5.6vmin;
     overflow: hidden;
-    display: flex;
+
   }
   .bl-nav-left i{
     padding-left: 4vmin;
   }
   .bl-nav-right {
-    width: 30.6%;
+    width: 27.6%;
     height: 100%;
     // background-color: blue;
   }
   .bl-nav-title {
-    width: 34.6%;
+    /*width: 34.6%;*/
     height: 100%;
     margin: 0 auto;
     overflow: hidden;
   }
   .bl-nav-title p {
     text-align: center;
-    font-size: 4.8vmin;
+    font-size: 5.5vmin;
     font-weight: 700;
     color: white;
     line-height: 12vmin;
@@ -229,6 +238,7 @@
   }
   #final-money>div:first-child{
     margin-left: 4vmin;
+    margin-right: 1vmin;
   }
   #final-money>div p{
     font-size: 4vmin;

@@ -12,7 +12,7 @@
     </div>
     <li class="lottery-info">
       <header class="lottery-time">
-        <span>双色球</span>
+        <span>福彩3</span>
         <b>第{{ssq['IssueName']}}期 {{EndTime}}</b>
         <p class="lottery-number">
           <strong v-for="everyNumber in WinNumber">{{everyNumber}}</strong>
@@ -59,14 +59,15 @@
         EndTime: '',
         items: [],
         saleMoney: '',
-        totalMoney: ''
+        totalMoney: '',
+        localId: 466380
       }
     },
     methods: {
       testData () {
         this.$request({
           type: 'get',
-          url: 'api/data/Handler.ashx?action=601&params={%22IssueID%22:466380}',
+          url: 'api/data/Handler.ashx?action=601&params={%22IssueID%22:' + this.localId + '}',
           headers: {},
           params: {},
           success: function (res) {
@@ -87,10 +88,19 @@
       },
       backBalllist () {
         this.$router.push({path: '/fc3D'})
+      },
+      myhandle (val) {
+        this.localId = val['changeID']
       }
     },
     mounted () {
       this.testData()
+    },
+    created () {
+      this.$bus.on('get', this.myhandle)
+    },
+    beforeDestroy () {
+      this.$bus.off('get', this.myhandle)
     }
   }
 </script>
@@ -206,11 +216,11 @@
 
   .moneyinfo strong {
     margin: 4.53333vmin 0 2.4vmin;
-    line-height: 1;
     display: block;
     color: #999;
     font-weight: 400;
     line-height:10.66667vmin;
+    font-size: 3.73333vmin;
   }
 
   .moneyinfo strong b {
@@ -301,6 +311,7 @@
     border: none;
     text-align: center;
     line-height: 10.66667vmin;
+    outline: none;
   }
 </style>
 

@@ -13,7 +13,7 @@ import Soccer from '@/components/tth-home/tth-buy/Soccer'
 import Basketball from '@/components/tth-home/tth-buy/Basketball'
 export default [
   {
-    path: '/',
+    path: '/home',
     name: 'Home',
     component: Home
   },

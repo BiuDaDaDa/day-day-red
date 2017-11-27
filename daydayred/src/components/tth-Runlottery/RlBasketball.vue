@@ -5,7 +5,9 @@
         <i class="iconfont icon-jiantou" id="turnback" @click="backRl"></i>
       </div>
       <div class="bl-nav-title">
-        <p>竞彩篮球开奖</p>
+        <h3>竞彩篮球开奖</h3>
+      </div>
+      <div class="bl-nav-right">
       </div>
     </div>
     <header>
@@ -13,7 +15,7 @@
         <i class="iconfont icon-jiantou"></i>
         <b>上一期</b>
       </span>
-      <div>
+      <div @click="chooseTime">
         <span>{{Today[0]}}-{{Today[1]}}-{{Today[2]}} {{WeekDay}}({{ssq.length}})场</span>
         <i class="iconfont icon-jiantou2"></i>
       </div>
@@ -24,19 +26,17 @@
     </header>
     <ul>
       <li v-for="(item, index) in ssq"
-          :class="{'active':!index}"
-          class="hehe"
-          @click="showInfo(index)">
+          @click="toggle(index)">
         <p>{{WeekDay}} {{item['MNO']}} {{item['LeagueName']}} {{MatchTime[index][0]}}:{{MatchTime[index][1]}}</p>
-        <i class="iconfont icon-jiantou2" id="down"></i>
         <div>
+          <i class="iconfont icon-jiantou2" id="down" ref="turnover"></i>
           <span id="HomeT">{{item['VTeam']}}</span>
           <div id="allRz">
             <p id="Rz">{{item['Rz']}}</p>
           </div>
           <span id="ValueT">{{item['HTeam']}}</span>
         </div>
-          <table ref="allresult">
+          <table ref="allresult" v-show="index == i">
             <tr>
               <td>比分</td>
               <td>让分胜负</td>
@@ -52,6 +52,16 @@
           </table>
       </li>
     </ul>
+    <div class="ftMask" v-if="isShowMask" @click="backList">
+    </div>
+    <div class="mask-body" v-if="isShowtimer">
+      <div class="mask-head">
+        <div class="cancel" @click="cancelValue">取消</div>
+        <div class="timerTitle">选择期次</div>
+        <div class="confirm" @click="confirmValue">确定</div>
+      </div>
+      <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
+    </div>
   </div>
 </template>
 <script>
@@ -70,7 +80,21 @@
         WeekDay: '',
         isShowInfo: true,
         number: 0,
-        IssueName: '20171122'
+        IssueName: '20171125',
+        i: -1,
+        // 下拉列表
+        slots: [
+          {
+            flex: 1,
+            values: ['20171114', '20171115', '20171116', '20171117', '20171118', '20171119'],
+            className: 'slot1',
+            textAlign: 'center'
+          }
+        ],
+        // 蒙版
+        isShowMask: false,
+        // 时间选择器
+        isShowtimer: false
       }
     },
     methods: {
@@ -78,7 +102,6 @@
         let that = this
         this.$request({
           type: 'get',
-          // http://m.tthong.cn/data/Handler.ashx?action=606&params={'IssueName':'20171120'}
           url: 'api/data/Handler.ashx?action=607&params={' + 'IssueName' + ':' + this.IssueName + '}',
           headers: {},
           params: {},
@@ -98,6 +121,7 @@
             that.Today = Test.cutMatchTime2(this.ssq[0]['IssueName'])
             // 当天是星期几
             that.WeekDay = this.ssq[0]['WKName']
+            // 第一个样式
             Indicator.close()
           },
           failed: function (err) {
@@ -124,8 +148,8 @@
       },
       goDay () {
         // 点击下一期翻看后一个记录
-        if (this.IssueName > 20171121) {
-          this.IssueName = 20171122
+        if (this.IssueName > 20171124) {
+          this.IssueName = 20171124
           Toast({
             message: '已到最后一期',
             duration: 1500
@@ -136,13 +160,37 @@
           Indicator.open('加载中...')
         }
       },
-      showInfo (index) {
+      toggle (index) {
         // 点击显示隐藏表格
-        if (this.$refs.allresult[index].style.display === 'block') {
-          this.$refs.allresult[index].style.display = 'none'
-        } else {
-          this.$refs.allresult[index].style.display = 'block'
+        this.i = index
+      },
+      // 显示时间选择器
+      chooseTime () {
+        this.isShowMask = true
+        this.isShowtimer = true
+      },
+      backList () {
+        this.isShowMask = false
+        this.isShowtimer = false
+      },
+      // 获取时间值
+      onValuesChange (picker, values) {
+        let value = values[0]
+        if (value !== undefined) {
+          this.value = value
         }
+      },
+      // 确定后关闭
+      confirmValue () {
+        this.isShowMask = false
+        this.isShowtimer = false
+        this.IssueName = this.value.toString()
+        this.testData()
+      },
+      // 取消后关闭
+      cancelValue () {
+        this.isShowMask = false
+        this.isShowtimer = false
       }
     },
     mounted () {
@@ -162,6 +210,8 @@
     width: 100%;
     height: 12vmin;
     background-color: @color-red;
+    display: flex;
+    justify-content: space-between;
   }
 
   .bl-nav > div {
@@ -169,7 +219,7 @@
   }
 
   .bl-nav-left {
-    width: 30.6%;
+    width: 29%;
     height: 100%;
     overflow: hidden;
     display: flex;
@@ -178,20 +228,24 @@
     padding-left: 4vmin;
   }
   .bl-nav-title {
-    width: 34.6%;
+  //  width: 34.6%;
     height: 100%;
     margin: 0 auto;
     overflow: hidden;
   }
 
-  .bl-nav-title p {
+  .bl-nav-title h3 {
     text-align: center;
-    font-size: 4.8vmin;
+    font-size: 5.5vmin;
     font-weight: 700;
     color: white;
     line-height: 12vmin;
   }
-
+  .bl-nav-right {
+    width: 29%;
+    height: 100%;
+    // background-color: blue;
+  }
   /*返回键*/
   #turnback {
     width: 5.86667vmin;
@@ -287,10 +341,18 @@
     margin-right: 8.66667vmin;
   }
 
-  .active table {
-    display: block;
-  }
+  /*.active table {*/
+    /*display: block;*/
+  /*}*/
 
+  #up{
+    transform:rotate(-180deg);
+    vertical-align: middle;
+    color: #6b8dff;
+    margin-top: 1.33333vmin;
+    display: inline-block;
+    margin-right: 8.66667vmin;
+  }
   /*图表*/
   td {
     width: 23.3333vmin;
@@ -304,13 +366,47 @@
     Helvetica Neue, STHeiti, Microsoft Yahei, Tahoma, Simsun, sans-serif;
   }
 
-  table {
-    margin-top: 2vmin;
-    display: none;
-  }
-
   table tr:first-child {
     color: @color-text-gray;
+  }
+
+  // 蒙版和弹窗
+  .ftMask{
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.7;
+  }
+  .mask-body{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 10;
+  }
+  .confirm, .cancel {
+    color: #ff5f5f;
+    font-size: 4.26667vmin;
+    padding: 2.66667vmin 4vmin;
+    height: 11.2vmin;
+    box-sizing: border-box;
+    display: inline-block;
+    -webkit-box-align: center;
+    justify-content: center;
+    width: 20vmin;
+  }
+
+  .timerTitle {
+    font-size: 4.26667vmin;
+    color: #000;
+    padding: 2.66667vmin 4vmin;
+    width: 50vmin;
+    display: inline-block;
+    text-align: center;
   }
 </style>
 

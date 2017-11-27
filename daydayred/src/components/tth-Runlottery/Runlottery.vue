@@ -37,17 +37,17 @@
                       <span>第{{football['IssueName']}}期 {{ftTime}}</span>
                     </p>
                     <div>
-                      <span>{{football['HTeam']}} {{football['Rz']}} {{football['VTeam']}}</span>
+                      <span id="ftResult">{{football['HTeam']}} {{football['Rz']}} {{football['VTeam']}}</span>
                       <i class="iconfont icon-arrow-right"></i>
                     </div>
                   </li>
                   <li class="basketball" @click="bkdetail">
                     <p>
                       <span>{{basketball['LotteryName']}}</span>
-                      <span>第{{basketball['IssueName']}}期 {{btTimeStr[1]}}-{{btTimeStr[2]}} {{shijian4}}</span>
+                      <span>第{{basketball['IssueName']}}期 {{btTime}}</span>
                     </p>
                     <div>
-                      <span>{{basketball['HTeam']}} {{basketball['Rz']}} {{basketball['VTeam']}}</span>
+                      <span id="bkResult">{{basketball['HTeam']}} {{basketball['Rz']}} {{basketball['VTeam']}}</span>
                       <i class="iconfont icon-arrow-right"></i>
                     </div>
                   </li>
@@ -95,7 +95,8 @@
 
 <script>
     import Test from './test'
-    import WsbFooter from '../../components/Footer.vue'
+    import WsbFooter from '../../components/Footer'
+
     export default {
       name: '',
       components: {
@@ -118,8 +119,7 @@
           shijian3: '',
           // 篮球
           basketball: {},
-          btTimeStr: {},
-          shijian4: '',
+          btTime: '',
           // 福彩3D
           welfare: {},
           str51: [],
@@ -178,7 +178,6 @@
               that.happy = response.data.data[1]
               that.result = Test.cutBiglt(that.happy['Rz'])
               that.hpTime = Test.cutTime(that.happy['EndTime'])
-              console.log(that.hpTime)
               // 足球
               that.football = response.data.data[2]
               that.ftTime = Test.cutTime(that.football['EndTime'])
@@ -191,7 +190,7 @@
               that.str51 = that.str5.split(',')
               that.fcTime = that.welfare['EndTime']
               that.fcTimeStr = that.fcTime.split('/')
-              that.try5 = new Date(that.btTimeStr[0], that.fcTimeStr[1], that.fcTimeStr[2]).getDay()
+              that.try5 = new Date(that.fcTimeStr[0], that.fcTimeStr[1], that.fcTimeStr[2]).getDay()
               that.shijian5 = '周' + '五六日一二三四'.charAt(that.try5)
               // 排列3
               that.rank = response.data.data[5]
@@ -199,7 +198,7 @@
               that.str61 = that.str6.split(',')
               that.rkTime = that.rank['EndTime']
               that.rkTimeStr = that.rkTime.split('/')
-              that.try6 = new Date(that.btTimeStr[0], that.rkTimeStr[1], that.rkTimeStr[2]).getDay()
+              that.try6 = new Date(that.rkTimeStr[0], that.rkTimeStr[1], that.rkTimeStr[2]).getDay()
               that.shijian6 = '周' + '五六日一二三四'.charAt(that.try6)
               // 江西
               that.choose11 = response.data.data[6]
@@ -207,7 +206,7 @@
               that.str71 = that.str7.split(',')
               that.jxTime = that.choose11['EndTime']
               that.jxTimeStr = that.jxTime.split('/')
-              that.try7 = new Date(that.btTimeStr[0], that.jxTimeStr[1], that.jxTimeStr[2]).getDay()
+              that.try7 = new Date(that.jxTimeStr[0], that.jxTimeStr[1], that.jxTimeStr[2]).getDay()
               that.shijian7 = '周' + '五六日一二三四'.charAt(that.try7)
             },
             failed: function (err) {
@@ -291,7 +290,6 @@
   /*双色球*/
   /*超级大乐透*/
 
-
   .happy-number>div p{
     font-size: 4vmin;
     font-weight: 700;
@@ -310,7 +308,7 @@
   .football div,.basketball div{
     height: 8.8vmin;
   }
-  .football div span,.basketball div span{
+  #ftResult,#bkResult{
     color: #fff;
     text-align: center;
     line-height: 1;
@@ -319,8 +317,8 @@
     padding-left: 8vmin;
     padding-top: 3.46667vmin;
     font-weight: 300;
-    width: 54.4vmin;
-    font-size: 3.73333vmin;
+    width: 58vmin;
+    font-size: 3.63333vmin;
     margin-left: 2.93333vmin;
   }
   /*箭头*/

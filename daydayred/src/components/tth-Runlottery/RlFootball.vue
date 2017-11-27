@@ -5,7 +5,9 @@
         <i class="iconfont icon-jiantou" id="turnback" @click="backRl"></i>
       </div>
       <div class="bl-nav-title">
-        <p>竞彩足球开奖</p>
+        <h3>竞彩足球开奖</h3>
+      </div>
+      <div class="bl-nav-right">
       </div>
     </div>
     <header>
@@ -13,7 +15,7 @@
         <i class="iconfont icon-jiantou"></i>
         <b>上一期</b>
       </span>
-      <div>
+      <div @click="chooseTime">
         <span>{{Today[0]}}-{{Today[1]}}-{{Today[2]}} {{WeekDay}}({{ssq.length}})场</span>
         <i class="iconfont icon-jiantou2"></i>
       </div>
@@ -24,12 +26,11 @@
     </header>
     <ul>
       <li v-for="(item, index) in ssq"
-          :class="{'active':!index}"
-          @click="showInfo(index)"
+          @click="toggle(index)"
       >
         <p>{{item['WKName']}} {{item['MNO']}} {{item['LeagueName']}} {{MatchTime[index][0]}}:{{MatchTime[index][1]}}</p>
-        <i class="iconfont icon-jiantou2" id="down" ref="turnover"></i>
         <div>
+          <i class="iconfont icon-jiantou2" id="down" ref="turnover"></i>
           <span id="HomeT">{{item['HTeam']}}</span>
           <div id="allRz">
             <p id="Rz">{{item['Rz']}}</p>
@@ -37,7 +38,7 @@
           </div>
           <span id="ValueT">{{item['VTeam']}}</span>
         </div>
-        <table ref="allresult">
+        <table ref="resultDetail" v-show="index == i">
           <tr>
             <td>胜平负</td>
             <td>让球胜平负</td>
@@ -55,11 +56,22 @@
         </table>
       </li>
     </ul>
+    <div class="ftMask" v-if="isShowMask" @click="backList">
+    </div>
+    <div class="mask-body" v-if="isShowtimer">
+      <div class="mask-head">
+        <div class="cancel" @click="cancelValue">取消</div>
+        <div class="timerTitle">选择期次</div>
+        <div class="confirm" @click="confirmValue">确定</div>
+      </div>
+      <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
+    </div>
   </div>
 </template>
 <script>
   import Test from './test'
   import { Toast, Indicator } from 'mint-ui'
+
   export default {
     name: 'rlfootball',
     data () {
@@ -73,8 +85,24 @@
         Today: [],
         WeekDay: '',
         // id拼接字符
-        IssueName: '20171122',
-        isShowInfo: true
+        IssueName: '20171127',
+        isShowInfo: true,
+        // 头部第一个li
+        i: -1,
+        // 下拉列表
+        slots: [
+          {
+            flex: 1,
+            values: ['20171114', '20171115', '20171116', '20171117', '20171118', '20171119', '20171120'],
+            className: 'slot1',
+            textAlign: 'center'
+          }
+        ],
+        // 蒙版时间选择器v-if值
+        // 黑色蒙版
+        isShowMask: false,
+        // 显示时间选择器
+        isShowtimer: false
       }
     },
     methods: {
@@ -100,6 +128,7 @@
             // 今天的比赛时间
             that.Today = Test.cutMatchTime2(this.ssq[0]['IssueName'])
             that.WeekDay = this.ssq[0]['WKName']
+            // 第一个样式
             Indicator.close()
           },
           failed: function (err) {
@@ -109,28 +138,35 @@
       },
       backDay () {
         // 上一期
-        if (this.IssueName < 20171115) {
-          this.IssueName = 20171115
+        if (parseInt(this.IssueName) < 20171115) {
+          this.IssueName = '20171115'
           Toast({
             message: '已到最前一期',
             duration: 1500
           })
         } else {
+          this.IssueName = parseInt(this.IssueName)
           this.IssueName--
+          this.IssueName = this.IssueName.toString()
+          console.log(this.IssueName)
           this.testData()
           Indicator.open('加载中...')
         }
       },
       goDay () {
         // 下一期
-        if (this.IssueName > 20171120) {
-          this.IssueName = 20171121
+        if (parseInt(this.IssueName) > 20171126) {
+          this.IssueName = '20171126'
+          console.log(this.IssueName)
           Toast({
             message: '已到最后一期',
             duration: 1500
           })
         } else {
+          this.IssueName = parseInt(this.IssueName)
           this.IssueName++
+          this.IssueName = this.IssueName.toString()
+          console.log(this.IssueName)
           this.testData()
           Indicator.open('加载中...')
         }
@@ -139,13 +175,37 @@
       backRl () {
         this.$router.push({path: '/runlottery'})
       },
-      // 比赛详情表格点击关闭打开
-      showInfo (index) {
-        if (this.$refs.allresult[index].style.display === 'block') {
-          this.$refs.allresult[index].style.display = 'none'
-        } else {
-          this.$refs.allresult[index].style.display = 'block'
+      // 比赛详情表格点击关闭和打开
+      toggle (index) {
+        this.i = index
+      },
+      chooseTime () {
+        this.isShowMask = true
+        this.isShowtimer = true
+      },
+      // 关闭时间选择器
+      backList () {
+        this.isShowMask = false
+        this.isShowtimer = false
+      },
+      // 获取时间值
+      onValuesChange (picker, values) {
+        let value = values[0]
+        if (value !== undefined) {
+          this.value = value
         }
+      },
+      // 确定后关闭
+      confirmValue () {
+        this.isShowMask = false
+        this.isShowtimer = false
+        this.IssueName = this.value.toString()
+        this.testData()
+      },
+      // 取消后关闭
+      cancelValue () {
+        this.isShowMask = false
+        this.isShowtimer = false
       }
     },
     mounted () {
@@ -156,15 +216,20 @@
 
 <style scoped lang="less">
   @import "../../common/css/style";
-  .RlFootball{
+
+  .RlFootball {
     max-width: 607px;
-    margin:0 auto;
+    margin: 0 auto;
+    position: relative;
   }
+
   /*头部*/
   .bl-nav {
     width: 100%;
     height: 12vmin;
     background-color: @color-red;
+    display: flex;
+    justify-content: space-between;
   }
 
   .bl-nav > div {
@@ -172,27 +237,34 @@
   }
 
   .bl-nav-left {
-    width: 33.1%;
+    width: 30.6%;
     height: 100%;
     overflow: hidden;
-    display: flex;
   }
-  .bl-nav-left i{
+
+  .bl-nav-left i {
     padding-left: 4vmin;
   }
+
   .bl-nav-title {
-    width: 34.6%;
+    // width: 34.6%;
     height: 100%;
     margin: 0 auto;
     overflow: hidden;
   }
 
-  .bl-nav-title p {
+  .bl-nav-title h3 {
     text-align: center;
-    font-size: 4.8vmin;
+    font-size: 5.5vmin;
     font-weight: 700;
     color: white;
     line-height: 12vmin;
+  }
+
+  .bl-nav-right {
+    width: 30.6%;
+    height: 100%;
+    // background-color: blue;
   }
 
   /*返回键*/
@@ -233,6 +305,7 @@
     border-bottom: 1px solid #e6e6e6;
     font-family: -apple-system, BlinkMacSystemFont, PingFang SC,
     Helvetica Neue, STHeiti, Microsoft Yahei, Tahoma, Simsun, sans-serif;
+    display: block;
   }
 
   li > p {
@@ -244,6 +317,7 @@
   #HomeT, #ValueT {
     display: inline-block;
     width: 24.2vmin;
+    padding-bottom: 8vmin;
     white-space: nowrap;
     text-overflow: clip;
     overflow: hidden;
@@ -257,6 +331,8 @@
 
   li > div {
     display: inline-block;
+    justify-content: center;
+    height: 12vmin;
   }
 
   #allRz {
@@ -285,14 +361,21 @@
   #down {
     vertical-align: middle;
     color: #6b8dff;
-    margin-top: 1.33333vmin;
+    margin-bottom: 8.33333vmin;
     display: inline-block;
     margin-right: 8.66667vmin;
   }
 
-  .active table {
-    display: block;
+  #up {
+    transform: rotate(-180deg);
+    vertical-align: middle;
+    color: #6b8dff;
+    margin-bottom: 8.33333vmin;
+    display: inline-block;
+    margin-right: 8.66667vmin;
   }
+
+  /*设置单独样式 li*/
 
   /*图表*/
   td {
@@ -307,12 +390,75 @@
     Helvetica Neue, STHeiti, Microsoft Yahei, Tahoma, Simsun, sans-serif;
   }
 
-  table {
-    margin-top: 2vmin;
-    display: none;
-  }
-
   table tr:first-child {
     color: @color-text-gray;
   }
+
+  /*蒙版*/
+  .ftMask {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: black;
+    opacity: 0.7;
+  }
+
+  .mask-body {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 10;
+  }
+
+  .confirm, .cancel {
+    color: #ff5f5f;
+    font-size: 4.26667vmin;
+    padding: 2.66667vmin 4vmin;
+    height: 11.2vmin;
+    box-sizing: border-box;
+    display: inline-block;
+    -webkit-box-align: center;
+    justify-content: center;
+    width: 20vmin;
+  }
+
+  .timerTitle {
+    font-size: 4.26667vmin;
+    color: #000;
+    padding: 2.66667vmin 4vmin;
+    width: 50vmin;
+    display: inline-block;
+    text-align: center;
+  }
+
+  /*.timeList{
+    background-color: white;
+  }
+  .timeList p{
+    text-align: center;
+    font-size: 4.26667vmin;
+  }
+  .timeList div{
+    display: flex;
+    justify-content: space-between;
+  }
+  .listHeader div{
+    color: #ff5f5f;
+    font-size: 4.26667vmin;
+    padding: 2.66667vmin 4vmin;
+    height: 11.2vmin;
+    box-sizing: border-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+  }
+  .listHeader div:nth-child(2){
+    color: #000;
+  }*/
 </style>
