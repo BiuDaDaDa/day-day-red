@@ -74,6 +74,7 @@
 
 <script>
   import OxsFooter from '../../components/Footer.vue'
+  import {Indicator} from 'mint-ui'
   export default {
     name: 'home',
     components: {
@@ -185,6 +186,7 @@
           success: function (res) {
             this.itemArr = res.data.data
 //            console.log('itemStyle' + this.itemArr[0].StyleTag)
+            Indicator.close()
           },
           failed: function (err) {
             console.log('未找到快捷投注数据:' + err)
@@ -227,6 +229,7 @@
       }
     },
     mounted () {
+      Indicator.open('加载中...')
       // 获取轮播图数据
       this.fecthBannerData()
       // 获取快捷投注数据

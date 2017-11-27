@@ -47,6 +47,7 @@
   import BuyRecentAward from '../tth-buy/buy-recentAward.vue'
   import Select9ball from '../tth-buy/buy-select9ball.vue'
   import BuyInstruction from '../tth-buy/buy-instruction.vue'
+  import {Indicator} from 'mint-ui'
   export default {
     name: 'introduction-fucai3d',
     components: {
@@ -106,6 +107,7 @@
           success: function (res) {
             this.MoreTimeArr = res.data.data
 //            console.log(res.data)
+            Indicator.close()
           },
           failed: function (err) {
             console.log('未找到福彩3D数据:' + err)
@@ -157,6 +159,7 @@
       }
     },
     mounted () {
+      Indicator.open('加载中...')
       this.fecthFucai3dData()
       this.fecthFucai3dRecentData()
       this.spliceRecentNum()

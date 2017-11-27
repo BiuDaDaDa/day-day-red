@@ -1,7 +1,7 @@
 <template>
   <!--首页-->
   <div class="header_wrap">
-    <div class="header_back">
+    <div class="header_back" @click="back">
       <i class="iconfont icon-jiantou"></i>
     </div>
     <h3>{{headerTitle}}</h3>
@@ -11,7 +11,12 @@
 <script>
   export default {
     name: 'homeHeader',
-    props: ['headerTitle']
+    props: ['headerTitle'],
+    methods: {
+      back () {
+        this.$router.go(-1)
+      }
+    }
   }
 </script>
 

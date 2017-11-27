@@ -106,6 +106,7 @@
       }
     },
     mounted () {
+      Indicator.open('加载中...')
       this.getRecordData(0)
     }
   }

@@ -191,6 +191,7 @@
       }
     },
     mounted () {
+      Indicator.open('加载中...')
       this.getScoreData('/api/master/score/instant?lotteryId=1&page=1&pageSize=20')
     }
   }

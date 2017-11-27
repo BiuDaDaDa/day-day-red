@@ -1586,7 +1586,8 @@ display: inline-block;
     font-size: 56px
 }
 .mint-toast-text {
-    font-size: 16px;
+    font-size: 4vmin;
+    line-height: 5vmin;
     display: block;
     text-align: center
 }

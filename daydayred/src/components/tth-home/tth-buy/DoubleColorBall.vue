@@ -60,6 +60,7 @@
   import BuyRecentAward from '../tth-buy/buy-recentAward.vue'
   import BuyInstruction from '../tth-buy/buy-instruction.vue'
   import SelectMoreBall from '../tth-buy/buy-selectMoreBall.vue'
+  import {Indicator} from 'mint-ui'
   export default {
     name: 'SuperLotto',
     components: {
@@ -106,6 +107,7 @@
           success: function (res) {
             this.MoreTimeArr = res.data.data
 //            console.log(res.data.data)
+            Indicator.close()
           },
           failed: function (err) {
             console.log('未找到双色球数据:' + err)
@@ -136,6 +138,7 @@
       }
     },
     mounted () {
+      Indicator.open('加载中...')
       this.fecthDoubleColorBallData()
       this.fecthDoubleColorBallRecentData()
     }
