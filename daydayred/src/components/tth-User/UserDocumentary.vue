@@ -135,14 +135,15 @@
   }
 
   .jiantou {
+    font-size: 4.5vmin;
     margin-left: 5%;
     color: @color-background-white;
     font-weight: 700;
   }
 
   .user-documentary-head span {
-    margin-left: 28%;
-    font-size: 22px;
+    margin-left: 28vmin;
+    font-size: 5.5vmin;
     font-weight: 900;
     color: @color-background-white;
   }
@@ -153,13 +154,13 @@
     background-color: @color-background-white;
     display: flex;
   }
-
   .my-documentary {
     width: 28%;
     line-height: 12vmin;
     text-align: center;
     margin-left: 15%;
     color: #333;
+    font-size: 4.5vmin;
   }
 
   .active {
@@ -168,6 +169,7 @@
   }
 
   .my-attention {
+    font-size: 4.5vmin;
     color: #333;
     width: 28%;
     line-height: 12vmin;
@@ -180,6 +182,7 @@
   }
   .nodate___1lEuU span{
     color: #333333;
+    font-size: 4.5vmin;
   }
   .nodate___1lEuU  button{
     margin: 15px auto;

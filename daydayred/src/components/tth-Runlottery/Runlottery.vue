@@ -95,7 +95,8 @@
 
 <script>
     import Test from './test'
-    import WsbFooter from '../../components/tth-Runlottery/Footer.vue'
+    import WsbFooter from '../../components/Footer'
+
     export default {
       name: '',
       components: {

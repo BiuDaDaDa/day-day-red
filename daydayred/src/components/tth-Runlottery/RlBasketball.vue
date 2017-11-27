@@ -15,7 +15,7 @@
         <i class="iconfont icon-jiantou"></i>
         <b>上一期</b>
       </span>
-      <div>
+      <div @click="chooseTime">
         <span>{{Today[0]}}-{{Today[1]}}-{{Today[2]}} {{WeekDay}}({{ssq.length}})场</span>
         <i class="iconfont icon-jiantou2"></i>
       </div>
@@ -52,6 +52,16 @@
           </table>
       </li>
     </ul>
+    <div class="ftMask" v-if="isShowMask" @click="backList">
+    </div>
+    <div class="mask-body" v-if="isShowtimer">
+      <div class="mask-head">
+        <div class="cancel" @click="cancelValue">取消</div>
+        <div class="timerTitle">选择期次</div>
+        <div class="confirm" @click="confirmValue">确定</div>
+      </div>
+      <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
+    </div>
   </div>
 </template>
 <script>
@@ -71,7 +81,20 @@
         isShowInfo: true,
         number: 0,
         IssueName: '20171124',
-        i: -1
+        i: -1,
+        // 下拉列表
+        slots: [
+          {
+            flex: 1,
+            values: ['20171114', '20171115', '20171116', '20171117', '20171118', '20171119'],
+            className: 'slot1',
+            textAlign: 'center'
+          }
+        ],
+        // 蒙版
+        isShowMask: false,
+        // 时间选择器
+        isShowtimer: false
       }
     },
     methods: {
@@ -140,7 +163,34 @@
       toggle (index) {
         // 点击显示隐藏表格
         this.i = index
-        this.$refs.turnover.id = 'down'
+      },
+      // 显示时间选择器
+      chooseTime () {
+        this.isShowMask = true
+        this.isShowtimer = true
+      },
+      backList () {
+        this.isShowMask = false
+        this.isShowtimer = false
+      },
+      // 获取时间值
+      onValuesChange (picker, values) {
+        let value = values[0]
+        if (value !== undefined) {
+          this.value = value
+        }
+      },
+      // 确定后关闭
+      confirmValue () {
+        this.isShowMask = false
+        this.isShowtimer = false
+        this.IssueName = this.value.toString()
+        this.testData()
+      },
+      // 取消后关闭
+      cancelValue () {
+        this.isShowMask = false
+        this.isShowtimer = false
       }
     },
     mounted () {
@@ -316,9 +366,47 @@
     Helvetica Neue, STHeiti, Microsoft Yahei, Tahoma, Simsun, sans-serif;
   }
 
-
   table tr:first-child {
     color: @color-text-gray;
+  }
+
+  // 蒙版和弹窗
+  .ftMask{
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.7;
+  }
+  .mask-body{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 10;
+  }
+  .confirm, .cancel {
+    color: #ff5f5f;
+    font-size: 4.26667vmin;
+    padding: 2.66667vmin 4vmin;
+    height: 11.2vmin;
+    box-sizing: border-box;
+    display: inline-block;
+    -webkit-box-align: center;
+    justify-content: center;
+    width: 20vmin;
+  }
+
+  .timerTitle {
+    font-size: 4.26667vmin;
+    color: #000;
+    padding: 2.66667vmin 4vmin;
+    width: 50vmin;
+    display: inline-block;
+    text-align: center;
   }
 </style>
 

@@ -7,6 +7,7 @@
   </div>
 </template>
 <script>
+  import {Indicator} from 'mint-ui'
   import {getJsCookie} from '@/common/js/util'
   export default {
     name: 'ChaseMask',
@@ -29,6 +30,7 @@
     methods: {
       // 点击历史发送接口事件
       maskClick (index) {
+        Indicator.open('加载中...')
         this.index = index
         this.$emit('maskClicked', false)
         if (index === 4) {
@@ -48,6 +50,7 @@
           success: function (res) {
             let itemArr = res.data.data.item
             this.$emit('itemClick', itemArr)
+            Indicator.close()
           },
           failed: function (err) {
             console.log(err)
@@ -135,6 +138,6 @@
     line-height: 13.33333vmin;
     background-color: #FFFFFF;
     text-align: center;
-    font-size: 18px;
+    font-size: 4.8vmin;
   }
 </style>

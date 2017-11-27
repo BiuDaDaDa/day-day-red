@@ -16,7 +16,7 @@
         <div class="login-phone">
           <i class="iconfont icon-denglu phone-dl"></i>
           <div id="phone-text">
-            <mt-field :attr="{ maxlength: 11 }" label="" placeholder="请输入手机号" type="tel" v-model="phone"></mt-field>
+            <mt-field :attr="{ maxlength: 13 }" label="" placeholder="请输入手机号" type="tel" v-model="phone"></mt-field>
           </div>
         </div>
         <!--请输入短信验证码-->
@@ -24,7 +24,7 @@
           <i v-show="weibiaoti" class="iconfont icon-weibiaoti9 weibiaoti"></i>
           <i v-show="mima" class="iconfont icon-mima mima"></i>
           <div id="sms-text" v-show="smsisShow">
-            <mt-field :attr="{ maxlength: 6 }" label="" v-model="captcha" placeholder="请输入短信验证码">
+            <mt-field  :attr="{ maxlength: 6 }" label="" v-model="captcha" placeholder="请输入短信验证码">
               <span @click="sendClick"  v-show="sendYzm" class="send-yzm">发送验证码</span>
             </mt-field>
           </div>
@@ -46,10 +46,9 @@
   import {Toast} from 'mint-ui'
   import isPhone from '@/common/js/isPhone'
   import sendCode from '@/common/js/sendCode'
-  import guid from '@/common/js/guid'
-  import {getJsCookie} from '@/common/js/util'
-//  import axios from 'axios'
 //  import guid from '@/common/js/guid'
+  import {getJsCookie} from '@/common/js/util'
+  import TrimJs from '@/common/js/trimJs'
   export default {
     name: 'Login',
     data () {
@@ -64,7 +63,8 @@
         phone: '',
         captcha: '',
         password: '',
-        cookieValue: ''
+        cookieValue: '',
+        guid: ''
       }
     },
     methods: {
@@ -99,7 +99,9 @@
       // 点击登陆判断是否有账号和短信验证码
       loginClick () {
         if (this.loginUser === 'login-user-dl') {
-          let myUrl = `"ValidCode":"${this.phone}","ValidCode":"${this.captcha}","RandomGuid":"${guid()}"`
+          // 验证码登陆
+          let phone = TrimJs(this.phone, 'g')
+          let myUrl = `"Mobile":"${phone}","ValidCode":"${this.captcha}","RandomGuid":"${this.guid}"`
           let myOtherUrl = encodeURI(myUrl)
           if (this.phone.length <= 0 || this.captcha.length <= 0) {
             Toast({
@@ -110,43 +112,61 @@
             })
             return false
           } else {
-            isPhone(this.phone)
+            isPhone(phone)
           }
           this.$request({
             type: 'get',
             url: '/api/user/Handler.ashx?action=702&params={' + myOtherUrl + '}',
             success: function (res) {
               console.log(res)
-//              let Guid = res.data.data.Guid
-//              let myUrl = `"UserIDGuid":"${Guid}"`
-//              let myOtherUrl = encodeURI(myUrl)
+              let Guid = res.data.data.Guid
+              let myUrl = `"UserIDGuid":"${Guid}"`
+              let myOtherUrl = encodeURI(myUrl)
               if (res.status === 200) {
                 console.log(123)
-//                this.$request({
-//                  type: 'get',
-//                  url: '/api/user/Handler.ashx?action=801&params={' + myOtherUrl + '}',
-//                  success: function (res) {
-//                    console.log(res)
-//                    console.log(window.cookie)
-//                  },
-//                  failed: function (err) {
-//                    console.log(err)
-//                  }
-//                })
+                Toast({
+                  message: '登陆成功',
+                  position: 'middle',
+                  iconClass: 'iconfont icon-dui',
+                  duration: 800
+                })
+                this.$request({
+                  type: 'get',
+                  url: '/api/user/Handler.ashx?action=801&params={' + myOtherUrl + '}',
+                  success: function (res) {
+                    console.log(res)
+                    if (res.status === 200) {
+                      this.cookieValue = getJsCookie('CP_UserIDGuid')
+                      if (this.cookieValue === Guid) {
+                        // 获取用户数据以字符串形式保存在localStorage中
+                        let data = JSON.stringify(res.data.data)
+                        window.localStorage.setItem('datas', data)
+                        this.$router.push({path: '/user'})
+                        window.location.reload()
+                      } else {
+                        window.localStorage.removeItem('datas')
+                      }
+                    }
+                  },
+                  failed: function (err) {
+                    console.log(err)
+                  }
+                })
               }
             },
             failed: function (err) {
-              console.log('未找到的密码' + err)
+              console.log('验证码登陆' + err)
             }
           })
         } else {
-          let myUrl = `"UserName":"${this.phone}","Password":"${this.password}"`
+          let phone = TrimJs(this.phone, 'g')
+          let myUrl = `"UserName":"${phone}","Password":"${this.password}"`
           let myOtherUrl = encodeURI(myUrl)
           // 密码登陆
           if (this.phone.length <= 0) {
-            isPhone(this.phone)
+            isPhone(phone)
           } else {
-            isPhone(this.phone)
+            isPhone(phone)
           }
           this.$request({
             type: 'get',
@@ -173,6 +193,23 @@
                         // 获取用户数据以字符串形式保存在localStorage中
                         let data = JSON.stringify(res.data.data)
                         window.localStorage.setItem('datas', data)
+//                        switch (this.index) {
+//                          case 0:
+//                            this.$router.push({path: '/home'})
+//                            break
+//                          case 1:
+//                            this.$router.push({path: '/runlottery'})
+//                            break
+//                          case 2:
+//                            this.$router.push({path: '/documentary'})
+//                            break
+//                          case 3:
+//                            this.$router.push({path: '/score'})
+//                            break
+//                          case 4:
+//                            this.$router.push({path: '/user'})
+//                            break
+//                        }
                         this.$router.push({path: '/user'})
                         window.location.reload()
                       } else {
@@ -195,17 +232,19 @@
       },
       // 点击发送验证按钮
       sendClick (event) {
-        let myUrl = `"Mobile":"${this.phone}","TypeID":"1"`
+        let phone = TrimJs(this.phone, 'g')
+        let myUrl = `"Mobile":"${phone}","TypeID":"4"`
         let myOtherUrl = encodeURI(myUrl)
         if (this.phone.length <= 0) {
-          isPhone(this.phone)
+          isPhone(phone)
         } else {
-          isPhone(this.phone)
+          isPhone(phone)
         }
         this.$request({
           type: 'get',
           url: '/api/user/Handler.ashx?action=704&params={' + myOtherUrl + '}',
           success: function (res) {
+            this.guid = res.data.data
             let msg = res.data.msg
             sendCode(msg, event)
           },
@@ -213,6 +252,20 @@
             console.log('未找到的验证码数据是' + err)
           }
         })
+      }
+    },
+    watch: {
+      // 通过watch来设置空格
+      phone (newValue, oldValue) {
+        if (newValue.length > oldValue.length) { // 文本框中输入
+          if (newValue.length === 3 || newValue.length === 8) {
+            this.phone = this.phone + ' '
+          }
+        } else { // 文本框中删除
+          if (newValue.length === 9 || newValue.length === 4) {
+            this.phone = this.phone.trim()
+          }
+        }
       }
     }
   }
@@ -241,7 +294,9 @@
     opacity: 1;
     text-align: center;
   }
-
+  .login-user p{
+    font-size: 4vmin;
+  }
   .login-user-dl {
     width: 50%;
     height: 10vmin;
@@ -315,45 +370,46 @@
   }
 
   .phone-dl {
-    margin-left: 20px;
-    font-size: 24px;
+    margin-left: 5vmin;
+    font-size: 6vmin;
     color: @color-text-red;
   }
 
   .weibiaoti {
-    margin-left: 16px;
-    font-size: 30px;
+    margin-left: 4vmin;
+    font-size: 8vmin;
     color: @color-text-red;
   }
 
   .mima {
-    margin-left: 16px;
-    font-size: 30px;
+    margin-left: 5vmin;
+    font-size: 6vmin;
     color: @color-text-red;
   }
 
   .send-yzm {
+    line-height: 12vmin;
     color: @color-text-red;
-    font-size: 17px;
+    font-size: 4.8vmin;
   }
 
   .login-login {
-    margin-top: 20px;
+    margin-top: 5vmin;
     width: 80vmin;
     height: 10vmin;
     background-color: @color-text-red;
     border: none;
     color: @color-background-white;
-    font-size: 20px;
+    font-size:5vmin;
     border-radius: 5px;
   }
 
   .celerity-logon {
-    margin-top: 25px;
+    margin-top: 5vmin;
     width: 80vmin;
     text-align: center;
     color: @color-text-red;
-    font-size: 14px;
+    font-size: 4vmin;
   }
 
 </style>

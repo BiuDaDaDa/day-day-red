@@ -1,11 +1,11 @@
 <template>
   <div id="documentary_patiuclars_wrap">
-    <router-link to="/documentary">
-    <div id="documentary_particulars_title">
+    <!--<router-link to="/documentary">-->
+    <div id="documentary_particulars_title" @click="returnGo">
       <i class="iconfont icon-jiantou"></i>
       彩帝详情
     </div>
-    </router-link>
+    <!--</router-link>-->
     <div id="documentary_particulars_user">
       <div id="user_avatar">
         <img :src="titledata.avatar">
@@ -14,8 +14,11 @@
         <div>{{titledata.nick}}</div>
         <span>粉丝数: {{titledata.fans}}</span>
       </div>
-      <div id="user_attention">
+      <div class="user_attention" @click="unattentionClick" v-show="unattention === false">
         +关注
+      </div>
+      <div class="user_attention" @click="unattentionClick" v-show="unattention === true">
+        √已关注
       </div>
     </div>
     <div id="recommend_and_grade">
@@ -79,7 +82,7 @@
             <b>{{gradedata.orderCounts7d}}单<strong>{{gradedata.hit7d}}红</strong>{{gradedata.unHit7d}}黑</b>
           </div>
           <div class="grade_recent_body_state">
-            <span>近3场状态</span>
+            <span>近{{hitstates1.length}}场状态</span>
             <b v-for="(hitstate,index,key) in hitstates1" :class="[{red1:hitstate === '红'},{black1:hitstate === '黑'}]">{{hitstate}}</b>
           </div>
         </div>
@@ -114,6 +117,8 @@
 </template>
 
 <script>
+  import {getJsCookie} from '@/common/js/util'
+  import {Indicator} from 'mint-ui'
   export default {
     name: 'Particulars',
     data () {
@@ -131,7 +136,10 @@
         gDisplay: false,
         fDisplay: false,
         four: 5,
-        Num: ''
+        Num: '',
+        login: getJsCookie('CP_UserIDGuid'),
+        unattention: false,
+        allorhit: 'all'
       }
     },
     methods: {
@@ -147,6 +155,7 @@
             if (this.titledata.avatar === '') {
               this.titledata.avatar = '../../src/assets/tth-documentary/tth-user.png'
             }
+            Indicator.close()
           },
           failed: function () {}
         })
@@ -154,7 +163,7 @@
       recommendData () {
         this.$request({
           type: 'get',
-          url: `/api/master/master/${this.$route.params.godsrankUid}/plan/recommend`,
+          url: `/api/master/master/${this.$route.params.godsrankUid}/plan/recommend?filter=${this.allorhit}&page=1&pageSize=100`,
           headers: {},
           params: {},
           success: function (res) {
@@ -168,6 +177,7 @@
               num += parseInt(this.wonNums[i])
             }
             this.wonNum = num
+//            Indicator.close()
           },
           failed: function () {}
         })
@@ -181,7 +191,7 @@
           success: function (res) {
 //            console.log(res.data.data)
             this.gradedata = res.data.data
-            this.hitstates = (res.data.data.hitState).split('').slice(0, 3)
+            this.hitstates = res.data.data.hitState
             this.hitstates1 = []
             for (let i = 0; i < this.hitstates.length; i++) {
               if (this.hitstates[i] === '1') {
@@ -190,6 +200,7 @@
                 this.hitstates1.push('黑')
               }
             }
+            Indicator.close()
 //            console.log(this.hitstates1)
           },
           failed: function () {}
@@ -215,12 +226,15 @@
         this.fDisplay = !this.fDisplay
         this.all = '全部推荐'
         this.Num = this.allNum
+        this.allorhit = 'all'
       },
       wonclick (res) {
         this.four = 3
         this.fDisplay = !this.fDisplay
         this.all = '中奖推荐'
         this.Num = this.wonNum
+        this.allorhit = 'hit'
+//        console.log(this.allorhit)
       },
       deity (index) {
         let masterSchemeId = this.plans[index].masterSchemeId
@@ -228,9 +242,25 @@
         this.$router.push('/deity/' + uId + '/' + masterSchemeId)
 //        console.log(masterSchemeId)
 //        console.log(uId)
+      },
+      unattentionClick () {
+        if (this.login === null) {
+          this.$router.push({path: '/login'})
+        } else {
+          this.unattention = !this.unattention
+        }
+      },
+      returnGo () {
+        this.$router.go(-1)
+      }
+    },
+    watch: {
+      allorhit () {
+        this.recommendData()
       }
     },
     mounted () {
+      Indicator.open('加载中')
       this.titleData()
       this.recommendData()
       this.gradeData()
@@ -281,7 +311,7 @@
   }
   #user_nick{
     color: white;
-    width: 64vmin;
+    width: 61vmin;
     padding-top: 3vmin;
   }
   #user_nick div{
@@ -293,7 +323,7 @@
     font-weight: 400;
     font-size: 3.73333vmin;
   }
-  #user_attention{
+  .user_attention{
     background: #fff;
     padding: 0 2.66667vmin;
     height: 6.66667vmin;

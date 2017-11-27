@@ -26,7 +26,7 @@
     </header>
     <ul>
       <li v-for="(item, index) in ssq"
-          @click="toggle(isShow, index)"
+          @click="toggle(index)"
       >
         <p>{{item['WKName']}} {{item['MNO']}} {{item['LeagueName']}} {{MatchTime[index][0]}}:{{MatchTime[index][1]}}</p>
         <div>
@@ -38,7 +38,7 @@
           </div>
           <span id="ValueT">{{item['VTeam']}}</span>
         </div>
-        <table v-show="isShow" >
+        <table ref="resultDetail" v-show="index == i">
           <tr>
             <td>胜平负</td>
             <td>让球胜平负</td>
@@ -56,16 +56,16 @@
         </table>
       </li>
     </ul>
-    <div class="ftMask" @click="backList" v-if="isChooseTime">
+    <div class="ftMask" v-if="isShowMask" @click="backList">
     </div>
-    <!--<div class="timeList">-->
-    <!--<div class="listHeader">-->
-    <!--<div>取消</div>-->
-    <!--<div>选择器次</div>-->
-    <!--<div>确定</div>-->
-    <!--</div>-->
-    <!--<p v-for="item in DateSimple">{{item}}</p>-->
-    <!--</div>-->
+    <div class="mask-body" v-if="isShowtimer">
+      <div class="mask-head">
+        <div class="cancel" @click="cancelValue">取消</div>
+        <div class="timerTitle">选择期次</div>
+        <div class="confirm" @click="confirmValue">确定</div>
+      </div>
+      <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
+    </div>
   </div>
 </template>
 <script>
@@ -85,12 +85,24 @@
         Today: [],
         WeekDay: '',
         // id拼接字符
-        IssueName: '20171125',
+        IssueName: '20171126',
         isShowInfo: true,
-        // 蒙版v-if值
-        isChooseTime: false,
         // 头部第一个li
-        isShow: true
+        i: -1,
+        // 下拉列表
+        slots: [
+          {
+            flex: 1,
+            values: ['20171114', '20171115', '20171116', '20171117', '20171118', '20171119', '20171120'],
+            className: 'slot1',
+            textAlign: 'center'
+          }
+        ],
+        // 蒙版时间选择器v-if值
+        // 黑色蒙版
+        isShowMask: false,
+        // 显示时间选择器
+        isShowtimer: false
       }
     },
     methods: {
@@ -126,28 +138,35 @@
       },
       backDay () {
         // 上一期
-        if (this.IssueName < 20171115) {
-          this.IssueName = 20171115
+        if (parseInt(this.IssueName) < 20171115) {
+          this.IssueName = '20171115'
           Toast({
             message: '已到最前一期',
             duration: 1500
           })
         } else {
+          this.IssueName = parseInt(this.IssueName)
           this.IssueName--
+          this.IssueName = this.IssueName.toString()
+          console.log(this.IssueName)
           this.testData()
           Indicator.open('加载中...')
         }
       },
       goDay () {
         // 下一期
-        if (this.IssueName > 20171124) {
-          this.IssueName = 20171124
+        if (parseInt(this.IssueName) > 20171125) {
+          this.IssueName = '20171125'
+          console.log(this.IssueName)
           Toast({
             message: '已到最后一期',
             duration: 1500
           })
         } else {
+          this.IssueName = parseInt(this.IssueName)
           this.IssueName++
+          this.IssueName = this.IssueName.toString()
+          console.log(this.IssueName)
           this.testData()
           Indicator.open('加载中...')
         }
@@ -157,15 +176,36 @@
         this.$router.push({path: '/runlottery'})
       },
       // 比赛详情表格点击关闭和打开
-      toggle (e, isShow, index) {
-        console.log(isShow, index)
-        e.target.isShow = false
+      toggle (index) {
+        this.i = index
       },
       chooseTime () {
-        this.isChooseTime = true
+        this.isShowMask = true
+        this.isShowtimer = true
       },
+      // 关闭时间选择器
       backList () {
-        this.isChooseTime = false
+        this.isShowMask = false
+        this.isShowtimer = false
+      },
+      // 获取时间值
+      onValuesChange (picker, values) {
+        let value = values[0]
+        if (value !== undefined) {
+          this.value = value
+        }
+      },
+      // 确定后关闭
+      confirmValue () {
+        this.isShowMask = false
+        this.isShowtimer = false
+        this.IssueName = this.value.toString()
+        this.testData()
+      },
+      // 取消后关闭
+      cancelValue () {
+        this.isShowMask = false
+        this.isShowtimer = false
       }
     },
     mounted () {
@@ -363,6 +403,36 @@
     left: 0;
     background-color: black;
     opacity: 0.7;
+  }
+
+  .mask-body {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 10;
+  }
+
+  .confirm, .cancel {
+    color: #ff5f5f;
+    font-size: 4.26667vmin;
+    padding: 2.66667vmin 4vmin;
+    height: 11.2vmin;
+    box-sizing: border-box;
+    display: inline-block;
+    -webkit-box-align: center;
+    justify-content: center;
+    width: 20vmin;
+  }
+
+  .timerTitle {
+    font-size: 4.26667vmin;
+    color: #000;
+    padding: 2.66667vmin 4vmin;
+    width: 50vmin;
+    display: inline-block;
+    text-align: center;
   }
 
   /*.timeList{

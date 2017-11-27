@@ -10,7 +10,7 @@
       <div class="login-phone">
         <i class="iconfont icon-shouji shouji"></i>
         <div id="phone-text">
-          <mt-field :attr="{ maxlength: 11 }"  label="" placeholder="请输入手机号" type="tel" v-model="phone"></mt-field>
+          <mt-field  :attr="{ maxlength: 13 }"  label="" placeholder="请输入手机号" type="tel" v-model="phone"></mt-field>
         </div>
       </div>
       <!--请输入短信验证码-->
@@ -42,14 +42,16 @@
   import { Toast } from 'mint-ui'
   import isPhone from '@/common/js/isPhone'
   import sendCode from '@/common/js/sendCode'
-  import guid from '@/common/js/guid'
+  import TrimJs from '@/common/js/trimJs'
+  import {getJsCookie} from '@/common/js/util'
   export default {
     name: 'Logon',
     data () {
       return {
         phone: '',
         captcha: '',
-        password: ''
+        password: '',
+        guid: ''
       }
     },
     methods: {
@@ -59,13 +61,13 @@
       },
       // 点击立即注册按钮
       logonClick () {
-        let myUrl = `"RandomGuid":"${guid()}","UserName":"${this.phone}","Password":"${this.password}","ValidCode":"${this.captcha}","ReferrerId":"undefined"`
+        let phone = TrimJs(this.phone, 'g')
+        let myUrl = `"RandomGuid":"${this.guid}","UserName":"${phone}","Password":"${this.password}","ValidCode":"${this.captcha}","ReferrerId":"undefined"`
         let myOtherUrl = encodeURI(myUrl)
-        console.log(myOtherUrl)
         if (this.phone.length <= 0) {
-          isPhone(this.phone)
+          isPhone(phone)
         } else {
-          isPhone(this.phone)
+          isPhone(phone)
         }
         if (this.password.length <= 0) {
           Toast({
@@ -80,7 +82,19 @@
           type: 'get',
           url: '/api/user/Handler.ashx?action=703&params={' + myOtherUrl + '}',
           success: function (res) {
-            console.log(res)
+            let Guid = res.data.data.Guid
+            if (res.status === 200) {
+              this.cookieValue = getJsCookie('CP_UserIDGuid')
+              if (this.cookieValue === Guid) {
+                // 获取用户数据以字符串形式保存在localStorage中
+                let data = JSON.stringify(res.data.data)
+                window.localStorage.setItem('datas', data)
+                this.$router.push({path: '/user'})
+                window.location.reload()
+              } else {
+                window.localStorage.removeItem('datas')
+              }
+            }
           },
           failed: function (err) {
             console.log('未找到数据是' + err)
@@ -89,17 +103,19 @@
       },
       // 点击发送验证码
       sendClick (event) {
-        let myUrl = `"Mobile":"${this.phone}","TypeID":"1"`
+        let phone = TrimJs(this.phone, 'g')
+        let myUrl = `"Mobile":"${phone}","TypeID":"1"`
         let myOtherUrl = encodeURIComponent(myUrl)
         if (this.phone.length <= 0) {
-          isPhone(this.phone)
+          isPhone(phone)
         } else {
-          isPhone(this.phone)
+          isPhone(phone)
         }
         this.$request({
           type: 'get',
           url: '/api/user/Handler.ashx?action=704&params={' + myOtherUrl + '}',
           success: function (res) {
+            this.guid = res.data.data
             let msg = res.data.msg
             sendCode(msg, event)
           },
@@ -107,6 +123,20 @@
             console.log('未找到的验证码数据是' + err)
           }
         })
+      }
+    },
+    watch: {
+      // 通过watch来设置空格
+      phone (newValue, oldValue) {
+        if (newValue.length > oldValue.length) { // 文本框中输入
+          if (newValue.length === 3 || newValue.length === 8) {
+            this.phone = this.phone + ' '
+          }
+        } else { // 文本框中删除
+          if (newValue.length === 9 || newValue.length === 4) {
+            this.phone = this.phone.trim()
+          }
+        }
       }
     }
   }
@@ -137,7 +167,7 @@
   .jiantouZ {
     line-height: 12vmin;
     color: white;
-    font-size: 16px;
+    font-size: 4.5vmin;
     font-weight: bold;
     margin-left: 5%;
   }
@@ -145,10 +175,12 @@
   .welcome-logon {
     line-height: 10vmin;
     color: #F2F2F2;
-    font-size: 22px;
-    margin-left: 30%;
+    font-size: 6vmin;
+    margin-left: 30vmin;
   }
-
+  .phone{
+    font-size: 5vmin;
+  }
   .login-user-dl {
     width: 50%;
     height: 10vmin;
@@ -207,7 +239,7 @@
 
   .shouji {
     margin-left: 18px;
-    font-size: 30px;
+    font-size: 7vmin;
     color: @color-text-red;
   }
 
@@ -223,12 +255,12 @@
 
   .weibiaoti {
     margin-left: 18px;
-    font-size: 30px;
+    font-size: 7vmin;
     color: @color-text-red;
   }
   .mima {
     margin-left: 20px;
-    font-size: 25px;
+    font-size: 6.2vmin;
     color: @color-text-red;
   }
   #phone-text {
@@ -240,26 +272,29 @@
     height: 12vmin;
   }
   .send-yzm {
+    border: none;
     outline: none;
+    background-color: white;
     color: @color-text-red;
-    font-size: 16px;
+    font-size: 4.8vmin;
+    line-height: 12vmin;
   }
   .login-login {
-    margin-top: 25px;
+    margin-top: 5vmin;
     width: 80vmin;
     height: 10vmin;
     background-color: @color-text-red;
     border: none;
     outline: none;
     color: @color-background-white;
-    font-size: 20px;
+    font-size: 4vmin;
     border-radius: 5px;
   }
   .celerity-logon {
     width: 75vmin;
     text-align: center;
     color: @color-text-gray;
-    font-size: 12px;
+    font-size: 3.3vmin;
     margin: 6% 2%;
   }
   .logon-password {

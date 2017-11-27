@@ -141,8 +141,8 @@
   }
 
   .record-span {
-    margin-left: 25%;
-    font-size: 22px;
+    margin-left: 28vmin;
+    font-size: 5.5vmin;
     font-weight: 900;
     color: @color-background-white;
   }
@@ -155,6 +155,7 @@
   }
 
   .jiantou {
+    font-size: 4.5vmin;
     margin-left: 5%;
     color: @color-background-white;
     font-weight: 700;
@@ -162,7 +163,7 @@
 
   .navBar {
     width: 100%;
-    height: 35px;
+    height:10vmin;
     background-color: @color-background-white;
   }
 
@@ -173,7 +174,7 @@
     width: 33.3333%;
     color: #333;
     text-align: center;
-    line-height: 35px;
+    line-height: 10vmin;
   }
 
   .user-record-body ul .nav-red {
@@ -199,6 +200,9 @@
     width: 100%;
     display: block;
     margin: 34.66667vmin 0 13.33333vmin;
+  }
+  .nodate___1lEuU span{
+    font-size: 5vmin;
   }
 
   .animatedCss {
