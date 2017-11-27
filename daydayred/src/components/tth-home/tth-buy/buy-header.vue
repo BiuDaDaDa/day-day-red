@@ -83,7 +83,7 @@
         }
       },
       backHome () {
-        this.$router.push({ path: '/' })
+        this.$router.go(-1)
       }
     },
     mounted () {

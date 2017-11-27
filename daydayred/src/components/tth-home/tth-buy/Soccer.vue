@@ -412,6 +412,7 @@
   import BuyHeader from '../tth-buy/buy-header'
   import BuyInstruction from '../tth-buy/buy-instruction.vue'
   import BuyFooterSport from '../tth-buy/buy-footer-sport.vue'
+  import {Indicator} from 'mint-ui'
   export default {
     name: 'Soccer',
     components: {
@@ -462,6 +463,7 @@
           success: function (res) {
             this.weekGameArr = res.data.data
 //            console.log(res.data.data)
+            Indicator.close()
           },
           failed: function (err) {
             console.log('未找到竞彩足球数据:' + err)
@@ -521,6 +523,7 @@
       }
     },
     mounted () {
+      Indicator.open('加载中...')
       this.fecthSoccerData()
     }
   }

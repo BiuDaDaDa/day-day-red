@@ -9,7 +9,7 @@
     <!--号码选择-->
     <div class="Select9ball_right">
       <!--每个号码球-->
-      <div v-for="(n,index) in numBallArr" :key="index">
+      <div ref="ball" v-for="(n,index) in numBallArr" :key="index" @click="selectBall">
         <div class="numBall" :class="{numBallActive:false}">
           <strong>{{n}}</strong>
         </div>
@@ -34,6 +34,9 @@
         for (let num = 0; num <= 9; num++) {
           this.numBallArr.push(num)
         }
+      },
+      selectBall () {
+
       }
     },
     mounted () {
