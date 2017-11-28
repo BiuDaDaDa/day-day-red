@@ -2,7 +2,7 @@
   <!--排列3-->
   <div class="fucai3d_wrap">
     <div class="fucai3d_main" v-show="isMainShow">
-      <BuyHeader :MethodsArr="MethodsArr" :MoreArr="MoreArr" @changeSelectBall="changeSelectBall" @instructionShow="isInstructionShow"></BuyHeader>
+      <BuyHeader :runLotto="'/fc3d'" :MethodsArr="MethodsArr" :MoreArr="MoreArr" @changeSelectBall="changeSelectBall" @instructionShow="isInstructionShow"></BuyHeader>
       <!--主体部分-->
       <div class="fucai3d_content">
         <!--时间-->
@@ -19,17 +19,17 @@
           <!--选球-->
           <!--直选-->
           <div v-if="changeBall == 0">
-            <Select9ball :numText="'百位'"></Select9ball>
-            <Select9ball :numText="'十位'"></Select9ball>
-            <Select9ball :numText="'个位'"></Select9ball>
+            <Select9ball :clearAll="clearAll" @returnNum="getNumBai" :numText="'百位'"></Select9ball>
+            <Select9ball :clearAll="clearAll" @returnNum="getNumShi" :numText="'十位'"></Select9ball>
+            <Select9ball :clearAll="clearAll" @returnNum="getNumGe" :numText="'个位'"></Select9ball>
           </div>
           <!--排列3-->
-          <Select9ball v-if="changeBall == 1" :numText="'选号'"></Select9ball>
+          <Select9ball :clearAll="clearAll" @returnNum="getNumZuXuan3" v-if="changeBall == 1" :numText="'选号'"></Select9ball>
           <!--排列6-->
-          <Select9ball v-if="changeBall == 2" :numText="'选号'"></Select9ball>
+          <Select9ball :clearAll="clearAll" @returnNum="getNumZuXuan6" v-if="changeBall == 2" :numText="'选号'"></Select9ball>
         </div>
       </div>
-      <BuyFooter></BuyFooter>
+      <BuyFooter @clearAllNum="clearAllNum" :countZhu="countZhu" :countMoney="countMoney"></BuyFooter>
       <!--隐藏部分-->
       <mt-popup v-model="isShowRecent" position="bottom" class="recentAward">
         <!--分割符号-->
@@ -95,7 +95,14 @@
             rule: '至少选择3个号码,猜对开奖号(顺序不限)',
             ruleMoney: '173'
           }
-        ]
+        ],
+        // 获取球号
+        zhiXuanArr: [[], [], []],
+        zhiXuan3Arr: [],
+        zhiXuan6Arr: [],
+        countZhu: 0,
+        countMoney: 0,
+        clearAll: false
       }
     },
     methods: {
@@ -156,6 +163,55 @@
       isInstructionShow () {
         this.isMainShow = !this.isMainShow
         this.isInsShow = !this.isInsShow
+      },
+      // 获取选的号码球
+      // 直选
+      getZhiXuanCount () {
+        let num1 = this.zhiXuanArr[0].length
+        let num2 = this.zhiXuanArr[1].length
+        let num3 = this.zhiXuanArr[2].length
+        this.countZhu = num1 * num2 * num3
+        this.countMoney = this.countZhu * 2
+      },
+      getNumBai (num) {
+        this.zhiXuanArr[0] = num
+//        console.log(this.zhiXuanArr)
+        this.getZhiXuanCount()
+      },
+      getNumShi (num) {
+        this.zhiXuanArr[1] = num
+        this.getZhiXuanCount()
+      },
+      getNumGe (num) {
+        this.zhiXuanArr[2] = num
+        this.getZhiXuanCount()
+      },
+      // 组选3
+      getZuXuan3Count () {
+        let num1 = this.zhiXuan3Arr.length
+        this.countZhu = num1 * (num1 - 1)
+        this.countMoney = this.countZhu * 2
+      },
+      getNumZuXuan3 (num) {
+        this.zhiXuan3Arr = num
+        this.getZuXuan3Count()
+      },
+      // 组选6
+      getZuXuan6Count () {
+        let num1 = this.zhiXuan6Arr.length
+        this.countZhu = num1 * (num1 - 2) * (num1 - 1) / 6
+        this.countMoney = this.countZhu * 2
+      },
+      getNumZuXuan6 (num) {
+        this.zhiXuan6Arr = num
+        this.getZuXuan6Count()
+      },
+      // 清除所有选择的球
+      clearAllNum () {
+        this.clearAll = !this.clearAll
+        this.countZhu = 0
+        this.countMoney = 0
+        console.log('清除')
       }
     },
     mounted () {
@@ -204,7 +260,7 @@
           width: 100%;
           /*规则*/
           .fucai3d_rule {
-            width: 100%;
+            /*width: 100%;*/
             height: 10.66667vmin;
             color: @color-text-gray;
             padding-left: 3.2vmin;

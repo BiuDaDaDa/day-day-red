@@ -46,7 +46,7 @@
 <script>
   export default {
     name: 'BuyHeader',
-    props: ['thisPage', 'MethodsArr', 'MoreArr'],
+    props: ['thisPage', 'MethodsArr', 'MoreArr', 'runLotto'],
     data () {
       return {
         MethodsName: this.MethodsArr,
@@ -77,9 +77,13 @@
       // 点击去别的连接
       toOtherPage (index) {
         this.closePop()
+        console.log(index)
         if (index === 'shuoming') {
           // 告诉父级打开玩法说明
           this.$emit('instructionShow')
+        } else if (index === 'kaijiang') {
+//          console.log(this.runLotto)
+          this.$router.push(this.runLotto)
         }
       },
       backHome () {

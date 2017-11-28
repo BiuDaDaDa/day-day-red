@@ -9,9 +9,9 @@
     <!--号码选择-->
     <div class="Select9ball_right">
       <!--每个号码球-->
-      <div ref="ball" v-for="(n,index) in numBallArr" :key="index" @click="selectBall">
-        <div class="numBall" :class="{numBallActive:false}">
-          <strong>{{n}}</strong>
+      <div v-for="(n,index) in numBallArr" :key="index">
+        <div ref="ball" @click="selectBall(index)" class="numBall">
+          <strong ref="ballText">{{n}}</strong>
         </div>
       </div>
     </div>
@@ -22,9 +22,11 @@
 <script>
   export default {
     name: 'Select9ball',
-    props: ['numText'],
+    props: ['numText', 'clearAll'],
     data () {
       return {
+        selectNum: '',
+        selectArr: [],
         numBallArr: []
       }
     },
@@ -35,12 +37,42 @@
           this.numBallArr.push(num)
         }
       },
-      selectBall () {
-
+      // 选中球
+      selectBall (index) {
+        // 选择不为被选中状态的球
+        if (this.selectArr.indexOf(index) === -1) {
+          // 选中的样式变化
+          this.$refs.ball[index].style.backgroundColor = '#ff5f5f'
+          this.$refs.ballText[index].style.color = 'white'
+          // 值放入数组
+          this.selectArr.push(index)
+        } else {
+          // 已经在数组中的值样式变回原来样式
+          this.$refs.ball[index].style.backgroundColor = '#f6f8f7'
+          this.$refs.ballText[index].style.color = '#ff5f5f'
+          // 删除
+          let numIndex = this.selectArr.indexOf(index)
+          this.selectArr.splice(numIndex, 1)
+        }
+//        console.log(this.selectArr)
+        this.$emit('returnNum', this.selectArr)
+      },
+      clearBall () {
+        for (let i = 0; i < this.numBallArr.length; i++) {
+          this.$refs.ball[i].style.backgroundColor = '#f6f8f7'
+          this.$refs.ballText[i].style.color = '#ff5f5f'
+        }
+        this.selectArr = []
+//        console.log(this.selectArr)
       }
     },
     mounted () {
       this.changeNum()
+    },
+    watch: {
+      clearAll: function () {
+        this.clearBall()
+      }
     }
   }
 </script>

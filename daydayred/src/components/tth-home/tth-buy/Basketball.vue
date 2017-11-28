@@ -3,7 +3,7 @@
     <!--主要内容-->
     <div class="basketball_main" v-show="isMainShow">
       <!--头-->
-      <BuyHeader :MethodsArr="MethodsArr" :MoreArr="MoreArr" @changeSelectBall="changeSelectBall"
+      <BuyHeader :runLotto="'/rlbasketball'" :MethodsArr="MethodsArr" :MoreArr="MoreArr" @changeSelectBall="changeSelectBall"
                  @instructionShow="isInstructionShow"></BuyHeader>
       <!--1混合过关-->
       <div class="basketball_hunheguoguan" v-if="changeBall == 0">
@@ -942,8 +942,8 @@
         width: 100%;
         /*头部*/
         h5 {
-          font-weight: bold;
-          font-size: 4.26667vmin;
+          /*font-weight: bold;*/
+          font-size: 2.93333vmin;
           width: 100%;
           height: 9.33333vmin;
           background: #fff;
