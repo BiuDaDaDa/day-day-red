@@ -2,22 +2,40 @@
   <!--购买彩票底部-->
 <div class="buyFooter_wrap">
   <!--垃圾箱-->
-  <div class="buyFooter_trash">
+  <div class="buyFooter_trash" @click="clearNum">
     <i class="iconfont icon-lajixiang"></i>
     <span>清空</span>
   </div>
   <!--购买总数金额-->
   <div class="buyFooter_count">
-    <span>共计<b>{{}}</b>注,<b>{{}}</b>元</span>
+    <span>共计<b>{{countZhu}}</b>注,<b>{{countMoney}}</b>元</span>
   </div>
   <!--确定-->
-  <input class="buyFooter_buyBtn" type="button" value="确定">
+  <input @click="toShoppingCar" class="buyFooter_buyBtn" type="button" value="确定">
 </div>
 </template>
 
 <script>
+  import { Toast } from 'mint-ui'
   export default {
-    name: 'BuyFooter'
+    name: 'BuyFooter',
+    props: ['countMoney', 'countZhu'],
+    methods: {
+      clearNum () {
+        this.$emit('clearAllNum')
+      },
+      toShoppingCar () {
+        if (this.countZhu > 0) {
+          this.$emit('toShopCar')
+        } else {
+          Toast({
+            message: '请选择',
+            position: 'middle',
+            duration: 1000
+          })
+        }
+      }
+    }
   }
 </script>
 

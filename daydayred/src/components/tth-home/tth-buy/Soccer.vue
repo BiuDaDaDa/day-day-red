@@ -3,7 +3,7 @@
     <!--main-->
     <div class="soccer_main" v-show="isMainShow">
       <!--头-->
-      <BuyHeader :MethodsArr="MethodsArr" :MoreArr="MoreArr" @changeSelectBall="changeSelectBall"
+      <BuyHeader :runLotto="'/rlfootball'" :MethodsArr="MethodsArr" :MoreArr="MoreArr" @changeSelectBall="changeSelectBall"
                  @instructionShow="isInstructionShow"></BuyHeader>
       <!--混合过关-->
       <div class="soccer_hunheguoguan" v-if="changeBall == 0">
@@ -31,7 +31,7 @@
                 <!--比赛队伍-->
                 <span class="right_title">
                   <b>让球</b>
-                  <span>{{game.HTeam}}<strong>vs</strong>{{game.VTeam}}</span>
+                  <span class="title_team"><em>{{game.HOrder}}</em>{{game.HTeam}}<strong>vs</strong>{{game.VTeam}}<em>{{game.AOrder}}</em></span>
                 </span>
                 <!--表格-->
                 <table>
@@ -89,7 +89,7 @@
               <div class="games_right">
                 <!--比赛队伍-->
                 <span class="right_title">
-                  <span>{{game.HTeam}}<strong>vs</strong>{{game.VTeam}}</span>
+                  <span><em>{{game.HOrder}}</em>{{game.HTeam}}<strong>vs</strong>{{game.VTeam}}<em>{{game.AOrder}}</em></span>
                 </span>
                 <!--表格-->
                 <table>
@@ -141,7 +141,7 @@
               <div class="games_right">
                 <!--比赛队伍-->
                 <span class="right_title">
-                  <span>{{game.HTeam}}<strong>vs</strong>{{game.VTeam}}</span>
+                  <span><em>{{game.HOrder}}</em>{{game.HTeam}}<strong>vs</strong>{{game.VTeam}}<em>{{game.AOrder}}</em></span>
                 </span>
                 <!--表格-->
                 <table>
@@ -194,7 +194,7 @@
               <div class="games_right">
                 <!--比赛队伍-->
                 <span class="right_title">
-                  <span>{{game.HTeam}}<strong>vs</strong>{{game.VTeam}}</span>
+                  <span><em>{{game.HOrder}}</em>{{game.HTeam}}<strong>vs</strong>{{game.VTeam}}<em>{{game.AOrder}}</em></span>
                 </span>
                 <!--表格-->
                 <table>
@@ -241,7 +241,7 @@
               <div class="games_right">
                 <!--比赛队伍-->
                 <span class="right_title">
-                  <span>{{game.HTeam}}<strong>vs</strong>{{game.VTeam}}</span>
+                  <span><em>{{game.HOrder}}</em>{{game.HTeam}}<strong>vs</strong>{{game.VTeam}}<em>{{game.AOrder}}</em></span>
                 </span>
                 <!--投注区-->
                 <div @click="morePlay(game.IssueNo, game.HTeam, game.VTeam)"><span>点击展开比分投注区</span></div>
@@ -621,16 +621,22 @@
                     transform: scale(.5);
                     line-height: 1.2;
                   }
-                  span {
+                  .title_team {
                     margin-left: 7.66667vmin;
+                    /*margin:0 auto;*/
                     margin-bottom: 2.66667vmin;
-                    font-size: 3.73333vmin;
+                    font-size: 3.2vmin;
                     display: inline-block;
                     font-weight: 700;
                     color: #5d5d5d;
                     white-space: nowrap;
                     strong {
-                      margin: 0 4vmin;
+                      margin: 0 .66667vmin;
+                      font-weight: 400;
+                    }
+                    em{
+                      font-style: normal;
+                      font-size: 2.4vmin;
                       font-weight: 400;
                     }
                   }
@@ -758,7 +764,6 @@
               height: 25.33333vmin;
               margin: 0 2.66667vmin;
               border-bottom: 1px solid #e6e6e6;
-              /*box-sizing: border-box;*/
               .games_left {
                 width: 15vmin;
                 height: 100%;
@@ -781,21 +786,25 @@
                 /*height: 100%;*/
                 box-sizing: border-box;
                 .right_title {
-                  /*box-sizing: border-box;*/
                   display: flex;
                   align-items: center;
                   justify-content: center;
                   position: relative;
                   span {
-                    margin-left: 7.66667vmin;
                     margin-bottom: 2.66667vmin;
-                    font-size: 3.73333vmin;
+                    font-size: 3.2vmin;
                     display: inline-block;
                     font-weight: 700;
                     color: #5d5d5d;
                     white-space: nowrap;
                     strong {
-                      margin: 0 4vmin;
+                      margin: 0 .66667vmin;
+                      font-weight: 400;
+                    }
+                    em{
+                      color: #999;
+                      font-style: normal;
+                      font-size: 2.4vmin;
                       font-weight: 400;
                     }
                   }
@@ -933,15 +942,20 @@
                   justify-content: center;
                   position: relative;
                   span {
-                    /*margin-left: 7.66667vmin;*/
                     margin-bottom: 2.66667vmin;
-                    font-size: 3.73333vmin;
+                    font-size: 3.2vmin;
                     display: inline-block;
                     font-weight: 700;
                     color: #5d5d5d;
                     white-space: nowrap;
                     strong {
-                      margin: 0 4vmin;
+                      margin: 0 .66667vmin;
+                      font-weight: 400;
+                    }
+                    em{
+                      color: #999;
+                      font-style: normal;
+                      font-size: 2.4vmin;
                       font-weight: 400;
                     }
                   }
@@ -1060,16 +1074,21 @@
                   justify-content: center;
                   position: relative;
                   span {
-                    /*margin-left: 7.66667vmin;*/
-                    margin-bottom: 2.66667vmin;
-                    font-size: 3.73333vmin;
+                    margin-bottom: 4.66667vmin;
                     display: inline-block;
                     font-weight: 700;
                     color: #5d5d5d;
                     white-space: nowrap;
+                    font-size: 3.2vmin;
                     strong {
-                      margin: 0 4vmin;
+                      margin: 0 .66667vmin;
                       font-weight: 400;
+                    }
+                    em{
+                      font-style: normal;
+                      font-size: 2.4vmin;
+                      font-weight: 400;
+                      color: #999;
                     }
                   }
                 }
@@ -1111,8 +1130,8 @@
         width: 100%;
         /*头部*/
         h5 {
-          font-weight: bold;
-          font-size: 4.26667vmin;
+          /*font-weight: bold;*/
+          font-size: 2.93333vmin;
           width: 100%;
           height: 9.33333vmin;
           background: #fff;
@@ -1268,7 +1287,7 @@
               span {
                 background-color: white;
                 height: 8.8vmin;
-                width: 28.82vmin;
+                width: 28.8vmin;
                 border-right: 1px solid #e6e6e6;
                 border-bottom: 1px solid #e6e6e6;
                 display: flex;
@@ -1319,7 +1338,7 @@
               span {
                 background-color: white;
                 height: 10.5vmin;
-                width: 12.2vmin;
+                width: 12.19vmin;
                 border-right: 1px solid #e6e6e6;
                 border-bottom: 1px solid #e6e6e6;
                 display: flex;
@@ -1375,7 +1394,7 @@
               span {
                 background-color: white;
                 height: 10.5vmin;
-                width: 12.2vmin;
+                width: 12.19vmin;
                 border-right: 1px solid #e6e6e6;
                 border-bottom: 1px solid #e6e6e6;
                 display: flex;
@@ -1486,7 +1505,7 @@
               span {
                 background-color: white;
                 height: 10.5vmin;
-                width: 12.2vmin;
+                width: 12.19vmin;
                 border-right: 1px solid #e6e6e6;
                 border-bottom: 1px solid #e6e6e6;
                 display: flex;

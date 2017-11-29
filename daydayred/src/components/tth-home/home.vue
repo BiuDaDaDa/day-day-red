@@ -75,6 +75,7 @@
 <script>
   import OxsFooter from '../../components/Footer.vue'
   import {Indicator} from 'mint-ui'
+//  import {getJsCookie} from '../../common/js/util'
   export default {
     name: 'home',
     components: {
@@ -262,9 +263,9 @@
       }
       .icon-liwu {
         position: absolute;
-        right: 34px;
-        /*top:45%;*/
-        font-size: 21px;
+        /*right: 34px;*/
+        right:8vmin;
+        font-size: 4.8vmin;
         color: Rgb(253, 253, 129);
       }
     }
@@ -282,7 +283,8 @@
         margin: 0 auto;
         margin-top: -8vmin;
         width: 96vmin;
-        height: 152px;
+        /*height: 152px;*/
+        height:36.5vmin;
         border-radius: 2.66667vmin;
         overflow: hidden;
         img {
@@ -335,8 +337,8 @@
           font-size: 1.86667vmin;
           .home_shortcut_center_nums_balls {
             margin-right: 2.26667vmin;
-            width: 7.8vmin;
-            height: 7.8vmin;
+            width: 8.2vmin;
+            height: 8.2vmin;
             border: 1px solid @color-text-red;
             border-radius: 50%;
             background-color: @color-red-l;
@@ -360,10 +362,12 @@
           }
         }
         .icon-shuaxin {
-          font-size: 30px;
+          /*font-size: 30px;*/
+          font-size: 7.7vmin;
           color: @color-text-gray;
-          margin-left: 15px;
-          transform: rotate(30deg);
+          /*margin-left: 15px;*/
+          margin-left: 2.5vmin;
+          transform: rotate(20deg);
         }
       }
       .home_shortcut_bottom {
@@ -457,8 +461,8 @@
             }
             .itemStyle2 {
               position: relative;
-              /*left: -5px;*/
-              margin-left: -5px;
+              margin-left: -1vmin;
+              white-space: nowrap;
               .text_small {
                 position: relative;
                 z-index: 11;
@@ -467,17 +471,16 @@
                 background-color: @color-red;
                 padding: 0 2.66667vmin;
                 border-radius: 13.33333vmin;
-                /*margin-left: -.66667vmin;*/
-                padding-left: 10px;
+                padding-left: 2vmin;
                 height: 100%;
               }
               .text_triangle {
                 z-index: 10;
                 position: absolute;
-                left: 12px;
-                top: -8px;
-                width: 16px;
-                height: 16px;
+                left: 2.8vmin;
+                top: -1.9vmin;
+                width: 3.2vmin;
+                height: 3.2vmin;
                 background-color: @color-red;
                 transform: rotate(45deg);
               }

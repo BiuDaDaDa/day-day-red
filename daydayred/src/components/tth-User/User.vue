@@ -77,7 +77,7 @@
   </div>
 </template>
 <script>
-  import {MessageBox, Toast} from 'mint-ui'
+  import {MessageBox} from 'mint-ui'
   import {fetch} from '@/common/js/localStorage'
   import {getJsCookie, removeJsCookie} from '@/common/js/util'
   import YkrFooter from '../../components/Footer.vue'
@@ -196,12 +196,9 @@
     mounted () {
       this.getCookie()
       if (getJsCookie('CP_UserIDGuid') === null) {
-        Toast({
-          message: '请登陆',
-          position: 'middle',
-          iconClass: 'iconfont icon-guanbi1',
-          duration: 5000
-        })
+        console.log('未登陆')
+      } else {
+        console.log('已登陆')
       }
     }
   }

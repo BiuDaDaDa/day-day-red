@@ -25,8 +25,7 @@
       </span>
     </header>
     <ul>
-      <li v-for="(item, index) in ssq"
-          @click="toggle(index)">
+      <li v-for="(item, index) in ssq" @click="toggle(index)">
         <p>{{WeekDay}} {{item['MNO']}} {{item['LeagueName']}} {{MatchTime[index][0]}}:{{MatchTime[index][1]}}</p>
         <div>
           <i class="iconfont icon-jiantou2" id="down" ref="turnover"></i>
@@ -36,7 +35,7 @@
           </div>
           <span id="ValueT">{{item['HTeam']}}</span>
         </div>
-          <table ref="allresult" v-show="index == i">
+          <table ref="resultDetail">
             <tr>
               <td>比分</td>
               <td>让分胜负</td>
@@ -54,6 +53,7 @@
     </ul>
     <div class="ftMask" v-if="isShowMask" @click="backList">
     </div>
+    <transition name="fade">
     <div class="mask-body" v-if="isShowtimer">
       <div class="mask-head">
         <div class="cancel" @click="cancelValue">取消</div>
@@ -62,6 +62,7 @@
       </div>
       <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
     </div>
+    </transition>
   </div>
 </template>
 <script>
@@ -78,15 +79,12 @@
         isHomeWin: [],
         Today: [],
         WeekDay: '',
-        isShowInfo: true,
-        number: 0,
-        IssueName: '20171125',
-        i: -1,
+        IssueName: '20171127',
         // 下拉列表
         slots: [
           {
             flex: 1,
-            values: ['20171114', '20171115', '20171116', '20171117', '20171118', '20171119'],
+            values: ['20171125', '20171124', '20171123', '20171122', '20171121', '20171120', '20171119', '20171118'],
             className: 'slot1',
             textAlign: 'center'
           }
@@ -116,59 +114,63 @@
               that.isHomeWin[index] = Test.Fencha(e['Rz'])
               // 比赛具体时间
               that.MatchTime[index] = Test.cutMatchTime(e['MatchTime'])
+              // 表格显示初始化
             })
             // 当天比赛时间
-            that.Today = Test.cutMatchTime2(this.ssq[0]['IssueName'])
+            that.Today = Test.cutMatchTime2(this.IssueName)
             // 当天是星期几
-            that.WeekDay = this.ssq[0]['WKName']
-            // 第一个样式
+            that.WeekDay = Test.cutWeek(this.IssueName)
+            // 加载图标关闭
             Indicator.close()
           },
           failed: function (err) {
             console.log(err)
+            Indicator.close()
           }
         })
       },
       backRl () {
-        this.$router.push({path: '/runlottery'})
+        this.$router.go(-1)
       },
       backDay () {
-        // 点击上一期翻看前一天的记录
-        if (this.IssueName < 20171116) {
-          this.IssueName = 20171116
+        // 上一期
+        if (parseInt(this.IssueName) < 20171115) {
+          this.IssueName = '20171115'
           Toast({
             message: '已到最前一期',
             duration: 1500
           })
+          Indicator.close()
         } else {
+          this.IssueName = parseInt(this.IssueName)
           this.IssueName--
+          this.IssueName = this.IssueName.toString()
           this.testData()
           Indicator.open('加载中...')
         }
       },
       goDay () {
-        // 点击下一期翻看后一个记录
-        if (this.IssueName > 20171124) {
-          this.IssueName = 20171124
+        if (parseInt(this.IssueName) > 20171126) {
+          this.IssueName = '20171127'
           Toast({
             message: '已到最后一期',
             duration: 1500
           })
+          Indicator.close()
         } else {
+          this.IssueName = parseInt(this.IssueName)
           this.IssueName++
+          this.IssueName = this.IssueName.toString()
           this.testData()
           Indicator.open('加载中...')
         }
-      },
-      toggle (index) {
-        // 点击显示隐藏表格
-        this.i = index
       },
       // 显示时间选择器
       chooseTime () {
         this.isShowMask = true
         this.isShowtimer = true
       },
+      // 点击蒙版取消时间选择器
       backList () {
         this.isShowMask = false
         this.isShowtimer = false
@@ -180,11 +182,22 @@
           this.value = value
         }
       },
+      // 比赛详情表格点击关闭和打开
+      toggle (index) {
+        if (this.$refs.resultDetail[index].style.display === 'block') {
+          this.$refs.resultDetail[index].style.display = 'none'
+          this.$refs.turnover[index].id = 'down'
+        } else {
+          this.$refs.resultDetail[index].style.display = 'block'
+          this.$refs.turnover[index].id = 'up'
+        }
+      },
       // 确定后关闭
       confirmValue () {
         this.isShowMask = false
         this.isShowtimer = false
         this.IssueName = this.value.toString()
+        Indicator.open('加载中...')
         this.testData()
       },
       // 取消后关闭
@@ -194,6 +207,7 @@
       }
     },
     mounted () {
+      Indicator.open('加载中...')
       this.testData()
     }
   }
@@ -202,7 +216,6 @@
 <style scoped lang="less">
   @import "../../common/css/style";
   .Rlbasketball{
-    max-width: 607px;
     margin:0 auto;
   }
   /*头部*/
@@ -341,10 +354,9 @@
     margin-right: 8.66667vmin;
   }
 
-  /*.active table {*/
-    /*display: block;*/
-  /*}*/
-
+  ul li table{
+    display: none;
+  }
   #up{
     transform:rotate(-180deg);
     vertical-align: middle;
@@ -364,21 +376,25 @@
     line-height: 1.5;
     font-family: -apple-system, BlinkMacSystemFont, PingFang SC,
     Helvetica Neue, STHeiti, Microsoft Yahei, Tahoma, Simsun, sans-serif;
+    vertical-align: middle;
   }
 
   table tr:first-child {
     color: @color-text-gray;
   }
-
+  table{
+    margin-top: 4vmin;
+  }
   // 蒙版和弹窗
   .ftMask{
-    position: absolute;
+    position: fixed;
     top:0;
     left:0;
     width:100%;
     height: 100%;
     background-color: black;
     opacity: 0.7;
+    z-index: 70;
   }
   .mask-body{
     position: fixed;
@@ -386,7 +402,12 @@
     left: 0;
     width: 100%;
     background-color: white;
-    z-index: 10;
+    z-index: 100;
+  }
+  .mask-head{
+    display: flex;
+    justify-content: space-between;
+    border-bottom:1px solid #e6e6e6;
   }
   .confirm, .cancel {
     color: #ff5f5f;
@@ -398,15 +419,28 @@
     -webkit-box-align: center;
     justify-content: center;
     width: 20vmin;
+    text-align: center;
   }
 
   .timerTitle {
     font-size: 4.26667vmin;
     color: #000;
     padding: 2.66667vmin 4vmin;
-    width: 50vmin;
     display: inline-block;
     text-align: center;
+  }
+  /*蒙版动画*/
+  /* 开始过渡阶段,动画出去阶段 */
+  .fade-enter-active,.fade-leave-active{
+    transition: all 0.3s ease-out;
+  }
+  /* 进入开始 */
+  .fade-enter{
+    transform: translateY(30vmin);
+  }
+  /* 出去终点 */
+  .fade-leave-active{
+    transform: translateY(60vmin);
   }
 </style>
 

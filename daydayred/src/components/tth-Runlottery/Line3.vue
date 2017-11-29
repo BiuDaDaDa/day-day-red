@@ -26,6 +26,7 @@
 
 <script>
   import Test from './test'
+  import {Indicator} from 'mint-ui'
   export default {
     name: 'balllist',
     data () {
@@ -53,6 +54,7 @@
               that.WinNumber[index] = Test.cutFc3D(e['WinNumber'])
               that.EndTime[index] = Test.cutTime(e['EndTime'])
             })
+            Indicator.close()
           },
           failed: function (err) {
             console.log(err)
@@ -60,15 +62,15 @@
         })
       },
       backRl () {
-        this.$router.push({path: '/runlottery'})
+        this.$router.go(-1)
       },
       numberDetail (index) {
         this.$router.push({path: '/Line3next'})
         this.localID = this.ssq[index]['ID']
-        console.log(this.localID)
       }
     },
     mounted () {
+      Indicator.open()
       this.testData()
     },
     beforeDestroy () {
@@ -83,7 +85,6 @@
   @import "../../common/css/style";
   .Line3{
     background-color: @color-background-white;
-    max-width: 607px;
     margin:0 auto;
   }
   /*头部*/
@@ -98,7 +99,7 @@
     display: inline-block;
   }
   .bl-nav-left {
-    width: 30.6%;
+    width: 20%;
     height: 100%;
     overflow: hidden;
     display: flex;
@@ -107,7 +108,7 @@
     padding-left: 4vmin;
   }
   .bl-nav-right {
-    width: 30.6%;
+    width: 20%;
     height: 100%;
   }
   .bl-nav-title {
