@@ -4,7 +4,7 @@
   <!--main-->
   <div class="superLotto_main" v-show="isMainShow">
     <!--头-->
-    <BuyHeader :MethodsArr="MethodsArr" :MoreArr="MoreArr" @changeSelectBall="changeSelectBall" @instructionShow="isInstructionShow"></BuyHeader>
+    <BuyHeader :runLotto="'/biglt'" :MethodsArr="MethodsArr" :MoreArr="MoreArr" @changeSelectBall="changeSelectBall" @instructionShow="isInstructionShow"></BuyHeader>
     <!--选球-->
     <div class="superLotto_content">
       <!--截止日期-->
@@ -17,11 +17,11 @@
         <!--规则5/2-->
         <div class="superLotto_normal_rule">
           <span>至少选择<b>5</b>个红球 <b class="blueB">2</b>个蓝球</span>
-          <div><i class="iconfont icon-yaoyiyao"></i>机选</div>
+          <div @click="randomNum"><i class="iconfont icon-yaoyiyao"></i>机选</div>
         </div>
-        <SelectMoreBall :maxNum="35" :isRedColor="true"></SelectMoreBall>
+        <SelectMoreBall :randomTimes="randomTimes" :randomNums="randomNums" :clearAll="clearAll" @returnNum="getNumRedPT" :maxNum="35" :isRedColor="true"></SelectMoreBall>
         <p class="line"></p>
-        <SelectMoreBall :maxNum="12" :isRedColor="false"></SelectMoreBall>
+        <SelectMoreBall :randomTimes="randomTimes" :randomNums="randomNums" :clearAll="clearAll" @returnNum="getNumBluePT" :maxNum="12" :isRedColor="false"></SelectMoreBall>
       </div>
       <!--胆拖投注-->
       <div class="superLotto_dantuo" v-show="changeBall == 1">
@@ -47,7 +47,7 @@
       </div>
     </div>
     <!--尾-->
-    <BuyFooter></BuyFooter>
+    <BuyFooter @clearAllNum="clearAllNum" :countZhu="countZhu" :countMoney="countMoney"></BuyFooter>
     <!--隐藏：最近开奖-->
     <mt-popup v-model="isShowRecent" position="bottom" class="recentAward">
       <!--分割符号-->
@@ -101,7 +101,14 @@
             'moreName': '玩法说明',
             'moreIndex': 'shuoming'
           }
-        ]
+        ],
+        numArrPT: [[], []],
+        countZhu: 0,
+        countMoney: 0,
+        clearAll: false,
+        buyCount: [0, 0, 0, 0, 1, 7, 28, 84, 210, 462, 924, 1716, 3003, 5005, 80081, 12376, 18564, 27132, 38760, 54264, 74613, 100947, 134596, 177100, 230230, 296010, 376739.999, 475019.999, 593774.999, 736281, 906192, 1107568],
+        randomNums: false,
+        randomTimes: 0
       }
     },
     methods: {
@@ -140,6 +147,38 @@
       isInstructionShow () {
         this.isMainShow = !this.isMainShow
         this.isInsShow = !this.isInsShow
+      },
+      // 计算总金额和总注数
+      getPTCount () {
+        let num1 = this.numArrPT[0].length
+//        console.log('红球个数' + this.numArrPT[0].length)
+        let num2 = this.numArrPT[1].length
+        num1 = this.buyCount[num1 - 1]
+        num2 = (num2 - 1) * num2 / 2
+        this.countZhu = num1 * num2
+        this.countMoney = this.countZhu * 2
+//        console.log(this.countMoney)
+      },
+      // 获取选球组件返回的数组
+      getNumRedPT (num) {
+        this.numArrPT[0] = num
+        this.getPTCount()
+      },
+      getNumBluePT (num) {
+        this.numArrPT[1] = num
+        this.getPTCount()
+      },
+      // 清除所有选择的球
+      clearAllNum () {
+        this.clearAll = !this.clearAll
+        this.countZhu = 0
+        this.countMoney = 0
+        console.log('清除')
+      },
+      // 随机球
+      randomNum () {
+        this.randomNums = !this.randomNums
+        this.randomTimes = 5
       }
     },
     mounted () {

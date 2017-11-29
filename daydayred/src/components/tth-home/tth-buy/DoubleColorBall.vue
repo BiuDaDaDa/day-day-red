@@ -4,7 +4,8 @@
     <!--main-->
     <div class="doubleColorBall_main" v-show="isMainShow">
       <!--头-->
-      <BuyHeader :MethodsArr="MethodsArr" :MoreArr="MoreArr" @changeSelectBall="changeSelectBall" @instructionShow="isInstructionShow"></BuyHeader>
+      <BuyHeader :runLotto="'/balllist'" :MethodsArr="MethodsArr" :MoreArr="MoreArr" @changeSelectBall="changeSelectBall"
+                 @instructionShow="isInstructionShow"></BuyHeader>
       <!--选球-->
       <div class="doubleColorBall_content">
         <!--截止日期-->
@@ -17,11 +18,13 @@
           <!--规则6/1-->
           <div class="doubleColorBall_normal_rule">
             <span>至少选择<b>6</b>个红球 <b class="blueB">1</b>个蓝球</span>
-            <div><i class="iconfont icon-yaoyiyao"></i>机选</div>
+            <div @click="randomNum"><i class="iconfont icon-yaoyiyao"></i>机选</div>
           </div>
-          <SelectMoreBall :maxNum="33" :isRedColor="true"></SelectMoreBall>
+          <SelectMoreBall :randomTimes="randomTimes" :randomNums="randomNums" :clearAll="clearAll" @returnNum="getNumRedPT" :maxNum="33"
+                          :isRedColor="true"></SelectMoreBall>
           <p class="line"></p>
-          <SelectMoreBall :maxNum="16" :isRedColor="false"></SelectMoreBall>
+          <SelectMoreBall :randomTimes="randomTimes" :randomNums="randomNums" :clearAll="clearAll" @returnNum="getNumBluePT" :maxNum="16"
+                          :isRedColor="false"></SelectMoreBall>
         </div>
         <!--胆拖投注-->
         <div class="doubleColorBall_dantuo" v-show="changeBall == 1">
@@ -42,7 +45,7 @@
         </div>
       </div>
       <!--尾-->
-      <BuyFooter></BuyFooter>
+      <BuyFooter @clearAllNum="clearAllNum" :countZhu="countZhu" :countMoney="countMoney"></BuyFooter>
       <!--隐藏：最近开奖-->
       <mt-popup v-model="isShowRecent" position="bottom" class="recentAward">
         <!--分割符号-->
@@ -50,7 +53,8 @@
       </mt-popup>
     </div>
     <!--隐藏：玩法说明-->
-    <BuyInstruction v-show="isInsShow" :thisPage="38" :thisTitle="'玩法说明'" @instructionClose="isInstructionShow"></BuyInstruction>
+    <BuyInstruction v-show="isInsShow" :thisPage="38" :thisTitle="'玩法说明'"
+                    @instructionClose="isInstructionShow"></BuyInstruction>
   </div>
 </template>
 
@@ -60,7 +64,8 @@
   import BuyRecentAward from '../tth-buy/buy-recentAward.vue'
   import BuyInstruction from '../tth-buy/buy-instruction.vue'
   import SelectMoreBall from '../tth-buy/buy-selectMoreBall.vue'
-  import {Indicator} from 'mint-ui'
+  import { Indicator } from 'mint-ui'
+
   export default {
     name: 'SuperLotto',
     components: {
@@ -96,7 +101,14 @@
             'moreName': '玩法说明',
             'moreIndex': 'shuoming'
           }
-        ]
+        ],
+        numArrPT: [[], []],
+        countZhu: 0,
+        countMoney: 0,
+        clearAll: false,
+        buyCount: [0, 0, 0, 0, 0, 1, 7, 28, 84, 210, 462, 924, 1716, 3003, 5005, 80081, 12376, 18564, 27132, 38760, 54264, 74613, 100947, 134596, 177100, 230230, 296010, 376739.999, 475019.999, 593774.999, 736281, 906192, 1107568],
+        randomNums: false,
+        randomTimes: 0
       }
     },
     methods: {
@@ -135,6 +147,35 @@
       isInstructionShow () {
         this.isMainShow = !this.isMainShow
         this.isInsShow = !this.isInsShow
+      },
+      getPTCount () {
+        console.log(this.numArrPT[0].length)
+        let num1 = this.numArrPT[0].length
+        let num2 = this.numArrPT[1].length
+        num1 = this.buyCount[num1 - 1]
+        this.countZhu = num1 * num2
+        this.countMoney = this.countZhu * 2
+      },
+      getNumRedPT (num) {
+        this.numArrPT[0] = num
+//        console.log(this.zhiXuanArr)
+        this.getPTCount()
+      },
+      getNumBluePT (num) {
+        this.numArrPT[1] = num
+        this.getPTCount()
+      },
+      // 清除所有选择的球
+      clearAllNum () {
+        this.clearAll = !this.clearAll
+        this.countZhu = 0
+        this.countMoney = 0
+        console.log('清除')
+      },
+      // 随机球
+      randomNum () {
+        this.randomNums = !this.randomNums
+        this.randomTimes = 6
       }
     },
     mounted () {
@@ -147,12 +188,13 @@
 
 <style scoped lang="less">
   @import "../../../common/css/style.less";
-  .doubleColorBall_wrap{
+
+  .doubleColorBall_wrap {
     width: 100%;
     height: 667px;
     position: relative;
     background-color: @color-background-gray;
-    .doubleColorBall_content{
+    .doubleColorBall_content {
       height: 100%;
       width: 100%;
       background-color: #FFFFFF;
@@ -178,9 +220,9 @@
         }
       }
       /*普通*/
-      .doubleColorBall_normal{
+      .doubleColorBall_normal {
         width: 100%;
-        .doubleColorBall_normal_rule{
+        .doubleColorBall_normal_rule {
           box-sizing: border-box;
           font-size: 3.2vmin;
           width: 100%;
@@ -191,19 +233,19 @@
           justify-content: space-between;
           background-color: white;
           color: @color-text-gray;
-          span{
-            b{
+          span {
+            b {
               color: @color-red;
             }
-            .blueB{
+            .blueB {
               color: @color-blue;
             }
           }
-          div{
+          div {
             display: flex;
             align-items: center;
             justify-content: center;
-            i{
+            i {
               margin-right: 1vmin;
               font-size: 7vmin;
               transform: rotate(45deg);
@@ -212,9 +254,9 @@
         }
       }
       /*胆拖*/
-      .doubleColorBall_dantuo{
+      .doubleColorBall_dantuo {
         width: 100%;
-        .doubleColorBall_dantuo_rule{
+        .doubleColorBall_dantuo_rule {
           font-size: 3.2vmin;
           width: 100%;
           height: 8vmin;
@@ -222,19 +264,19 @@
           display: flex;
           justify-content: flex-start;
           align-items: center;
-          span{
+          span {
             color: @color-text-gray;
-            b{
+            b {
               color: @color-red;
             }
-            .dantuoBlue{
+            .dantuoBlue {
               color: @color-blue
             }
           }
         }
       }
       /*分割线*/
-      .line{
+      .line {
         width: 100%;
         height: .66667vmin;
         /*display: block;*/
