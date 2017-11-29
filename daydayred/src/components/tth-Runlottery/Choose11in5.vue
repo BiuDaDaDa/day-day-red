@@ -24,6 +24,7 @@
 </template>
 <script>
   import Test from './test'
+  import {Indicator} from 'mint-ui'
   export default {
     name: 'balllist',
     data () {
@@ -48,6 +49,7 @@
               that.WinNumber[index] = Test.cutFc3D(e['WinNumber'])
               that.EndTime[index] = Test.cutTime(e['EndTime'])
             })
+            Indicator.close()
           },
           failed: function (err) {
             console.log(err)
@@ -55,10 +57,11 @@
         })
       },
       backRl () {
-        this.$router.push({path: '/runlottery'})
+        this.$router.go(-1)
       }
     },
     mounted () {
+      Indicator.open('加载中...')
       this.testData()
     }
   }
@@ -68,7 +71,6 @@
   @import "../../common/css/style";
   .Choose11in5{
     background-color: @color-background-white;
-    max-width: 607px;
     margin:0 auto;
   }
   /*头部*/

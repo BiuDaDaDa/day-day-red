@@ -36,6 +36,7 @@
 
 <script>
   import Test from './test'
+  import {Indicator} from 'mint-ui'
   export default {
     name: 'balllist',
     data () {
@@ -63,6 +64,7 @@
               that.WinNumber[index] = Test.cutBiglt(e['WinNumber'])
               that.EndTime[index] = Test.cutTime(e['EndTime'])
             })
+            Indicator.close()
           },
           failed: function (err) {
             console.log(err)
@@ -70,7 +72,7 @@
         })
       },
       backRl () {
-        this.$router.push({path: '/runlottery'})
+        this.$router.go(-1)
       },
       numberDetail (index) {
         this.$router.push({path: '/bigltnext'})
@@ -78,6 +80,7 @@
       }
     },
     mounted () {
+      Indicator.open('加载中...')
       this.testData()
     },
     beforeDestroy () {
@@ -92,7 +95,6 @@
   @import "../../common/css/style";
   .BigLt{
     background-color: @color-background-white;
-      max-width: 607px;
       margin:0 auto;
   }
   /*头部*/
@@ -107,7 +109,7 @@
     display: inline-block;
   }
   .bl-nav-left {
-    width: 28.2%;
+    width: 20%;
     height: 100%;
     font-size: 5.6vmin;
     overflow: hidden;
@@ -117,7 +119,7 @@
     padding-left: 4vmin;
   }
   .bl-nav-right {
-    width: 27.6%;
+    width: 20%;
     height: 100%;
     // background-color: blue;
   }

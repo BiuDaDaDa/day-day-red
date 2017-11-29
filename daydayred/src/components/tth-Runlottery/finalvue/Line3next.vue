@@ -41,7 +41,7 @@
         <td><span>{{item['winMoney']}}</span></td>
       </tr>
     </table>
-    <button>
+    <button @click="buyline3">
       购买福彩3D
     </button>
   </div>
@@ -73,7 +73,6 @@
           success: function (res) {
             this.ssq = res.data.data
             this.items = res.data.data.item
-            console.log(this.items)
             // 销量
             this.saleMoney = res.data.data['SaleMoney']
             // 奖池
@@ -92,7 +91,10 @@
       },
       myhandle (val) {
         this.localId = val['changeID']
-        console.log(this.localId)
+      },
+      // 点击按钮购买彩票
+      buyline3 () {
+        this.$router.push({path: '/rank3'})
       }
     },
     mounted () {
@@ -123,6 +125,8 @@
     width: 100%;
     height: 12vmin;
     background-color: @color-red;
+    display: flex;
+    justify-content: space-between;
   }
 
   .bl-nav > div {
@@ -130,16 +134,15 @@
   }
 
   .bl-nav-left {
-    width: 26.6%;
+    width: 20%;
     height: 100%;
     // background-color: green;
     margin-left: 2.8vmin;
     overflow: hidden;
-    display: flex;
   }
 
   .bl-nav-right {
-    width: 30.6%;
+    width: 20%;
     height: 100%;
     // background-color: blue;
   }
