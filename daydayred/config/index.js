@@ -9,6 +9,7 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
+    productionSourceMap:false,
     proxyTable: {
       '/api': {
         target: 'http://m.tthong.cn',

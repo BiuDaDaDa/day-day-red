@@ -46,7 +46,7 @@
             <input type="checkbox">
             追加
           </label>
-          <input class="shortcut_buyNow" type="button" value="立即购买">
+          <input class="shortcut_buyNow" type="button" value="立即购买" @click="button">
         </div>
       </div>
     </div>
@@ -75,6 +75,7 @@
 <script>
   import OxsFooter from '../../components/Footer.vue'
   import {Indicator} from 'mint-ui'
+  import {getJsCookie} from '@/common/js/util'
 //  import {getJsCookie} from '../../common/js/util'
   export default {
     name: 'home',
@@ -111,6 +112,11 @@
             console.log('未找到轮播图数据:' + err)
           }
         })
+      },
+      button () {
+        if (getJsCookie('CP_UserIDGuid') === null) {
+          this.$router.push({path: '/login'})
+        }
       },
       // 快捷投注随机球数
       getRandomNum () {
