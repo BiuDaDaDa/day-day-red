@@ -75,6 +75,7 @@
 <script>
   import OxsFooter from '../../components/Footer.vue'
   import {Indicator} from 'mint-ui'
+//  import {getJsCookie} from '../../common/js/util'
   export default {
     name: 'home',
     components: {

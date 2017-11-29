@@ -11,17 +11,29 @@
     <span>共计<b>{{countZhu}}</b>注,<b>{{countMoney}}</b>元</span>
   </div>
   <!--确定-->
-  <input class="buyFooter_buyBtn" type="button" value="确定">
+  <input @click="toShoppingCar" class="buyFooter_buyBtn" type="button" value="确定">
 </div>
 </template>
 
 <script>
+  import { Toast } from 'mint-ui'
   export default {
     name: 'BuyFooter',
     props: ['countMoney', 'countZhu'],
     methods: {
       clearNum () {
         this.$emit('clearAllNum')
+      },
+      toShoppingCar () {
+        if (this.countZhu > 0) {
+          this.$emit('toShopCar')
+        } else {
+          Toast({
+            message: '请选择',
+            position: 'middle',
+            duration: 1000
+          })
+        }
       }
     }
   }

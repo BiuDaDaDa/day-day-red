@@ -27,7 +27,7 @@
           <Select9ball :clearAll="clearAll" @returnNum="getNumZuXuan6" v-if="changeBall == 2" :numText="'选号'"></Select9ball>
         </div>
       </div>
-      <BuyFooter @clearAllNum="clearAllNum" :countZhu="countZhu" :countMoney="countMoney"></BuyFooter>
+      <BuyFooter @toShopCar="toShopCar" @clearAllNum="clearAllNum" :countZhu="countZhu" :countMoney="countMoney"></BuyFooter>
       <!--隐藏部分-->
       <mt-popup v-model="isShowRecent" position="bottom" class="recentAward">
         <!--分割符号-->
@@ -37,6 +37,8 @@
     <!--玩法说明-->
     <BuyInstruction v-show="isInsShow" :thisPage="41" :thisTitle="'排列3玩法说明'"
                     @instructionClose="isInstructionShow"></BuyInstruction>
+    <!--选号列表-->
+    <shoppingCar :thisArr="thisArr" :name="'排列3选号列表'" v-if="isShowShopCar" @closeShoppingCar="closeShoppingCar"></shoppingCar>
   </div>
 </template>
 
@@ -47,6 +49,7 @@
   import Select9ball from '../tth-buy/buy-select9ball.vue'
   import BuyInstruction from '../tth-buy/buy-instruction.vue'
   import { Indicator } from 'mint-ui'
+  import shoppingCar from '../../tth-home/tth-buy/buy-shoppingCar.vue'
 
   export default {
     name: 'introduction-rank3',
@@ -55,7 +58,8 @@
       BuyHeader,
       BuyRecentAward,
       Select9ball,
-      BuyInstruction
+      BuyInstruction,
+      shoppingCar
     },
     data () {
       return {
@@ -103,7 +107,10 @@
         zhiXuan6Arr: [],
         countZhu: 0,
         countMoney: 0,
-        clearAll: false
+        clearAll: false,
+        isShowShopCar: false,
+        ShopCarArr: [],
+        thisArr: []
       }
     },
     methods: {
@@ -202,6 +209,30 @@
         this.countZhu = 0
         this.countMoney = 0
         console.log('清除')
+      },
+      // 跳转购物车
+      toShopCar () {
+        if (this.changeBall === 0) {
+          this.ShopCarArr = this.zhiXuanArr
+        } else if (this.changeBall === 1) {
+          this.ShopCarArr = this.zhiXuan3Arr
+        } else if (this.changeBall === 2) {
+          this.ShopCarArr = this.zhiXuan6Arr
+        }
+        this.isShowShopCar = true
+        this.isMainShow = false
+        // 数组
+        this.thisArr = []
+        this.thisArr.push(this.ShopCarArr)
+        this.thisArr.push(this.MethodsArr[this.changeBall])
+        this.thisArr.push(this.countZhu)
+        this.thisArr.push(this.countMoney)
+        console.log(this.thisArr)
+      },
+      closeShoppingCar () {
+        this.isShowShopCar = false
+        this.isMainShow = true
+        this.clearAllNum()
       }
     },
     mounted () {
