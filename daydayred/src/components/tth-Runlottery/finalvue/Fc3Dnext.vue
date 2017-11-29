@@ -41,7 +41,7 @@
         <td><span>{{item['winMoney']}}</span></td>
       </tr>
     </table>
-    <button>
+    <button @click="buy3D">
       购买福彩3D
     </button>
   </div>
@@ -91,6 +91,10 @@
       },
       myhandle (val) {
         this.localId = val['changeID']
+      },
+      // 点击按钮购买彩票
+      buy3D () {
+        this.$router.push({path: '/fucai3d'})
       }
     },
     mounted () {
@@ -121,6 +125,8 @@
     width: 100%;
     height: 12vmin;
     background-color: @color-red;
+    display: flex;
+    justify-content: space-between;
   }
 
   .bl-nav > div {
@@ -128,16 +134,15 @@
   }
 
   .bl-nav-left {
-    width: 26.6%;
+    width: 20%;
     height: 100%;
     // background-color: green;
     margin-left: 2.8vmin;
     overflow: hidden;
-    display: flex;
   }
 
   .bl-nav-right {
-    width: 30.6%;
+    width: 20%;
     height: 100%;
     // background-color: blue;
   }

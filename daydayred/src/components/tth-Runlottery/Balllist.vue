@@ -36,6 +36,7 @@
 
 <script>
   import Test from './test'
+  import {Indicator} from 'mint-ui'
   export default {
     name: 'balllist',
     data () {
@@ -59,6 +60,7 @@
             this.ssq.forEach(function (e, index) {
               that.WinNumber[index] = Test.cutNumber(e['WinNumber'])
               that.EndTime[index] = Test.cutTime(e['EndTime'])
+              Indicator.close()
             })
           },
           failed: function (err) {
@@ -66,17 +68,21 @@
           }
         })
       },
+      // 跳转至开奖页面
       backRl () {
-        this.$router.push({path: '/runlottery'})
+        this.$router.go(-1)
       },
+      // 获取点击对应li内容的ID值
       numberDetail (index) {
         this.$router.push({path: '/balllistnext'})
         this.localID = this.ssq[index]['ID']
       }
     },
     mounted () {
+      Indicator.open('加载中...')
       this.testData()
     },
+    // 生命周期在销毁前发送请求
     beforeDestroy () {
       this.$bus.emit('get', {
         changeID: this.localID
@@ -89,7 +95,6 @@
   @import "../../common/css/style";
   .Balllist{
     background-color:@color-background-white;
-    max-width: 607px;
     margin:0 auto;
   }
   /*头部*/
@@ -116,10 +121,8 @@
   .bl-nav-right {
     width: 20%;
     height: 100%;
-    // background-color: blue;
   }
   .bl-nav-title {
-   // width: 30.6%;
     height: 100%;
     margin: 0 auto;
     overflow: hidden;
