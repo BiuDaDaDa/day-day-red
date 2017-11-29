@@ -15,6 +15,7 @@
         <div class="week_body_body_hitRate" v-show="num === 1">命中率: {{god.hitRate}}</div>
         <div class="week_body_body_profitRate" v-show="num === 2">盈利率: {{god.profitRate}}</div>
         <div class="week_body_body_hitRate" v-show="num === 3">连红: {{god.combo}}</div>
+        <div class="redball" v-if="god.recommend > 0">{{god.recommend}}</div>
       </div>
     </div>
   </div>
@@ -135,6 +136,7 @@
   }
  .week_body_body{
    width: 25%;
+   position: relative;
  }
   .week_body_body_avatar{
     width: 13vmin;
@@ -188,6 +190,21 @@
    border-radius: 2.13333vmin;
    font-size: 2.13333vmin;
    box-sizing: border-box;
+ }
+ .redball{
+   position: absolute;
+   width: 4vmin;
+   height: 4vmin;
+   line-height: 4vmin;
+   text-align: center;
+   background: #ff5f5f;
+   font-size: 3.2vmin;
+   color: #fff;
+   border-radius: 50%;
+   display: block;
+   top: -1vmin;
+   right: 4.9vmin;
+   font-weight: 400;
  }
 
 
