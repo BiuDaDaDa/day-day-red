@@ -162,7 +162,7 @@
         <td><span>5</span></td>
       </tr>
     </table>
-    <button>
+    <button @click="buyhappy">
       购买超级大乐透
     </button>
   </div>
@@ -228,7 +228,10 @@
       },
       myhandle (val) {
         this.localId = val['changeID']
-        console.log(val, '这是前一个页面的数据')
+      },
+      // 点击按钮购买彩票
+      buyhappy () {
+        this.$router.push({path: '/superLotto'})
       }
     },
     mounted () {
@@ -259,6 +262,8 @@
     width: 100%;
     height: 12vmin;
     background-color: @color-red;
+    display: flex;
+    justify-content: space-between;
   }
 
   .bl-nav > div {
@@ -266,15 +271,15 @@
   }
 
   .bl-nav-left {
-    width: 24.73%;
+    width: 20%;
     height: 100%;
     padding-left: 2.8vmin;
     overflow: hidden;
-    display: flex;
+
   }
 
   .bl-nav-right {
-    width: 30.6%;
+    width: 20%;
     height: 100%;
     // background-color: blue;
   }

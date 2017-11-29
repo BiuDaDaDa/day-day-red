@@ -1,3 +1,4 @@
+// 双色球号码分割成数组
 export function cutNumber (str) {
   // 获取获奖号码
   var str1 = str.split('+')
@@ -5,7 +6,7 @@ export function cutNumber (str) {
   var str12 = str11.concat(str1[1])
   return str12
 }
-
+// 双色球的开奖日期换算
 export function cutTime (str) {
   // 获取月份和日期
   var str2 = str.split('/')
@@ -14,7 +15,26 @@ export function cutTime (str) {
   var time = str2[1] + '-' + str2[2] + '  ' + WeekDay
   return time
 }
-
+// 计算足彩和篮球的星期
+export function cutWeek (str) {
+  var str1 = str.split('')
+  var str11 = str1.splice(0, 4)
+  var str21 = str11.toString()
+  var str31 = str21.replace(/,/g, '')
+  // 月份
+  var str12 = str1.splice(0, 2)
+  var str22 = str12.toString()
+  var str32 = str22.replace(/,/g, '')
+  // 日
+  var str13 = str1.splice(0, 2)
+  var str23 = str13.toString()
+  var str33 = str23.replace(/,/g, '')
+  var dataNumber = new Date(str31, str32, str33).getDay()
+  var WeekDay = '周' + '五六日一二三四'.charAt(dataNumber)
+  // str1在切割后会变化
+  return WeekDay
+}
+// 分割大乐透的获奖号码为数组
 export function cutBiglt (str) {
   // 获取获奖号码
   var str3 = str.split('+')
@@ -23,13 +43,13 @@ export function cutBiglt (str) {
   var str33 = str31.concat(str32)
   return str33
 }
-
+// 分割福彩3D的号码为数组
 export function cutFc3D (str) {
   // 获取获奖号码
   var str1 = str.split(',')
   return str1
 }
-
+// 获取比赛的开赛时间
 export function cutMatchTime (str) {
   // 获取获奖号码
   var str1 = str.split(' ')
@@ -81,7 +101,7 @@ export function concede (str, str2) {
   return hRz
 }
 
-// 篮球函数
+// 篮球函数比分判断主胜和客胜
 export function concede2 (str, str2) {
   var str1 = str.split(':')
   var strg = parseInt(str2)
@@ -96,7 +116,7 @@ export function concede2 (str, str2) {
   }
   return hRz
 }
-
+// 计算比赛结果的大小分
 export function BigorSmall (str, str2) {
   var str1 = str.split(':')
   var strg = parseInt(str2)
@@ -112,8 +132,8 @@ export function BigorSmall (str, str2) {
   return hRz
 }
 
-// 判断主胜客胜
-// 判断分差
+// 判断主胜主负的分差
+
 export function Fencha (str) {
   var str1 = str.split(':')
   var str11 = parseInt(str1[0])
@@ -164,20 +184,7 @@ export function cutMatchTime2 (str) {
   var time = [str1, str2, str3]
   return time
 }
-export function cutTimeBs (str) {
-  // 获取月份和日期
-  var str2 = str.split(' ')
-  var str3 = str2[0].split('/')
-  var dataNumber = new Date(str3[0], str3[1], str3[2]).getDay()
-  var WeekDay = '周' + '五六日一二三四'.charAt(dataNumber)
-  return WeekDay
-}
-export function cutMatchTime3 (str) {
-  // 获取获奖号码
-  var str1 = str.split(' ')
-  var str11 = str1[1].split(':')
-  return str11
-}
+
 export default {
   cutNumber,
   cutTime,
@@ -191,5 +198,5 @@ export default {
   BigorSmall,
   Fencha,
   cutMatchTime2,
-  cutTimeBs
+  cutWeek
 }

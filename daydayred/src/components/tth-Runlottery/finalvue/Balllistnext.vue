@@ -149,7 +149,7 @@
         <td><span>5</span></td>
       </tr>
     </table>
-    <button>
+    <button @click="buyDouble">
       购买双色球
     </button>
   </div>
@@ -214,14 +214,20 @@
       },
       myhandle (val) {
         this.localId = val['changeID']
+      },
+      // 点击按钮购买彩票
+      buyDouble () {
+        this.$router.push({path: '/doubleColorBall'})
       }
     },
     mounted () {
       this.testData()
     },
+    // 创建完成后在该页面进行二级页面的监听
     created () {
       this.$bus.on('get', this.myhandle)
     },
+    // 销毁监听
     beforeDestroy () {
       this.$bus.off('get', this.myhandle)
     }
@@ -244,6 +250,8 @@
     width: 100%;
     height: 12vmin;
     background-color: @color-red;
+    display: flex;
+    justify-content: space-between;
   }
 
   .bl-nav > div {
@@ -251,16 +259,16 @@
   }
 
   .bl-nav-left {
-    width: 26.6%;
+    width: 20%;
     height: 100%;
     // background-color: green;
     margin-left: 2.8vmin;
     overflow: hidden;
-    display: flex;
+
   }
 
   .bl-nav-right {
-    width: 30.6%;
+    width: 20%;
     height: 100%;
     // background-color: blue;
   }

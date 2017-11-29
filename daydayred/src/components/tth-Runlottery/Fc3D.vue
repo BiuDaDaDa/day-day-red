@@ -26,6 +26,7 @@
 
 <script>
   import Test from './test'
+  import {Indicator} from 'mint-ui'
   export default {
     name: 'balllist',
     data () {
@@ -52,6 +53,7 @@
               that.WinNumber[index] = Test.cutFc3D(e['WinNumber'])
               that.EndTime[index] = Test.cutTime(e['EndTime'])
             })
+            Indicator.close()
           },
           failed: function (err) {
             console.log(err)
@@ -59,7 +61,7 @@
         })
       },
       backRl () {
-        this.$router.push({path: '/runlottery'})
+        this.$router.go(-1)
       },
       numberDetail (index) {
         this.$router.push({path: '/Fc3Dnext'})
@@ -67,6 +69,7 @@
       }
     },
     mounted () {
+      Indicator.open('加载中...')
       this.testData()
     },
     beforeDestroy () {
@@ -81,7 +84,6 @@
   @import "../../common/css/style";
   .Fc3D{
     background-color: @color-background-white;
-    max-width: 607px;
     margin:0 auto;
   }
   /*头部*/
@@ -96,7 +98,7 @@
     display: inline-block;
   }
   .bl-nav-left {
-    width: 29%;
+    width: 20%;
     height: 100%;
     // background-color: green;
     overflow: hidden;
@@ -106,7 +108,7 @@
     padding-left: 4vmin;
   }
   .bl-nav-right {
-    width: 30.6%;
+    width: 20%;
     height: 100%;
     // background-color: blue;
   }

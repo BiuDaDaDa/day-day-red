@@ -1,6 +1,6 @@
 <template>
       <div class="runlottery">
-            <div class="rl-nav">
+            <div class="rl-nav" @click="backHome">
                 <div class="rl-nav-title">
                     <p>开奖公告</p>
                 </div>
@@ -96,7 +96,7 @@
 <script>
     import Test from './test'
     import WsbFooter from '../../components/Footer'
-
+    import {Indicator} from 'mint-ui'
     export default {
       name: '',
       components: {
@@ -138,30 +138,43 @@
         }
       },
       mounted () {
+        Indicator.open('加载中...')
         this.testData()
       },
       methods: {
+        // 跳转至双色球
         dndetail () {
           this.$router.push({path: '/balllist'})
         },
+        // 跳转至大乐透
         hndetail () {
           this.$router.push({path: '/biglt'})
         },
+        // 跳转至福彩3
         fc3detail () {
           this.$router.push({path: '/fc3d'})
         },
+        // 跳转至排列3
         lidetail () {
           this.$router.push({path: '/line3'})
         },
+        // 跳转至江西11选5
         jxdetail () {
           this.$router.push({path: '/choose11in5'})
         },
+        // 跳转至足彩
         fcdetail () {
           this.$router.push({path: '/rlfootball'})
         },
+        // 跳转至篮球
         bkdetail () {
           this.$router.push({path: '/rlbasketball'})
         },
+        // 点击头部返回主页
+        backHome () {
+          this.$router.push({path: '/home'})
+        },
+        // 请求接口数据
         testData () {
           let that = this
           this.$request({
@@ -208,6 +221,7 @@
               that.jxTimeStr = that.jxTime.split('/')
               that.try7 = new Date(that.jxTimeStr[0], that.jxTimeStr[1], that.jxTimeStr[2]).getDay()
               that.shijian7 = '周' + '五六日一二三四'.charAt(that.try7)
+              Indicator.close()
             },
             failed: function (err) {
               console.log(err)
@@ -223,8 +237,11 @@
   @import "../../common/css/style";
   .runlottery{
     background-color:@color-background-white;
-    max-width: 607px;
     margin:0 auto;
+    height: 115vmin;
+  }
+  ul li{
+    background-color:@color-background-white;
   }
   .rl-nav{
         width:100%;
@@ -287,12 +304,19 @@
     font-family: -apple-system,BlinkMacSystemFont,PingFang SC,Helvetica
     Neue,STHeiti,Microsoft Yahei,Tahoma,Simsun,sans-serif;
   }
+
   /*双色球*/
   /*超级大乐透*/
 
   .happy-number>div p{
     font-size: 4vmin;
     font-weight: 700;
+  }
+  .happy-number>div:nth-child(7),.double-number>div:nth-child(7){
+    background-color: #6b8dff;
+  }
+  .happy-number div:nth-child(6){
+    background-color: #6b8dff;
   }
   /*篮球 足球*/
   .football div{
