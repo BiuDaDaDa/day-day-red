@@ -122,9 +122,8 @@
               let myUrl = `"UserIDGuid":"${Guid}"`
               let myOtherUrl = encodeURI(myUrl)
               if (res.status === 200) {
-                console.log(123)
                 Toast({
-                  message: '登陆成功',
+                  message: res.data.msg,
                   position: 'middle',
                   iconClass: 'iconfont icon-dui',
                   duration: 800
@@ -137,6 +136,12 @@
                     if (res.status === 200) {
                       this.cookieValue = getJsCookie('CP_UserIDGuid')
                       if (this.cookieValue === Guid) {
+                        Toast({
+                          message: '登陆成功',
+                          position: 'middle',
+                          iconClass: 'iconfont icon-dui',
+                          duration: 800
+                        })
                         // 获取用户数据以字符串形式保存在localStorage中
                         let data = JSON.stringify(res.data.data)
                         window.localStorage.setItem('datas', data)
@@ -177,7 +182,7 @@
               console.log(res)
               if (res.status === 200) {
                 Toast({
-                  message: '登陆成功',
+                  message: res.data.msg,
                   position: 'middle',
                   iconClass: 'iconfont icon-dui',
                   duration: 800
@@ -189,26 +194,15 @@
                     if (res.status === 200) {
                       this.cookieValue = getJsCookie('CP_UserIDGuid')
                       if (this.cookieValue === Guid) {
+                        Toast({
+                          message: '登陆成功',
+                          position: 'middle',
+                          iconClass: 'iconfont icon-dui',
+                          duration: 800
+                        })
                         // 获取用户数据以字符串形式保存在localStorage中
                         let data = JSON.stringify(res.data.data)
                         window.localStorage.setItem('datas', data)
-//                        switch (this.index) {
-//                          case 0:
-//                            this.$router.push({path: '/home'})
-//                            break
-//                          case 1:
-//                            this.$router.push({path: '/runlottery'})
-//                            break
-//                          case 2:
-//                            this.$router.push({path: '/documentary'})
-//                            break
-//                          case 3:
-//                            this.$router.push({path: '/score'})
-//                            break
-//                          case 4:
-//                            this.$router.push({path: '/user'})
-//                            break
-//                        }
                         this.$router.push({path: '/user'})
                         window.location.reload()
                       } else {
