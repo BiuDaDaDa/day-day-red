@@ -122,12 +122,14 @@
               let myUrl = `"UserIDGuid":"${Guid}"`
               let myOtherUrl = encodeURI(myUrl)
               if (res.status === 200) {
-                Toast({
-                  message: res.data.msg,
-                  position: 'middle',
-                  iconClass: 'iconfont icon-dui',
-                  duration: 800
-                })
+                if (res.data.msg !== '') {
+                  Toast({
+                    message: res.data.msg,
+                    position: 'middle',
+                    iconClass: 'iconfont icon-dui',
+                    duration: 800
+                  })
+                }
                 this.$request({
                   type: 'get',
                   url: '/api/user/Handler.ashx?action=801&params={' + myOtherUrl + '}',
@@ -146,7 +148,6 @@
                         let data = JSON.stringify(res.data.data)
                         window.localStorage.setItem('datas', data)
                         this.$router.push({path: '/user'})
-                        window.location.reload()
                       } else {
                         window.localStorage.removeItem('datas')
                       }
@@ -181,30 +182,31 @@
               let myOtherUrl = encodeURI(myUrl)
               console.log(res)
               if (res.status === 200) {
-                Toast({
-                  message: res.data.msg,
-                  position: 'middle',
-                  iconClass: 'iconfont icon-dui',
-                  duration: 800
-                })
+                if (res.data.msg !== '') {
+                  Toast({
+                    message: res.data.msg,
+                    position: 'middle',
+                    iconClass: 'iconfont icon-dui',
+                    duration: 800
+                  })
+                }
                 this.$request({
                   type: 'get',
                   url: '/api/user/Handler.ashx?action=801&params={' + myOtherUrl + '}',
                   success: function (res) {
                     if (res.status === 200) {
+                      Toast({
+                        message: '登陆成功',
+                        position: 'middle',
+                        iconClass: 'iconfont icon-dui',
+                        duration: 800
+                      })
                       this.cookieValue = getJsCookie('CP_UserIDGuid')
                       if (this.cookieValue === Guid) {
-                        Toast({
-                          message: '登陆成功',
-                          position: 'middle',
-                          iconClass: 'iconfont icon-dui',
-                          duration: 800
-                        })
                         // 获取用户数据以字符串形式保存在localStorage中
                         let data = JSON.stringify(res.data.data)
                         window.localStorage.setItem('datas', data)
                         this.$router.push({path: '/user'})
-                        window.location.reload()
                       } else {
                         window.localStorage.removeItem('datas')
                       }

@@ -81,8 +81,6 @@
   import {fetch} from '@/common/js/localStorage'
   import {getJsCookie, removeJsCookie} from '@/common/js/util'
   import YkrFooter from '../../components/Footer.vue'
-  let users = fetch()
-  console.log(users)
   export default {
     name: 'User',
     components: {
@@ -90,7 +88,7 @@
     },
     data () {
       return {
-        users: users,
+        users: '',
         air: '--',
         logout: false,
         index: null
@@ -181,8 +179,8 @@
       outClick () {
         MessageBox.confirm('确定要退出么？').then(action => {
           removeJsCookie('CP_UserIDGuid')
-          localStorage.removeItem('datas')
-          window.location.reload()
+          window.localStorage.removeItem('datas')
+          this.users = ''
         }).catch(function (err) {
           console.log(err)
         })
@@ -190,6 +188,8 @@
       getCookie () {
         if (getJsCookie('CP_UserIDGuid') !== null) {
           this.logout = true
+        } else {
+          window.localStorage.removeItem('datas')
         }
       }
     },
@@ -198,6 +198,7 @@
       if (getJsCookie('CP_UserIDGuid') === null) {
         console.log('未登陆')
       } else {
+        this.users = fetch()
         console.log('已登陆')
       }
     }
