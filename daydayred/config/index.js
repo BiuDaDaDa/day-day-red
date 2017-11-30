@@ -14,7 +14,7 @@ module.exports = {
       '/api': {
         target: 'http://m.tthong.cn',
         secure: false,
-        cookieDomainRewrite: "localhost",
+        cookieDomainRewrite: "0.0.0.0",
         pathRewrite: {
           '^/api': '/'
         },
@@ -25,7 +25,7 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '0.0.0.0', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.HOST, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,

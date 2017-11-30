@@ -9,10 +9,10 @@
     methods: {
       way () {
         let windowHref = window.location.href
-        if (windowHref === 'http://localhost:8080/') {
+        if (windowHref === window.location.href) {
           this.$router.push({path: '/home'})
         }
-//        console.log(window.location.href)
+        console.log(window.location.href)
       }
     },
     mounted () {
